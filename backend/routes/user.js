@@ -1,3 +1,5 @@
+//groupomania
+
 /*----------------------------------------------------
 user.js
 router pour les utilisateurs.
