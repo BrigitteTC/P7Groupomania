@@ -1,7 +1,9 @@
+//P7 Groupomania
+
 //-------------------------------------------------------
 //server.js
 //
-// creation: 28/03/2022
+// creation: 21/04/2022
 // auteur: btc
 //
 // creation d'un serveur

@@ -1,25 +1,21 @@
-//Piiquante
+//P7 Groupomania
 
 //----------------------------------------------------------------
 //app.js
-// date de création: 28/03/3033
+// date de création: 21/04/2022
 // auteur: BTC
 //
 // Appliction app.js pour placer l'applisation express
-// se connecter à MongoDB
+// se connecter à mySQL
 //-------------------------------------------
 
 // import de express
 // express facilite le codage du server node.
 const express = require("Express");
 
-//mongoose
-// Mongoose est un package qui facilite les interactions avec la base de données MongoDB.
-const mongoose = require("mongoose");
-
 //routes
 const userRoutes = require("./routes/user");
-const sauceRoutes = require("./routes/sauce");
+const forumRoutes = require("./routes/forum");
 
 // Acces au path du server
 const path = require("path");
@@ -30,22 +26,23 @@ const app = express();
 //configure dotenv pour les variables d'environnement
 require("dotenv").config();
 
-//connexion a mongoDB
+//connexion a mySQL
 
 const user = process.env.USER;
 const passwd = process.env.USER_PASSWD;
-const urlDB = process.env.URLDB;
-const uri = "mongodb+srv://" + user + ":" + passwd + "@" + urlDB;
+const database = process.env.DATABASE;
 
-mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connexion à MongoDB Piiquante réussie !"))
-
-  .catch((error) => {
-    console.error(
-      "error= " + error + "  Connexion à MongoDB Piiquante échouée !"
-    );
-  });
+const mysql = require("mysql");
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: user,
+  password: passwd,
+  database: database,
+});
+connection.connect((err) => {
+  if (err) throw err;
+  console.log("Connecté!");
+});
 
 //gestion des images:
 /*indique à Express qu'il faut gérer la ressource images de manière statique 
@@ -76,8 +73,8 @@ app.use(express.json());
 
 //app.use pour enregistrer les routes
 
-//Route pour les sauces:
-app.use("/api/sauces", sauceRoutes);
+//Route pour les elts du forum:
+app.use("/api/forum", forumRoutes);
 
 ///api/auth = route attendue par le front end pour authentification
 app.use("/api/auth", userRoutes);

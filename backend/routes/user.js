@@ -1,7 +1,7 @@
-//groupomania
+//P7 groupomania
 
 /*----------------------------------------------------
-user.js
+routes/user.js
 router pour les utilisateurs.
 Auteur: BTC/
 Date de création: 20/04/2022
