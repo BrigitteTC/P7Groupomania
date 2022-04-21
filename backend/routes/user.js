@@ -19,7 +19,7 @@ router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 
 //Suppression d'un utilisateur  DELETE
-router.delete("/:id", auth, userCtrl.deleteUser);
+router.delete("/:id", userCtrl.deleteUser);
 
 //export du router
 module.exports = router;

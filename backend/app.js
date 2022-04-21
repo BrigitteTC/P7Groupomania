@@ -15,7 +15,7 @@ const express = require("Express");
 
 //routes
 const userRoutes = require("./routes/user");
-const forumRoutes = require("./routes/forum");
+//const forumRoutes = require("./routes/forum");
 
 // Acces au path du server
 const path = require("path");
@@ -44,13 +44,20 @@ connection.connect((err) => {
   console.log("Connecté!");
 });
 
+//Fermeture de la connexion:
+connection.end((err) => {
+  // La connexion se termine normalement
+  // Garantit que toutes les requêtes restantes sont exécutées
+  // Envoie ensuite un paquet de sortie au serveur MySQL.
+});
+
 //gestion des images:
 /*indique à Express qu'il faut gérer la ressource images de manière statique 
 (un sous-répertoire de notre répertoire de base, __dirname ) 
 à chaque fois qu'elle reçoit une requête vers la route /images . 
 */
 
-app.use("/images", express.static(path.join(__dirname, "images")));
+https: app.use("/images", express.static(path.join(__dirname, "images")));
 
 // ajout du middleware général
 app.use((req, res, next) => {
@@ -74,10 +81,10 @@ app.use(express.json());
 //app.use pour enregistrer les routes
 
 //Route pour les elts du forum:
-app.use("/api/forum", forumRoutes);
+//app.use("/api/forum", forumRoutes);
 
 ///api/auth = route attendue par le front end pour authentification
-app.use("/api/auth", userRoutes);
+//app.use("/api/auth", userRoutes);
 
 //export de la fonction pour qu'on puisse y acceder depuis les autres fichiers du projet
 // dont le server node.
