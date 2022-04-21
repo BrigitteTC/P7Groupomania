@@ -39,6 +39,7 @@ const connection = mysql.createConnection({
   password: passwd,
   database: database,
 });
+
 connection.connect((err) => {
   if (err) throw err;
   console.log("Connecté!");
@@ -84,7 +85,7 @@ app.use(express.json());
 //app.use("/api/forum", forumRoutes);
 
 ///api/auth = route attendue par le front end pour authentification
-//app.use("/api/auth", userRoutes);
+app.use("/api/auth", userRoutes);
 
 //export de la fonction pour qu'on puisse y acceder depuis les autres fichiers du projet
 // dont le server node.
