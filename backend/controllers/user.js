@@ -46,13 +46,22 @@ exports.signup = (req, res, next) => {
     bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
+        const email = req.body.email;
+        const pseudo = req.body.pseudo;
         connection.query(
-          "INSERT INTO user (email, passwd, pseudo) VALUES ('titi4@test.fr', 'titi', 'titi1');",
+          "INSERT INTO user (email, passwd, pseudo) VALUES ('" +
+            email +
+            "','" +
+            hash +
+            "','" +
+            pseudo +
+            "');",
           (err, lignes) => {
             if (err) throw err;
 
             console.log("Données reçues de Db:");
             console.log(lignes);
+            res.status(201).json({ message: "Utilisateur créé !" });
           }
         );
       })
