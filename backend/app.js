@@ -45,13 +45,6 @@ connection.connect((err) => {
   console.log("Connecté!");
 });
 
-//Fermeture de la connexion:
-connection.end((err) => {
-  // La connexion se termine normalement
-  // Garantit que toutes les requêtes restantes sont exécutées
-  // Envoie ensuite un paquet de sortie au serveur MySQL.
-});
-
 //gestion des images:
 /*indique à Express qu'il faut gérer la ressource images de manière statique 
 (un sous-répertoire de notre répertoire de base, __dirname ) 
@@ -86,6 +79,13 @@ app.use(express.json());
 
 ///api/auth = route attendue par le front end pour authentification
 app.use("/api/auth", userRoutes);
+
+//Fermeture de la connexion:
+connection.end((err) => {
+  // La connexion se termine normalement
+  // Garantit que toutes les requêtes restantes sont exécutées
+  // Envoie ensuite un paquet de sortie au serveur MySQL.
+});
 
 //export de la fonction pour qu'on puisse y acceder depuis les autres fichiers du projet
 // dont le server node.

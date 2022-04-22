@@ -80,3 +80,23 @@ exports.deleteUser = (req, res, next) => {
     });
   }
 };
+
+/*----------------------------------------------------------------------------
+ft getAllUsers
+
+Objet: Affiche la liste des utilisateurs les utilisateurs.
+
+verbe: GET
+
+Algo:
+  SELECT * sur table users
+
+----------------------------------------------------------------*/
+exports.getAllUsers = (req, res, next) => {
+  try {
+  } catch {
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+};
