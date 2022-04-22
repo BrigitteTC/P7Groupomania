@@ -42,7 +42,7 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) throw err;
-  console.log("Connecté!");
+  console.log("Connecté mySQL groupomania!");
 });
 
 //gestion des images:

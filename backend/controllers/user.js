@@ -19,6 +19,16 @@ const jwt = require("jsonwebtoken");
 //configure dotenv pour les variables d'environnement
 require("dotenv").config();
 
+//Base de données mysql
+const mysql = require("mysql");
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: process.env.USER,
+  password: process.env.USER_PASSWD,
+  database: process.env.DATABASE,
+});
+
 /*--------------------------------------------------------------------------
  ft signup :
  
@@ -32,6 +42,23 @@ require("dotenv").config();
 ------------------------------------------------------------*/
 exports.signup = (req, res, next) => {
   try {
+    console.log("signup");
+    bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => {
+        connection.query(
+          "INSERT INTO user (email, passwd, pseudo) VALUES ('titi4@test.fr', 'titi', 'titi1');",
+          (err, lignes) => {
+            if (err) throw err;
+
+            console.log("Données reçues de Db:");
+            console.log(lignes);
+          }
+        );
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
   } catch {
     res.status(500).json({
       error: new Error("Erreur server"),
