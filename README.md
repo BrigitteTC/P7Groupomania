@@ -11,7 +11,7 @@ mysql> DESCRIBE user;
 | id | int | NO | PRI | NULL | auto_increment |
 | email | varchar(255) | NO | UNI | NULL | |
 | passwd | varchar(100) | NO | | NULL | |
-| pseudo | varchar(100) | NO | | NULL | |
+| pseudo | varchar(100) | NO | UNI | NULL | |
 | moderator | tinyint(1) | NO | | 0 | |
 +-----------+--------------+------+-----+---------+----------------+
 5 rows in set (0.00 sec)
