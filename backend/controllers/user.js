@@ -56,15 +56,17 @@ exports.signup = (req, res, next) => {
             "');",
           (err, fields) => {
             if (err) {
+              // Reponse avec code et message d'erreur
               res
                 .status(400)
                 .json({ message: err.code + err.sqlMessage + err.errno });
-              //throw err;
-            }
-            console.log("erreur" + err);
-            console.log("Données reçues de Db:" + fields);
+              console.log("erreur" + err);
+            } else {
+              // OK utilisateur cree
+              console.log("Données reçues de Db:" + fields);
 
-            res.status(201).json({ message: "Utilisateur créé !" });
+              res.status(201).json({ message: "Utilisateur créé !" });
+            }
           }
         );
       })
@@ -80,6 +82,7 @@ exports.signup = (req, res, next) => {
 
 /*----------------------------------------------------------------------------
 ft login 
+
 
 Objet: pour connecter les utilisateurs.
 
