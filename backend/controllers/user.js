@@ -54,18 +54,20 @@ exports.signup = (req, res, next) => {
             "','" +
             req.body.pseudo +
             "');",
-          (err, fields) => {
+          (err) => {
             if (err) {
               // Reponse avec code et message d'erreur
-              res
-                .status(400)
-                .json({ message: err.code + err.sqlMessage + err.errno });
+              res.status(400).json({
+                message: "code: " + err.code + " message: " + err.sqlMessage,
+              });
               console.log("erreur" + err);
             } else {
               // OK utilisateur cree
-              console.log("Données reçues de Db:" + fields);
+              console.log("utilisateur cree" + req.body.pseudo);
 
-              res.status(201).json({ message: "Utilisateur créé !" });
+              res
+                .status(201)
+                .json({ message: "Utilisateur créé : " + req.body.pseudo });
             }
           }
         );
