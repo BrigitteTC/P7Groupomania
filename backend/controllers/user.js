@@ -7,7 +7,7 @@ auteur BTC
 controleur pour les users
 -----------------------------------------
 */
-
+const express = require("Express");
 //package de cryptage
 const bcrypt = require("bcrypt");
 
@@ -18,6 +18,10 @@ const jwt = require("jsonwebtoken");
 
 //configure dotenv pour les variables d'environnement
 require("dotenv").config();
+
+const cors = require("cors");
+
+const bodyParser = require("body-parser");
 
 //Base de données mysql
 const mysql = require("mysql");
@@ -94,13 +98,31 @@ Algo:
   Vérif de l'utilisateur
   Si utilisateur connu: verif du passwd avec la clé secréte
 
+
+  Réponse de mysql avec les infos suivantes:
+  [
+  RowDataPacket {
+    id: 32,
+    email: 'titi16.1@test.fr',
+    passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
+    pseudo: 'titi16.1@test.fr',
+    moderator: 0
+  }
+]
+
 ----------------------------------------------------------------*/
 exports.login = (req, res, next) => {
   try {
     const secretKey = process.env.SECRET_KEY;
-    const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
+    const sql =
+      "SELECT passwd FROM user WHERE email = '" + req.body.email + "';";
+
+    const allsql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
+
     console.log(sql);
-    connection.query(sql, (err, data, fields) => {
+    console.log(allsql);
+    connection.query(sql, (err, data) => {
+      //connection.query(allsql, (err, data) => {
       if (err) {
         // Reponse avec code et message d'erreur
         res.status(400).json({
@@ -110,10 +132,22 @@ exports.login = (req, res, next) => {
       } else {
         // test log
         console.log(data);
+        try {
+          console.log("debut du try");
 
-        //test passwd
+          console.log(data);
 
-        res.status(200).json({ message: "Utilisateur logue" });
+          //
+          //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
+          //Si correct renvoi du TOKEN au frontend
+          //  A completer
+          //
+
+          res.status(200).json({ message: "Utilisateur logue" });
+        } catch (err) {
+          console.log("fail");
+          res.status(400).json({ message: "probleme" });
+        }
       }
     });
   } catch {
