@@ -97,6 +97,25 @@ Algo:
 ----------------------------------------------------------------*/
 exports.login = (req, res, next) => {
   try {
+    const secretKey = process.env.SECRET_KEY;
+    const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
+    console.log(sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // test log
+        console.log(data);
+
+        //test passwd
+
+        res.status(200).json({ message: "Utilisateur logue" });
+      }
+    });
   } catch {
     res.status(500).json({
       error: new Error("Erreur server"),
