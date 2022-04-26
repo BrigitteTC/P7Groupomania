@@ -104,7 +104,7 @@ Algo:
     id: 32,
     email: 'titi16.1@test.fr',
     passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
-    pseudo: 'titi16.1@test.fr',
+    pseudo: 'titi16',
     moderator: 0
   }
 ]
@@ -112,6 +112,7 @@ Algo:
 ----------------------------------------------------------------*/
 exports.login = (req, res, next) => {
   try {
+    console.log("fonction exports.login");
     const secretKey = process.env.SECRET_KEY;
     const sql =
       "SELECT passwd FROM user WHERE email = '" + req.body.email + "';";
@@ -120,8 +121,8 @@ exports.login = (req, res, next) => {
 
     console.log(sql);
     console.log(allsql);
-    connection.query(sql, (err, data, fields) => {
-      //connection.query(allsql, (err, data) => {
+    //connection.query(sql, (err, data, fields) => {
+    connection.query(allsql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
         res.status(400).json({
@@ -137,13 +138,27 @@ exports.login = (req, res, next) => {
           console.log(data);
           console.log(fields);
 
+          //result est un tableau avec 1 seul elt
+          const result = Object.values(JSON.parse(JSON.stringify(data)));
+          console.log(result);
+          console.log("result[0] : ");
+          console.log(result[0]);
+
+          const obj = result[0];
+          console.log("obj : ");
+          console.log(obj);
+          console.log("obj id : ");
+          console.log(obj.id);
+          console.log("obj psw : ");
+          console.log(obj.passwd);
+
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
           //Si correct renvoi du TOKEN au frontend
           //  A completer
           //
 
-          res.status(200).json({ message: "Utilisateur logue" + data });
+          res.status(200).json({ message: "Utilisateur logue" + obj });
         } catch (err) {
           console.log("fail");
           res.status(400).json({ message: "probleme" });
@@ -191,9 +206,43 @@ Algo:
 ----------------------------------------------------------------*/
 exports.getAllUsers = (req, res, next) => {
   try {
-  } catch {
+    console.log("fonction exports.getAllUsers");
+
+    const sql = "SELECT * FROM user ";
+
+    console.log(sql);
+
+    connection.query(sql, (err, rows, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // test log
+        console.log(data);
+        try {
+          console.log("debut du try");
+
+          console.log(rows);
+          console.log(fields);
+
+          const result = Object.values(JSON.parse(JSON.stringify(rows)));
+          console.log(result);
+
+          console.log(JSON.parse(result));
+
+          res.status(200).json({ message: "user list" + result });
+        } catch (err) {
+          console.log("fail");
+          res.status(400).json({ message: "probleme" });
+        }
+      }
+    });
+  } catch (err) {
     res.status(500).json({
-      error: new Error("Erreur server"),
+      error: new Error("Erreur server" + err),
     });
   }
 };

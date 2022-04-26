@@ -21,5 +21,8 @@ router.post("/login", userCtrl.login);
 //Suppression d'un utilisateur  DELETE
 router.delete("/:id", userCtrl.deleteUser);
 
+//GET
+router.get("/", userCtrl.getAllUsers);
+
 //export du router
 module.exports = router;
