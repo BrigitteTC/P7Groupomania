@@ -109,20 +109,48 @@ Algo:
   }
 ]
 
+
+
+Pour récupérer les infos du  RowDataPacket
+const result = Object.values(JSON.parse(JSON.stringify(data)));
+
+result = 1 tableau avec 1 seul elt
+result = 
+[
+{
+    id: 32,
+    email: 'titi16.1@test.fr',
+    passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
+    pseudo: 'titi16',
+    moderator: 0
+  }
+]
+
+obj=result[0]=
+{
+    id: 32,
+    email: 'titi16.1@test.fr',
+    passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
+    pseudo: 'titi16',
+    moderator: 0
+  }
+
+On peut récupérer chaque item par
+const id=obj.id
+const passwd= obj.passwd 
+...
+
 ----------------------------------------------------------------*/
 exports.login = (req, res, next) => {
   try {
     console.log("fonction exports.login");
     const secretKey = process.env.SECRET_KEY;
-    const sql =
-      "SELECT passwd FROM user WHERE email = '" + req.body.email + "';";
 
-    const allsql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
+    const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
 
     console.log(sql);
-    console.log(allsql);
-    //connection.query(sql, (err, data, fields) => {
-    connection.query(allsql, (err, data, fields) => {
+
+    connection.query(sql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
         res.status(400).json({
@@ -133,24 +161,13 @@ exports.login = (req, res, next) => {
         // test log
         console.log(data);
         try {
-          console.log("debut du try");
-
-          console.log(data);
-          console.log(fields);
-
           //result est un tableau avec 1 seul elt
           const result = Object.values(JSON.parse(JSON.stringify(data)));
-          console.log(result);
-          console.log("result[0] : ");
-          console.log(result[0]);
 
           const obj = result[0];
-          console.log("obj : ");
-          console.log(obj);
-          console.log("obj id : ");
-          console.log(obj.id);
-          console.log("obj psw : ");
-          console.log(obj.passwd);
+
+          const passwd = obj.passwd;
+          const moderator = obj.moderator;
 
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
@@ -158,10 +175,10 @@ exports.login = (req, res, next) => {
           //  A completer
           //
 
-          res.status(200).json({ message: "Utilisateur logue" + obj });
+          res.status(200).json({ message: "Utilisateur logue" });
         } catch (err) {
           console.log("fail");
-          res.status(400).json({ message: "probleme" });
+          res.status(400).json({ message: "login failed" });
         }
       }
     });
