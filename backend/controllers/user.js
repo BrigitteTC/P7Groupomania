@@ -148,7 +148,7 @@ exports.login = (req, res, next) => {
 
     const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
 
-    console.log(sql);
+    console.log("requete sql = " + sql);
 
     connection.query(sql, (err, data, fields) => {
       if (err) {
@@ -168,14 +168,45 @@ exports.login = (req, res, next) => {
 
           const passwd = obj.passwd;
           const moderator = obj.moderator;
+          const id = obj.id;
 
+          console.log("id= " + id);
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
           //Si correct renvoi du TOKEN au frontend
           //  A completer
-          //
 
-          res.status(200).json({ message: "Utilisateur logue" });
+          bcrypt
+            .compare(req.body.password, passwd)
+            .then((valid) => {
+              console.log("bcrypt");
+              if (!valid) {
+                console.log("bcrypt: passwd incorrect");
+
+                return res
+                  .status(401)
+                  .json({ error: "Mot de passe incorrect" });
+              }
+
+              console.log("bcrypt: passwd correct renvoi du token");
+              res.status(200).json({
+                userId: id,
+                moderator: moderator,
+                //token signé avec clé secrete et qui expire dans 24h avec chaine alleatoire
+
+                token: jwt.sign(
+                  {
+                    userId: id,
+                  },
+                  secretKey,
+                  { expiresIn: "24h" }
+                ),
+              });
+            })
+            .catch((err) =>
+              res.status(500).json({ error: new Error("Erreur server" + err) })
+            ); //500 = error serveur
+          //
         } catch (err) {
           console.log("fail");
           res.status(400).json({ message: "login failed" });
