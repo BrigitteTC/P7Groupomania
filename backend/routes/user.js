@@ -21,8 +21,10 @@ const auth = require("../middleware/auth");
 router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 
+//Route PUT pour modification d'un utilisateur
+
 //Suppression d'un utilisateur  DELETE
-router.delete("/login/:id", auth, userCtrl.deleteUser);
+router.delete("/:id", auth, userCtrl.deleteUser);
 
 //GET
 router.get("/login", userCtrl.getAllUsers);
