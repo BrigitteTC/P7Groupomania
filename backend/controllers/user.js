@@ -50,38 +50,37 @@ exports.signup = (req, res, next) => {
     bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
-        connection.query(
+        sql =
           "INSERT INTO user (email, passwd, pseudo) VALUES ('" +
-            req.body.email +
-            "','" +
-            hash +
-            "','" +
-            req.body.pseudo +
-            "');",
-          (err) => {
-            if (err) {
-              // Reponse avec code et message d'erreur
-              res.status(400).json({
-                message: "code: " + err.code + " message: " + err.sqlMessage,
-              });
-              console.log("erreur" + err);
-            } else {
-              // OK utilisateur cree
-              console.log("utilisateur cree" + req.body.pseudo);
+          req.body.email +
+          "','" +
+          hash +
+          "','" +
+          req.body.pseudo +
+          "');";
+        connection.query(sql, (err, data, fields) => {
+          if (err) {
+            // Reponse avec code et message d'erreur
+            res.status(400).json({
+              message: "code: " + err.code + " message: " + err.sqlMessage,
+            });
+            console.log("erreur" + err);
+          } else {
+            // OK utilisateur cree
+            console.log("utilisateur cree" + req.body.pseudo);
 
-              res
-                .status(201)
-                .json({ message: "Utilisateur créé : " + req.body.pseudo });
-            }
+            res
+              .status(201)
+              .json({ message: "Utilisateur créé : " + req.body.pseudo });
           }
-        );
+        });
       })
       .catch((error) => {
         res.status(500).json({ error });
       });
-  } catch {
+  } catch (err) {
     res.status(500).json({
-      error: new Error("Erreur server"),
+      error: new Error("Erreur server" + err),
     });
   }
 };
@@ -121,7 +120,7 @@ exports.login = (req, res, next) => {
 
     console.log(sql);
     console.log(allsql);
-    connection.query(sql, (err, data) => {
+    connection.query(sql, (err, data, fields) => {
       //connection.query(allsql, (err, data) => {
       if (err) {
         // Reponse avec code et message d'erreur
@@ -136,6 +135,7 @@ exports.login = (req, res, next) => {
           console.log("debut du try");
 
           console.log(data);
+          console.log(fields);
 
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
@@ -143,16 +143,16 @@ exports.login = (req, res, next) => {
           //  A completer
           //
 
-          res.status(200).json({ message: "Utilisateur logue" });
+          res.status(200).json({ message: "Utilisateur logue" + data });
         } catch (err) {
           console.log("fail");
           res.status(400).json({ message: "probleme" });
         }
       }
     });
-  } catch {
+  } catch (err) {
     res.status(500).json({
-      error: new Error("Erreur server"),
+      error: new Error("Erreur server" + err),
     });
   }
 };
