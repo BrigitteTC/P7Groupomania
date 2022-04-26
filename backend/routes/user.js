@@ -11,6 +11,9 @@ Date de création: 20/04/2022
 const express = require("express");
 const router = express.Router();
 
+//Authentification pour vérifier le user
+const auth = require("../middleware/auth");
+
 // controleur pour associer les fonctions aux différentes routes
 const userCtrl = require("../controllers/user");
 
@@ -19,7 +22,7 @@ router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 
 //Suppression d'un utilisateur  DELETE
-router.delete("/:id", userCtrl.deleteUser);
+router.delete("/:id", auth, userCtrl.deleteUser);
 
 //GET
 router.get("/", userCtrl.getAllUsers);

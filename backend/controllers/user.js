@@ -143,12 +143,12 @@ const passwd= obj.passwd
 ----------------------------------------------------------------*/
 exports.login = (req, res, next) => {
   try {
-    console.log("fonction exports.login");
+    console.log("DEBUG : fonction exports.login");
     const secretKey = process.env.SECRET_KEY;
 
     const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
 
-    console.log("requete sql = " + sql);
+    console.log("DEBUG: requete sql = " + sql);
 
     connection.query(sql, (err, data, fields) => {
       if (err) {
@@ -156,10 +156,10 @@ exports.login = (req, res, next) => {
         res.status(400).json({
           message: "code: " + err.code + " message: " + err.sqlMessage,
         });
-        console.log("erreur" + err);
+        console.log("DEBUG: erreur" + err);
       } else {
         // test log
-        console.log(data);
+        console.log("DEBUG  data= " + data);
         try {
           //result est un tableau avec 1 seul elt
           const result = Object.values(JSON.parse(JSON.stringify(data)));
@@ -170,7 +170,7 @@ exports.login = (req, res, next) => {
           const moderator = obj.moderator;
           const id = obj.id;
 
-          console.log("id= " + id);
+          console.log("DEBUG: id= " + id);
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
           //Si correct renvoi du TOKEN au frontend
@@ -179,16 +179,16 @@ exports.login = (req, res, next) => {
           bcrypt
             .compare(req.body.password, passwd)
             .then((valid) => {
-              console.log("bcrypt");
+              console.log("DEBUG: bcrypt");
               if (!valid) {
-                console.log("bcrypt: passwd incorrect");
+                console.log("DEBUG: bcrypt: passwd incorrect");
 
                 return res
                   .status(401)
                   .json({ error: "Mot de passe incorrect" });
               }
 
-              console.log("bcrypt: passwd correct renvoi du token");
+              console.log("DEBUG: bcrypt: passwd correct renvoi du token");
               res.status(200).json({
                 userId: id,
                 moderator: moderator,
@@ -208,7 +208,7 @@ exports.login = (req, res, next) => {
             ); //500 = error serveur
           //
         } catch (err) {
-          console.log("fail");
+          console.log("login fail");
           res.status(400).json({ message: "login failed" });
         }
       }
@@ -219,6 +219,48 @@ exports.login = (req, res, next) => {
     });
   }
 };
+
+/*-----------------------------------------------------------------------------
+function: isAuth(req.body.email)
+
+Objet: Vérifie que l'utilisateur qui lance la requete est autorisé
+
+Paramètres:
+  Entrée: email
+
+  sortie:
+    true si autorisé
+    false: sinon
+algorithme:
+  Vérifie que le token correspond au mail passé en paramètre
+-------------------------------------------------------------------------------
+*/
+
+function isAuth(userId, authUserId) {
+  var returnFt = false;
+  try {
+    const sql = "SELECT * FROM user WHERE id = '" + userId + "';";
+    console.log("DEBUG: requete sql = " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (!err) {
+        const result = Object.values(JSON.parse(JSON.stringify(data)));
+
+        const obj = result[0];
+
+        const id = obj.id;
+
+        console.log("DEBUG: id = " + id);
+        if (id == authUserId) {
+          returnFt = true;
+        }
+      }
+    });
+  } catch (err) {
+    console.log("erreur isAuth = " + err);
+  }
+
+  return returnFt;
+}
 
 /*----------------------------------------------------------------------------
 ft deleteUser
@@ -234,9 +276,44 @@ Algo:
 ----------------------------------------------------------------*/
 exports.deleteUser = (req, res, next) => {
   try {
-  } catch {
+    console.log("DEBUG : fonction exports.deleteUser");
+
+    const sql = "DELETE * FROM user WHERE id = '" + req.body.id + "';";
+
+    console.log("DEBUG: requete sql = " + sql);
+
+    //Verif user est le prpprietaire du compte ou un moderateur
+
+    if (isAuth(req.body.id, req.auth.id)) {
+      console.log("DEBUG: req autorisee");
+      connection.query(sql, (err, data, fields) => {
+        if (err) {
+          // Reponse avec code et message d'erreur
+          res.status(400).json({
+            message: "code: " + err.code + " message: " + err.sqlMessage,
+          });
+          console.log("erreur" + err);
+        } else {
+          try {
+            //result est un tableau avec 1 seul elt
+
+            console.log("DEBUG: data= " + data);
+            console.log("DEBUG: fields= " + fields);
+            //
+
+            res.status(200).json({ message: "Utilisateur supprimé" });
+
+            //
+          } catch (err) {
+            console.log("login fail");
+            res.status(400).json({ message: "login failed" });
+          }
+        }
+      });
+    }
+  } catch (err) {
     res.status(500).json({
-      error: new Error("Erreur server"),
+      error: new Error("Erreur server" + err),
     });
   }
 };

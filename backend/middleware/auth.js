@@ -1,8 +1,8 @@
-//Piiquante
+//Groupomania
 
 /*----------------------------------------
 middleware/auth.js
-Date de création: 29/03/2022
+Date de création: 26/04/2022
 auteur: BTC
 
 Gestion authentification des utilisateurs
@@ -13,7 +13,7 @@ ATTENTION: pour DELETE et PUT
   Utilisation de req.auth pour authentifier l'utilisateur
   car la vérification du user envoyé par le body peut être falsifiée
   par une personne malveillante qui utiliserait POSTDAM par exemple pour envoyer une
-  requete em mettant son propre userId comme propriétaire de la sauce.
+  requete.
 ------------------------------------------------*/
 
 //configure dotenv pour les variables d'environnement
