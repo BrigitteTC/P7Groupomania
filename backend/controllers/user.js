@@ -189,19 +189,19 @@ exports.login = (req, res, next) => {
               }
 
               console.log("DEBUG: bcrypt: passwd correct renvoi du token");
-
+              //token signé avec clé secrete et qui expire dans 24h avec chaine alleatoire
+              const token = jwt.sign(
+                {
+                  userId: id,
+                },
+                secretKey,
+                { expiresIn: "24h" }
+              );
+              console.log("DEBUG: login  token:  " + token);
               res.status(200).json({
                 userId: id,
                 moderator: moderator,
-                //token signé avec clé secrete et qui expire dans 24h avec chaine alleatoire
-
-                token: jwt.sign(
-                  {
-                    userId: id,
-                  },
-                  secretKey,
-                  { expiresIn: "24h" }
-                ),
+                token: token,
               });
             })
             .catch((err) =>
@@ -209,12 +209,13 @@ exports.login = (req, res, next) => {
             ); //500 = error serveur
           //
         } catch (err) {
-          console.log("login fail");
+          console.log("login failed" + err);
           res.status(400).json({ message: "login failed" });
         }
       }
     });
   } catch (err) {
+    console.log("erreur  " + err);
     res.status(500).json({
       error: new Error("Erreur server" + err),
     });
@@ -278,7 +279,13 @@ Algo:
 exports.modifyUser = (req, res, next) => {
   console.log("DEBUG : fonction exports.modifyUser");
   try {
-  } catch {}
+    res.status(200).json({ message: "Utilisateur modifié" });
+  } catch (err) {
+    console.log("erreur modifyUser : " + err);
+    res.status(500).json({
+      error: new Error("Erreur server" + err),
+    });
+  }
 };
 
 /*----------------------------------------------------------------------------
