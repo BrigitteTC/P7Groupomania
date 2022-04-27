@@ -13,15 +13,9 @@ const bcrypt = require("bcrypt");
 
 //controle des token
 const jwt = require("jsonwebtoken");
-//modele users
-//const User = require("../models/User");
 
 //configure dotenv pour les variables d'environnement
 require("dotenv").config();
-
-const cors = require("cors");
-
-const bodyParser = require("body-parser");
 
 //Base de données mysql
 const mysql = require("mysql");

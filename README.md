@@ -2,7 +2,34 @@
 
 Projet P7 Openclassroom Groupomania
 
+---
+
 Tables de mySQL:
+
+Creation de la base de données:
+CREATE DATABASE groupomania;
+
+CREATE TABLE user (
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+email VARCHAR(255) NOT NULL UNIQUE ,
+email VARCHAR(100) NOT NULL,
+pseudo VARCHAR(100), NOT NULL UNIQUE ,
+moderator BOOLEAN DEFAULT false
+);
+
+CREATE TABLE post (
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+userId INTEGER NOT NULL,
+post text,
+imageUrl VARCHAR(500)
+);
+
+CREATE TABLE comment (
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+userId INTEGER NOT NULL,
+postId INTEGER NOT NULL,
+comment text
+);
 
 mysql> DESCRIBE user;
 +-----------+--------------+------+-----+---------+----------------+

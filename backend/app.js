@@ -15,7 +15,7 @@ const express = require("Express");
 
 //routes
 const userRoutes = require("./routes/user");
-//const forumRoutes = require("./routes/forum");
+const postRoutes = require("./routes/post");
 
 // Acces au path du server
 const path = require("path");
@@ -85,7 +85,7 @@ app.use(express.json());
 //app.use pour enregistrer les routes
 
 //Route pour les elts du forum:
-//app.use("/api/forum", forumRoutes);
+app.use("/api/post", postRoutes);
 
 ///api/auth = route attendue par le front end pour authentification
 app.use("/api/auth", userRoutes);
