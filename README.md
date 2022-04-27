@@ -18,13 +18,15 @@ mysql> DESCRIBE user;
 
 #DEBUG:
 
+Table user:
+
 signup:
 methode: POST
 URL: http://localhost:3000/api/auth/signup
 Headers:
 Authorization: Bearer null
 Body:
-JSOn avec: email, passwd et pseudo
+JSON avec: email, passwd et pseudo
 ex: {"email":"titi@test.fr","password":"titi","pseudo":"titi"}
 
 ---

@@ -222,55 +222,6 @@ exports.login = (req, res, next) => {
   }
 };
 
-/*-----------------------------------------------------------------------------
-function: isAuth(req.body.email)
-
-Objet: Vérifie que l'utilisateur qui lance la requete est autorisé
-
-Paramètres:
-  Entrée: email
-
-  sortie:
-    true si autorisé
-    false: sinon
-algorithme:
-  Vérifie que le token correspond au mail passé en paramètre
--------------------------------------------------------------------------------
-*/
-
-function isAuth(userId, authUserId) {
-  console.log("DEBUG : fonction isAuth");
-  console.log("DEBUG : fonction isAuth : userId : " + userId);
-  console.log("DEBUG : fonction isAuth : authUserId : " + authUserId);
-  var returnFt = false;
-  try {
-    const sql = "SELECT * FROM user WHERE id = '" + userId + "';";
-    console.log("DEBUG: fonction isAuth: requete sql = " + sql);
-    connection.query(sql, (err, data, fields) => {
-      try {
-        if (!err) {
-          const result = Object.values(JSON.parse(JSON.stringify(data)));
-
-          const obj = result[0];
-
-          const id = obj.id;
-
-          console.log("DEBUG:fonction isAuth:  id = " + id);
-          if (id == authUserId) {
-            returnFt = true;
-          }
-        }
-      } catch (err) {
-        console.log("erreur isAuth connection.query = " + err);
-      }
-    });
-  } catch (err) {
-    console.log("erreur isAuth = " + err);
-  }
-
-  return returnFt;
-}
-
 /*----------------------------------------------------------------------------
 ft modifyUser
 
@@ -312,7 +263,7 @@ exports.modifyUser = (req, res, next) => {
             console.log("erreur" + err);
           } else {
             // OK utilisateur modifie
-            console.log("utilisateur modifie" + req.body.pseudo);
+            console.log("DEBUG: utilisateur modifie" + req.body.pseudo);
 
             res
               .status(201)
@@ -371,60 +322,6 @@ exports.deleteUser = (req, res, next) => {
         } catch (err) {
           console.log("erreur" + err);
           res.status(400).json({ message: "delete failed" });
-        }
-      }
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: new Error("Erreur server" + err),
-    });
-  }
-};
-
-/*----------------------------------------------------------------------------
-ft getAllUsers
-
-Objet: Affiche la liste des utilisateurs les utilisateurs.
-
-verbe: GET
-
-Algo:
-  SELECT * sur table users
-
-----------------------------------------------------------------*/
-exports.getAllUsers = (req, res, next) => {
-  try {
-    console.log("fonction exports.getAllUsers");
-
-    const sql = "SELECT * FROM user ";
-
-    console.log(sql);
-
-    connection.query(sql, (err, rows, fields) => {
-      if (err) {
-        // Reponse avec code et message d'erreur
-        res.status(400).json({
-          message: "code: " + err.code + " message: " + err.sqlMessage,
-        });
-        console.log("erreur" + err);
-      } else {
-        // test log
-        console.log(data);
-        try {
-          console.log("debut du try");
-
-          console.log(rows);
-          console.log(fields);
-
-          const result = Object.values(JSON.parse(JSON.stringify(rows)));
-          console.log(result);
-
-          console.log(JSON.parse(result));
-
-          res.status(200).json({ message: "user list" + result });
-        } catch (err) {
-          console.log("fail");
-          res.status(400).json({ message: "probleme" });
         }
       }
     });
