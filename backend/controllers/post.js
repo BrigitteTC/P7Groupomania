@@ -12,6 +12,62 @@ POST, PUT, GET et DELETE
 
 const fs = require("fs"); //acces à la gestion des fichiers de Node
 
+//configure dotenv pour les variables d'environnement
+require("dotenv").config();
+
+//jsonwebtoken pour vérifier les token
+
+const jwt = require("jsonwebtoken");
+
+//Base de données mysql
+const mysql = require("mysql");
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: process.env.USER,
+  password: process.env.USER_PASSWD,
+  database: process.env.DATABASE,
+});
+
+/*----------------------------------------------------------------------------------
+Fonction: getUserId
+
+Objet: donne l'id d'un utilisateur en ft du token
+
+Parametres:
+  Parametre entrée: req avec le header
+  Paremetre de sortie: id
+
+Algorithme
+  Décode l'id à l'aide de jwt.verify
+-------------------------------------------------------
+*/
+function getUserId(req) {
+  var userId; //L'ID du user qui sera extrait du token
+  try {
+    //on récupère le token dans le header = 2ieme elt du header apres le bearer
+    const token = req.headers.authorization.split(" ")[1];
+    console.log(
+      "DEBUG : fonction getUserId: req.headers.authorization : " +
+        req.headers.authorization
+    );
+    console.log("DEBUG : fonction getUserId: token : " + token);
+    const secretKey = process.env.SECRET_KEY;
+
+    // on décode le token avec verify et clé secrete
+    const decodedToken = jwt.verify(token, secretKey);
+
+    userId = decodedToken.userId;
+    console.log("DEBUG : fonction getUserId: userId : " + userId);
+  } catch (err) {
+    console.log("getUserId  erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+  console.log("DEBUG : fonction getUserId: retour  userId : " + userId);
+  return userId;
+}
 /*-----------------------------------------------------------------------------------
 Fonction: createPost
 
@@ -22,15 +78,43 @@ verbe: POST
 -------------------------------------------------------------------------------*/
 
 exports.createPost = (req, res, next) => {
+  console.log("DEBUG createPost");
   try {
-    const postObject = JSON.parse(req.body.post);
+    const userId = getUserId(req);
 
-    const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+    let imageUrl = "";
+    /* on verra plus tard pour recuperer l'image rentree par le user
+    imageUrl = `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
+*/
+    // Requete sql pour creer le post
+    sql =
+      "INSERT INTO post (post, imageURL, userId) VALUES ('" +
+      req.body.post +
+      "','" +
+      imageUrl +
+      "','" +
+      userId +
+      "');";
 
-    res.status(201).json({ message: "Objet enregistré !" });
-  } catch {
+    console.log("DEBUG  createPost sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK post cree
+        console.log("post cree");
+
+        res.status(201).json({ message: "post créé" });
+      }
+    });
+  } catch (err) {
+    console.log("createPost  erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });

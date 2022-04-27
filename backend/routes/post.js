@@ -14,11 +14,12 @@ const router = express.Router();
 const postCtrl = require("../controllers/post");
 
 const auth = require("../middleware/auth");
+const authPost = require("../middleware/authPost");
 const multer = require("../middleware/multer-config");
 
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
-router.post("/", auth, multer, postCtrl.createPost);
+router.post("/", authPost, multer, postCtrl.createPost);
 router.put("/:id", auth, multer, postCtrl.modifyPost);
 
 router.get("/", auth, postCtrl.getAllPost);
