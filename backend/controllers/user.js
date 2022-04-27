@@ -286,10 +286,8 @@ Algo:
 exports.modifyUser = (req, res, next) => {
   console.log("DEBUG : fonction exports.modifyUser");
   try {
-    if (isAuth(req.params.id, req.auth.id)) {
-      console.log("DEBUG: req autorisee");
-      res.status(200).json({ message: "Utilisateur modifié" });
-    }
+    console.log("DEBUG: req autorisee");
+    res.status(200).json({ message: "Utilisateur modifié" });
   } catch (err) {
     console.log("erreur modifyUser : " + err);
     res.status(500).json({
@@ -314,39 +312,34 @@ exports.deleteUser = (req, res, next) => {
   try {
     console.log("DEBUG : fonction exports.deleteUser");
 
-    const sql = "DELETE * FROM user WHERE id = '" + req.body.id + "';";
+    const sql = "DELETE  FROM user WHERE id = '" + req.params.id + "';";
 
     console.log("DEBUG: requete sql = " + sql);
 
-    //Verif user est le prpprietaire du compte ou un moderateur
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        try {
+          //result est un tableau avec 1 seul elt
 
-    if (isAuth(req.body.id, req.auth.id)) {
-      console.log("DEBUG: req autorisee");
-      connection.query(sql, (err, data, fields) => {
-        if (err) {
-          // Reponse avec code et message d'erreur
-          res.status(400).json({
-            message: "code: " + err.code + " message: " + err.sqlMessage,
-          });
+          console.log("DEBUG: data= " + data);
+          console.log("DEBUG: fields= " + fields);
+          //
+
+          res.status(200).json({ message: "Utilisateur supprimé" });
+
+          //
+        } catch (err) {
           console.log("erreur" + err);
-        } else {
-          try {
-            //result est un tableau avec 1 seul elt
-
-            console.log("DEBUG: data= " + data);
-            console.log("DEBUG: fields= " + fields);
-            //
-
-            res.status(200).json({ message: "Utilisateur supprimé" });
-
-            //
-          } catch (err) {
-            console.log("login fail");
-            res.status(400).json({ message: "login failed" });
-          }
+          res.status(400).json({ message: "delete failed" });
         }
-      });
-    }
+      }
+    });
   } catch (err) {
     res.status(500).json({
       error: new Error("Erreur server" + err),

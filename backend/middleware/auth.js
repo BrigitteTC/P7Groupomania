@@ -14,6 +14,10 @@ ATTENTION: pour DELETE et PUT
   car la vérification du user envoyé par le body peut être falsifiée
   par une personne malveillante qui utiliserait POSTDAM par exemple pour envoyer une
   requete.
+
+
+  req.auth.userId: est l'id déduit du token du header.
+  req.params.id: est l'id donné dans l'URL
 ------------------------------------------------*/
 
 //configure dotenv pour les variables d'environnement
@@ -41,12 +45,23 @@ module.exports = (req, res, next) => {
     console.log("DEBUG : fonction auth: decodedToken : " + decodedToken);
 
     const userId = decodedToken.userId;
-    console.log("DEBUG : fonction auth; userId : " + userId);
+    console.log("DEBUG : fonction auth: userId : " + userId);
     req.auth = { userId }; //attribue le userId à l'objet requete (clé et var du meme nom)
+    console.log("DEBUG : fonction auth: req.auth : " + req.auth.userId);
 
     // verif userId de la requete correspond à celui du token
-    if (req.body.userId && req.body.userId !== userId) {
-      throw "403: unauthorized request";
+    console.log(
+      "DEBUG : fonction auth: verif req.auth.userId: " + req.auth.userId
+    );
+    console.log(
+      "DEBUG : fonction auth: verif req.params.id : " + req.params.id
+    );
+    if (req.params.id != req.auth.userId) {
+      console.log("DEBUG : fonction auth: 403: unauthorized request");
+      res.status(403).json({
+        error: new Error("403: unauthorized request"),
+      });
+      //throw "403: unauthorized request";
     } else {
       // tout va bien on peut passer la requete on passe à la suite
 
