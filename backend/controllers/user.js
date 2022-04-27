@@ -189,6 +189,7 @@ exports.login = (req, res, next) => {
               }
 
               console.log("DEBUG: bcrypt: passwd correct renvoi du token");
+
               res.status(200).json({
                 userId: id,
                 moderator: moderator,
@@ -261,6 +262,24 @@ function isAuth(userId, authUserId) {
 
   return returnFt;
 }
+
+/*----------------------------------------------------------------------------
+ft modifyUser
+
+Objet: modifier le profil d'un utilisateur.
+
+verbe: PUT
+
+Algo:
+  Vérif de l'utilisateur
+  modifie User
+
+----------------------------------------------------------------*/
+exports.modifyUser = (req, res, next) => {
+  console.log("DEBUG : fonction exports.modifyUser");
+  try {
+  } catch {}
+};
 
 /*----------------------------------------------------------------------------
 ft deleteUser
