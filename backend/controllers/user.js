@@ -239,22 +239,29 @@ algorithme:
 */
 
 function isAuth(userId, authUserId) {
+  console.log("DEBUG : fonction isAuth");
+  console.log("DEBUG : fonction isAuth : userId : " + userId);
+  console.log("DEBUG : fonction isAuth : authUserId : " + authUserId);
   var returnFt = false;
   try {
     const sql = "SELECT * FROM user WHERE id = '" + userId + "';";
-    console.log("DEBUG: requete sql = " + sql);
+    console.log("DEBUG: fonction isAuth: requete sql = " + sql);
     connection.query(sql, (err, data, fields) => {
-      if (!err) {
-        const result = Object.values(JSON.parse(JSON.stringify(data)));
+      try {
+        if (!err) {
+          const result = Object.values(JSON.parse(JSON.stringify(data)));
 
-        const obj = result[0];
+          const obj = result[0];
 
-        const id = obj.id;
+          const id = obj.id;
 
-        console.log("DEBUG: id = " + id);
-        if (id == authUserId) {
-          returnFt = true;
+          console.log("DEBUG:fonction isAuth:  id = " + id);
+          if (id == authUserId) {
+            returnFt = true;
+          }
         }
+      } catch (err) {
+        console.log("erreur isAuth connection.query = " + err);
       }
     });
   } catch (err) {
@@ -279,7 +286,10 @@ Algo:
 exports.modifyUser = (req, res, next) => {
   console.log("DEBUG : fonction exports.modifyUser");
   try {
-    res.status(200).json({ message: "Utilisateur modifié" });
+    if (isAuth(req.params.id, req.auth.id)) {
+      console.log("DEBUG: req autorisee");
+      res.status(200).json({ message: "Utilisateur modifié" });
+    }
   } catch (err) {
     console.log("erreur modifyUser : " + err);
     res.status(500).json({
