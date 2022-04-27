@@ -46,7 +46,7 @@ const connection = mysql.createConnection({
 ------------------------------------------------------------*/
 exports.signup = (req, res, next) => {
   try {
-    console.log("signup");
+    console.log("DEBUG: ft signup");
     bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
@@ -279,17 +279,51 @@ Objet: modifier le profil d'un utilisateur.
 verbe: PUT
 
 Algo:
-  Vérif de l'utilisateur
-  modifie User
+  Idem signup
+  On mets à jour les 3 paramètres email, passwd haxhe et pseudo
+  Hash du passwd 
 
 ----------------------------------------------------------------*/
+
 exports.modifyUser = (req, res, next) => {
-  console.log("DEBUG : fonction exports.modifyUser");
   try {
-    console.log("DEBUG: req autorisee");
-    res.status(200).json({ message: "Utilisateur modifié" });
+    console.log("DEBUG: ft modifyUser");
+    bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => {
+        sql =
+          "UPDATE user SET email ='" +
+          req.body.email +
+          "', passwd ='" +
+          hash +
+          "', pseudo = '" +
+          req.body.pseudo +
+          "' WHERE id= '" +
+          req.params.id +
+          "';";
+
+        console.log("DEBUG ft ModifyUser: sql=" + sql);
+        connection.query(sql, (err, data, fields) => {
+          if (err) {
+            // Reponse avec code et message d'erreur
+            res.status(400).json({
+              message: "code: " + err.code + " message: " + err.sqlMessage,
+            });
+            console.log("erreur" + err);
+          } else {
+            // OK utilisateur modifie
+            console.log("utilisateur modifie" + req.body.pseudo);
+
+            res
+              .status(201)
+              .json({ message: "Utilisateur modifie : " + req.body.pseudo });
+          }
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
   } catch (err) {
-    console.log("erreur modifyUser : " + err);
     res.status(500).json({
       error: new Error("Erreur server" + err),
     });
