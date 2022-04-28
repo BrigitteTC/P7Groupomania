@@ -22,12 +22,15 @@ const jwt = require("jsonwebtoken");
 //Base de données mysql
 const mysql = require("mysql");
 
+/* DEBUG 28/04/2022
 const connection = mysql.createConnection({
   host: "localhost",
   user: process.env.USER,
   password: process.env.USER_PASSWD,
   database: process.env.DATABASE,
 });
+FIN DEBUG 28/04/2022
+*/
 
 /*----------------------------------------------------------------------------------
 Fonction: getUserId
@@ -71,7 +74,7 @@ function getUserId(req) {
 /*-----------------------------------------------------------------------------------
 Fonction: createPost
 
-Objet: création d'une sauce
+Objet: création d'un post
 
 verbe: POST
 
@@ -99,7 +102,7 @@ exports.createPost = (req, res, next) => {
       "');";
 
     console.log("DEBUG  createPost sql: " + sql);
-    connection.query(sql, (err, data, fields) => {
+    mysql.connection.query(sql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
         res.status(400).json({

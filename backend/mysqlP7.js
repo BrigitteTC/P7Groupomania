@@ -26,17 +26,4 @@ const connection = mysql.createConnection({
   database: database,
 });
 
-connection.connect(() => {
-  try {
-    console.log("Connecté mySQL groupomania");
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-//Fermeture de la connexion:
-connection.end((err) => {
-  // La connexion se termine normalement
-  // Garantit que toutes les requêtes restantes sont exécutées
-  // Envoie ensuite un paquet de sortie au serveur MySQL.
-});
+exports.connection = connection;

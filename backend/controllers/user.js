@@ -17,8 +17,12 @@ const jwt = require("jsonwebtoken");
 //configure dotenv pour les variables d'environnement
 require("dotenv").config();
 
+const connection = require("../mysqlp7").connection;
+
 //Base de données mysql
-const mysql = require("mysql");
+//DEBUG 28/04/2022  const connection = require("../mysql");
+
+/* DEBUG 28/04/2022
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -26,6 +30,9 @@ const connection = mysql.createConnection({
   password: process.env.USER_PASSWD,
   database: process.env.DATABASE,
 });
+
+Fin DEBUG 28/04/2022
+*/
 
 /*--------------------------------------------------------------------------
  ft signup :
@@ -52,6 +59,7 @@ exports.signup = (req, res, next) => {
           "','" +
           req.body.pseudo +
           "');";
+
         connection.query(sql, (err, data, fields) => {
           if (err) {
             // Reponse avec code et message d'erreur
