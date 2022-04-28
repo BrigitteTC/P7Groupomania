@@ -228,15 +228,33 @@ DELETE avec suppression du dossier image
 -------------------------------------------------------------------------------*/
 
 exports.deletePost = (req, res, next) => {
+  console.log("DEBUG deletePost");
   try {
+    // Requete sql pour detruirele post
+    sql = "DELETE FROM post  WHERE id = '" + req.params.id + "';";
+
+    console.log("DEBUG  deletePost sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: deletepost OK");
+
+        res.status(201).json({ message: "post zigouillé" });
+      }
+    });
   } catch (err) {
-    console.log("erreur: " + err);
+    console.log("deletePost erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });
   }
 };
-
 /*-----------------------------------------------------------------------------------
 Fonction: getAllPost
 
@@ -246,9 +264,29 @@ verbe= GET
 ------------------------------------------------------*/
 
 exports.getAllPost = (req, res, next) => {
+  console.log("DEBUG getAllPost");
   try {
+    // Requete sql pour lire tour les post
+    sql = "SELECT * FROM post ;";
+
+    console.log("DEBUG  getAllPost sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: getAllPost OK");
+        console.log(data);
+
+        res.status(201).json({ message: "getAllPost OK" });
+      }
+    });
   } catch (err) {
-    console.log("erreur: " + err);
+    console.log("getAllPost erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });

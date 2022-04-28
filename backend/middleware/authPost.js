@@ -53,9 +53,10 @@ module.exports = (req, res, next) => {
     // test à faire plus tard
     // verifier user = moderateur
     // ou user = proprietaire du post ou du comment
+    //       cqd: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
     next();
   } catch (e) {
-    console.log(e);
+    console.log("authPost" + e);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });

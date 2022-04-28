@@ -73,6 +73,7 @@ app.use("/api/auth", userRoutes);
 
 /*
 //Fermeture de la connexion:
+A voir plus tard pour fermer
 connection.end(() => {
   // La connexion se termine normalement
   // Garantit que toutes les requêtes restantes sont exécutées

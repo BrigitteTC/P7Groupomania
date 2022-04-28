@@ -13,22 +13,21 @@ const router = express.Router();
 
 const postCtrl = require("../controllers/post");
 
-const auth = require("../middleware/auth");
 const authPost = require("../middleware/authPost");
 const multer = require("../middleware/multer-config");
 
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
 router.post("/", authPost, multer, postCtrl.createPost);
-router.put("/:id", auth, multer, postCtrl.modifyPost);
+router.put("/:id", authPost, multer, postCtrl.modifyPost);
 
-router.get("/", auth, postCtrl.getAllPost);
+router.get("/", authPost, postCtrl.getAllPost);
 router.get("/:id", authPost, postCtrl.getOnePost);
 
-router.delete("/:id", auth, postCtrl.deletePost);
+router.delete("/:id", authPost, postCtrl.deletePost);
 
 //Route pour les commentaires
-router.post("/:id/comment", auth, postCtrl.createComment);
+router.post("/:id/comment", authPost, postCtrl.createComment);
 
 //export du router
 module.exports = router;

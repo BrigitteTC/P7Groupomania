@@ -56,6 +56,10 @@ Body:
 JSON avec: email, passwd et pseudo
 ex: {"email":"titi@test.fr","password":"titi","pseudo":"titi"}
 
+Réponse:
+Status: 201
+message: utilisateur crée + pseudo
+
 ---
 
 login:
@@ -66,6 +70,12 @@ Authorization: Bearer null
 Body:
 JSOn avec: email, passwd
 ex: {"email":"titi@test.fr","password":"titi"}
+
+Réponse:
+status: 200
+token
+userId
+moderateur: 0/1
 
 ---
 
@@ -83,6 +93,10 @@ body; JSOn avec tous les parametres:
 ex:
 {"email":"toto@test.fr","password":"toto1","pseudo":"toto2"}
 
+Réponse:
+status: 201
+message: "Utilisateur modifie : " + pseudo
+
 ---
 
 deleteUser:
@@ -97,6 +111,11 @@ VALUE: Bearer token
 
 body: pas de body requis
 
+Réponse:
+status: 200
+message: "Utilisateur supprimé"
+
+#---------------------------------------------
 #---------------------------------------------
 
 Table post
@@ -112,3 +131,9 @@ VALUE: Bearer token
 
 body:
 {"post":"blabla","imageUrl":"","userId":"31"}
+
+Réponse:
+status: 201
+message: "post créé";
+
+#---------------------------------------------
