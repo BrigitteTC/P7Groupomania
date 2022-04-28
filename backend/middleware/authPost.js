@@ -45,7 +45,12 @@ module.exports = (req, res, next) => {
     console.log("DEBUG : fonction authPost: decodedToken : " + decodedToken);
 
     const userId = decodedToken.userId;
-    console.log("DEBUG : fonction authPost: userId : " + userId);
+    if (req.body.userId) {
+      console.log(
+        "DEBUG : fonction authPost: req.body.userId : " + req.body.userId
+      );
+    }
+    console.log("DEBUG : fonction authPost: decodedToken.userId : " + userId);
     req.auth = { userId }; //attribue le userId à l'objet requete (clé et var du meme nom)
     console.log("DEBUG : fonction authPost: req.auth : " + req.auth.userId);
 
@@ -53,7 +58,7 @@ module.exports = (req, res, next) => {
     // test à faire plus tard
     // verifier user = moderateur
     // ou user = proprietaire du post ou du comment
-    //       cqd: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
+    //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
     next();
   } catch (e) {
     console.log("authPost" + e);
