@@ -20,17 +20,8 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 //Base de données mysql
-const mysql = require("mysql");
-
-/* DEBUG 28/04/2022
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: process.env.USER,
-  password: process.env.USER_PASSWD,
-  database: process.env.DATABASE,
-});
-FIN DEBUG 28/04/2022
-*/
+// connection database groupomania
+const connection = require("../mysqlp7").connection;
 
 /*----------------------------------------------------------------------------------
 Fonction: getUserId
@@ -83,9 +74,9 @@ verbe: POST
 exports.createPost = (req, res, next) => {
   console.log("DEBUG createPost");
   try {
-    const userId = getUserId(req);
+    //const userId = getUserId(req);
 
-    let imageUrl = "";
+    let imageUrl = req.body.imageUrl;
     /* on verra plus tard pour recuperer l'image rentree par le user
     imageUrl = `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
@@ -93,16 +84,16 @@ exports.createPost = (req, res, next) => {
 */
     // Requete sql pour creer le post
     sql =
-      "INSERT INTO post (post, imageURL, userId) VALUES ('" +
+      "INSERT INTO post (post, imageUrl, userId) VALUES ('" +
       req.body.post +
       "','" +
       imageUrl +
       "','" +
-      userId +
+      req.body.userId +
       "');";
 
     console.log("DEBUG  createPost sql: " + sql);
-    mysql.connection.query(sql, (err, data, fields) => {
+    connection.query(sql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
         res.status(400).json({
@@ -134,9 +125,28 @@ verbe: GET
 -------------------------------------------------------------------------------*/
 
 exports.getOnePost = (req, res, next) => {
+  console.log("DEBUG getOnePost");
   try {
+    // Requete sql pour lire le post
+    sql = "SELECT * FROM post  WHERE id = '" + req.params.id + "';";
+
+    console.log("DEBUG  getOnePost sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: getOnepost OK");
+
+        res.status(201).json({ message: "post lu" });
+      }
+    });
   } catch (err) {
-    console.log("erreur: " + err);
+    console.log("getOnePost erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });

@@ -1,7 +1,7 @@
 //groupomania
 
 /*-------------------------------------------------
-routes/forum.js
+routes/post.js
 Date de création: 20 avril 2022
 auteur: BTC
 
@@ -23,7 +23,7 @@ router.post("/", authPost, multer, postCtrl.createPost);
 router.put("/:id", auth, multer, postCtrl.modifyPost);
 
 router.get("/", auth, postCtrl.getAllPost);
-router.get("/:id", auth, postCtrl.getOnePost);
+router.get("/:id", authPost, postCtrl.getOnePost);
 
 router.delete("/:id", auth, postCtrl.deletePost);
 

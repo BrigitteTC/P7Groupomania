@@ -96,3 +96,19 @@ VALUE: Bearer token
     exemple: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMzLCJpYXQiOjE2NTEwNDcyODgsImV4cCI6MTY1MTEzMzY4OH0.dROiXv7xiTIwYNtlC0Ov6pf65HsXsbtzB293Pd2SD_I
 
 body: pas de body requis
+
+#---------------------------------------------
+
+Table post
+
+createPost:
+methode: POST
+URL: http://localhost:3000/api/post
+Headers:
+KEY: Authorisation
+VALUE: Bearer token
+
+    exemple: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMzLCJpYXQiOjE2NTEwNDcyODgsImV4cCI6MTY1MTEzMzY4OH0.dROiXv7xiTIwYNtlC0Ov6pf65HsXsbtzB293Pd2SD_I
+
+body:
+{"post":"blabla","imageUrl":"","userId":"31"}

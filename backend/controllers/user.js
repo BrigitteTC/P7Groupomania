@@ -17,22 +17,8 @@ const jwt = require("jsonwebtoken");
 //configure dotenv pour les variables d'environnement
 require("dotenv").config();
 
+// connection database groupomania
 const connection = require("../mysqlp7").connection;
-
-//Base de données mysql
-//DEBUG 28/04/2022  const connection = require("../mysql");
-
-/* DEBUG 28/04/2022
-
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: process.env.USER,
-  password: process.env.USER_PASSWD,
-  database: process.env.DATABASE,
-});
-
-Fin DEBUG 28/04/2022
-*/
 
 /*--------------------------------------------------------------------------
  ft signup :

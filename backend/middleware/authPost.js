@@ -50,16 +50,10 @@ module.exports = (req, res, next) => {
     console.log("DEBUG : fonction authPost: req.auth : " + req.auth.userId);
 
     // verif userId de la requete correspond à celui du token
-
-    // verif userId de la requete correspond à celui du token
-    if (req.body.userId && req.body.userId !== userId) {
-      console.log("DEBUG : fonction authPost: 403: unauthorized request");
-      throw "403: unauthorized request";
-    } else {
-      // tout va bien on peut passer la requete on passe à la suite
-
-      next();
-    }
+    // test à faire plus tard
+    // verifier user = moderateur
+    // ou user = proprietaire du post ou du comment
+    next();
   } catch (e) {
     console.log(e);
     res.status(401).json({

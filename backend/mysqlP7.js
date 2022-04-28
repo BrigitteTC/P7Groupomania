@@ -1,7 +1,7 @@
 //P7 Groupomania
 
 //----------------------------------------------------------------
-//mysql.js
+//mysqlP7.js
 // date de création: 25/04/2022
 // auteur: BTC
 //
