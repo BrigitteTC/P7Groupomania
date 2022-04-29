@@ -29,7 +29,7 @@ const connection = require("../mysqlp7").connection;
 
  Algo: 
    hash du mot de passe
-   Sauvegarde utilisateur crée
+   Quert=y mysal: INSERT INTO user pour créer le user
 ------------------------------------------------------------*/
 exports.signup = (req, res, next) => {
   try {
@@ -52,10 +52,12 @@ exports.signup = (req, res, next) => {
             res.status(400).json({
               message: "code: " + err.code + " message: " + err.sqlMessage,
             });
-            console.log("erreur" + err);
+            console.log("DEBUG: createUser: erreur  " + err);
           } else {
             // OK utilisateur cree
-            console.log("utilisateur cree" + req.body.pseudo);
+            console.log(
+              "DEBUG: createUser: utilisateur cree  " + req.body.pseudo
+            );
 
             res
               .status(201)
@@ -63,10 +65,12 @@ exports.signup = (req, res, next) => {
           }
         });
       })
-      .catch((error) => {
-        res.status(500).json({ error });
+      .catch((err) => {
+        console.log("createUser: erreur:  " + err);
+        res.status(500).json({ err });
       });
   } catch (err) {
+    console.log("createUser: erreur:  " + err);
     res.status(500).json({
       error: new Error("Erreur server" + err),
     });
@@ -136,7 +140,7 @@ exports.login = (req, res, next) => {
 
     const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
 
-    console.log("DEBUG: requete sql = " + sql);
+    console.log("DEBUG: login  requete sql = " + sql);
 
     connection.query(sql, (err, data, fields) => {
       if (err) {
@@ -144,10 +148,10 @@ exports.login = (req, res, next) => {
         res.status(400).json({
           message: "code: " + err.code + " message: " + err.sqlMessage,
         });
-        console.log("DEBUG: erreur" + err);
+        console.log("DEBUG: login erreur  " + err);
       } else {
         // test log
-        console.log("DEBUG  data= " + data);
+        console.log("DEBUG login  data= " + data);
         try {
           //result est un tableau avec 1 seul elt
           const result = Object.values(JSON.parse(JSON.stringify(data)));
@@ -158,7 +162,7 @@ exports.login = (req, res, next) => {
           const moderator = obj.moderator;
           const id = obj.id;
 
-          console.log("DEBUG: id= " + id);
+          console.log("DEBUG: login  id= " + id);
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
           //Si correct renvoi du TOKEN au frontend
@@ -197,15 +201,15 @@ exports.login = (req, res, next) => {
             ); //500 = error serveur
           //
         } catch (err) {
-          console.log("login failed" + err);
+          console.log("login: login failed  " + err);
           res.status(400).json({ message: "login failed" });
         }
       }
     });
   } catch (err) {
-    console.log("erreur  " + err);
+    console.log("login: erreur  " + err);
     res.status(500).json({
-      error: new Error("Erreur server" + err),
+      error: new Error("Erreur server  " + err),
     });
   }
 };
@@ -219,7 +223,7 @@ verbe: PUT
 
 Algo:
   Idem signup
-  On mets à jour les 3 paramètres email, passwd haxhe et pseudo
+  On mets à jour les 3 paramètres email, passwd haxh et pseudo
   Hash du passwd 
 
 ----------------------------------------------------------------*/
@@ -241,17 +245,19 @@ exports.modifyUser = (req, res, next) => {
           req.params.id +
           "';";
 
-        console.log("DEBUG ft ModifyUser: sql=" + sql);
+        console.log("DEBUG ft modifyUser: sql=" + sql);
         connection.query(sql, (err, data, fields) => {
           if (err) {
             // Reponse avec code et message d'erreur
             res.status(400).json({
               message: "code: " + err.code + " message: " + err.sqlMessage,
             });
-            console.log("erreur" + err);
+            console.log("modifyUser: erreur  " + err);
           } else {
             // OK utilisateur modifie
-            console.log("DEBUG: utilisateur modifie" + req.body.pseudo);
+            console.log(
+              "DEBUG: modifyUser: utilisateur modifie" + req.body.pseudo
+            );
 
             res
               .status(201)
@@ -260,11 +266,13 @@ exports.modifyUser = (req, res, next) => {
         });
       })
       .catch((error) => {
+        console.log("modifyUser: erreur:  " + err);
         res.status(500).json({ error });
       });
   } catch (err) {
+    console.log("modifyUser: erreur:  " + err);
     res.status(500).json({
-      error: new Error("Erreur server" + err),
+      error: new Error("Erreur server " + err),
     });
   }
 };
@@ -278,7 +286,7 @@ verbe: DELETE
 
 Algo:
   Vérif de l'utilisateur
-  Delete User
+  query mysal: DELETE from user evec id du user
 
 ----------------------------------------------------------------*/
 exports.deleteUser = (req, res, next) => {
@@ -287,7 +295,7 @@ exports.deleteUser = (req, res, next) => {
 
     const sql = "DELETE  FROM user WHERE id = '" + req.params.id + "';";
 
-    console.log("DEBUG: requete sql = " + sql);
+    console.log("DEBUG: deleteUser: requete sql = " + sql);
 
     connection.query(sql, (err, data, fields) => {
       if (err) {
@@ -300,22 +308,23 @@ exports.deleteUser = (req, res, next) => {
         try {
           //result est un tableau avec 1 seul elt
 
-          console.log("DEBUG: data= " + data);
-          console.log("DEBUG: fields= " + fields);
+          console.log("DEBUG: deleteUser  data= " + data);
+          console.log("DEBUG: deleteUser  fields= " + fields);
           //
 
           res.status(200).json({ message: "Utilisateur supprimé" });
 
           //
         } catch (err) {
-          console.log("erreur" + err);
+          console.log("deleteUser: erreur" + err);
           res.status(400).json({ message: "delete failed" });
         }
       }
     });
   } catch (err) {
+    console.log("deleteUser: erreur:  " + err);
     res.status(500).json({
-      error: new Error("Erreur server" + err),
+      error: new Error("Erreur server:  " + err),
     });
   }
 };

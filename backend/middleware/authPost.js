@@ -12,12 +12,15 @@ pour protéger les routes sensibles
 ATTENTION: pour DELETE et PUT
   Utilisation de req.auth pour authentifier l'utilisateur
   car la vérification du user envoyé par le body peut être falsifiée
-  par une personne malveillante qui utiliserait POSTDAM par exemple pour envoyer une
+  par une personne malveillante qui utiliserait POSTMAN par exemple pour envoyer une
   requete.
 
 
   req.auth.userId: est l'id déduit du token du header.
   req.params.id: est l'id donné dans l'URL
+
+  Por authentifier un post:
+  Il faut vérifier que celui qui envoie la requete est bien le proprietaire du post.
 ------------------------------------------------*/
 
 //configure dotenv pour les variables d'environnement
@@ -33,7 +36,7 @@ module.exports = (req, res, next) => {
     //on récupère le token dans le header = 2ieme elt du header apres le bearer
     const token = req.headers.authorization.split(" ")[1];
     console.log(
-      "DEBUG : fonction auth: req.headers.authorization : " +
+      "DEBUG : fonction authPost: req.headers.authorization : " +
         req.headers.authorization
     );
     console.log("DEBUG : fonction authPost: token : " + token);
@@ -60,8 +63,8 @@ module.exports = (req, res, next) => {
     // ou user = proprietaire du post ou du comment
     //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
     next();
-  } catch (e) {
-    console.log("authPost" + e);
+  } catch (err) {
+    console.log("authPost:  " + err);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });
