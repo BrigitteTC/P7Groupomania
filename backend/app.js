@@ -32,7 +32,7 @@ connection.connect(() => {
   try {
     console.log("Connecté mySQL groupomania");
   } catch (err) {
-    console.log("connect" + err);
+    console.log("connect " + err);
   }
 });
 
@@ -58,7 +58,7 @@ app.use((req, res, next) => {
     );
     next();
   } catch (err) {
-    console.log("app.use" + err);
+    console.log("app.use " + err);
   }
 });
 

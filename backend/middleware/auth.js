@@ -56,19 +56,18 @@ module.exports = (req, res, next) => {
     console.log(
       "DEBUG : fonction auth: verif req.params.id : " + req.params.id
     );
+
+    // test id du token correspond à l'Id de la route DELETE
     if (req.params.id != req.auth.userId) {
       console.log("DEBUG : fonction auth: 403: unauthorized request");
-      res.status(403).json({
-        error: new Error("403: unauthorized request"),
-      });
-      //throw "403: unauthorized request";
+      throw "403: unauthorized request";
     } else {
       // tout va bien on peut passer la requete on passe à la suite
 
       next();
     }
   } catch (e) {
-    console.log("erreur auth  " + e);
+    console.log("erreur auth:  " + e);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });

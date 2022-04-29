@@ -256,7 +256,7 @@ exports.modifyUser = (req, res, next) => {
           } else {
             // OK utilisateur modifie
             console.log(
-              "DEBUG: modifyUser: utilisateur modifie" + req.body.pseudo
+              "DEBUG: modifyUser: utilisateur modifie  " + req.body.pseudo
             );
 
             res
@@ -265,9 +265,9 @@ exports.modifyUser = (req, res, next) => {
           }
         });
       })
-      .catch((error) => {
+      .catch((err) => {
         console.log("modifyUser: erreur:  " + err);
-        res.status(500).json({ error });
+        res.status(500).json({ message: "modify failed" });
       });
   } catch (err) {
     console.log("modifyUser: erreur:  " + err);
