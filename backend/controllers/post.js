@@ -142,9 +142,9 @@ exports.getOnePost = (req, res, next) => {
         console.log("erreur" + err);
       } else {
         // OK
-        console.log("DEBUG: getOnepost OK");
+        console.log("ℹ️DEBUG: getOnepost OK");
 
-        res.status(201).json({ message: "post lu" });
+        res.status(201).json({ message: "post lu", post: data });
       }
     });
   } catch (err) {
@@ -284,7 +284,7 @@ exports.getAllPost = (req, res, next) => {
         console.log("DEBUG: getAllPost OK");
         console.log(data);
 
-        res.status(201).json({ message: "getAllPost OK" });
+        res.status(201).json({ message: "getAllPost OK", data });
       }
     });
   } catch (err) {

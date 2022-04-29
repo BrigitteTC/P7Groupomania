@@ -19,12 +19,12 @@ const multer = require("../middleware/multer-config");
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
 router.post("/", authPost, multer, postCtrl.createPost);
-router.put("/:id", authPost, multer, postCtrl.modifyPost);
+router.put("/:id", postCtrl.modifyPost);
 
 router.get("/", authPost, postCtrl.getAllPost);
 router.get("/:id", authPost, postCtrl.getOnePost);
 
-router.delete("/:id", authPost, postCtrl.deletePost);
+router.delete("/:id", postCtrl.deletePost);
 
 //Route pour les commentaires
 router.post("/:id/comment", authPost, postCtrl.createComment);
