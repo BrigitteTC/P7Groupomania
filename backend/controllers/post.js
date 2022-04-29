@@ -83,7 +83,7 @@ exports.createPost = (req, res, next) => {
     }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
 */
     // Requete sql pour creer le post
-    let userId = req.auth.userId;
+    let userId = req.auth.userId; //userId déduit du token du header
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
       "INSERT INTO post (post, imageUrl, userId) VALUES ('" +
