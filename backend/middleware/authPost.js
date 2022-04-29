@@ -64,7 +64,7 @@ module.exports = (req, res, next) => {
     //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
     next();
   } catch (err) {
-    console.log("authPost:  " + err);
+    console.log("erreur authPost:  " + err);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });

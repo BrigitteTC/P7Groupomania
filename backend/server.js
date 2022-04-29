@@ -62,7 +62,8 @@ const errorHandler = (error) => {
       default:
         throw error;
     }
-  } catch {
+  } catch (err) {
+    console.log("erreur errorHandler: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });
@@ -77,9 +78,17 @@ server.on("error", errorHandler);
 //consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console.
 
 server.on("listening", () => {
-  const address = server.address();
-  const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  console.log("Listening on " + bind);
+  try {
+    const address = server.address();
+    const bind =
+      typeof address === "string" ? "pipe " + address : "port " + port;
+    console.log("Listening on " + bind);
+  } catch (err) {
+    console.log("listening: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
 });
 
 server.listen(port);
