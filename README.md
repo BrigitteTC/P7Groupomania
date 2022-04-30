@@ -130,10 +130,12 @@ VALUE: Bearer token
     exemple: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMzLCJpYXQiOjE2NTEwNDcyODgsImV4cCI6MTY1MTEzMzY4OH0.dROiXv7xiTIwYNtlC0Ov6pf65HsXsbtzB293Pd2SD_I
 
 body:
-{"post":"blabla","imageUrl":"","userId":"31"}
+{"post":"blabla","imageUrl":""}
 
 Réponse:
 status: 201
 message: "post créé";
+
+Le post est crée avec le userId déduit du token
 
 #---------------------------------------------
