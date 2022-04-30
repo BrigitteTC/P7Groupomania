@@ -150,8 +150,6 @@ module.exports = (req, res, next) => {
 
     const userId = decodedToken.userId; //userId deduit du token
 
-    //cherche userID est moderator
-
     //REcherche propriétaire du post
     const postUserId = getPostOwner(req.params.id);
 
@@ -161,7 +159,8 @@ module.exports = (req, res, next) => {
 
     console.log("DEBUG ft authPost postUserId  " + postUserId);
 
-    if (postUserId == userId) {
+    // verifie user moderateur ou proprietaire du post
+    if (postUserId == userId || isModerator(userId)) {
       console.log("DEBUG : fonction authPost: decodedToken.userId : " + userId);
 
       req.auth = { userId }; //attribue le userId à l'objet requete (clé et var du meme nom)
