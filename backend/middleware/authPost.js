@@ -83,7 +83,47 @@ function getPostOwner(postId) {
 
 
 --------------------------------------------------------------------------
+function: isModerator
+
+Objet: Vérifie si un utilisateur est moderateur 
+
+Parametres:
+  Entrée: token
+  Sortie: 
+
+
+Algorithme:
+
+----------------------------------------------------------------------------
 */
+function isModerator(userId) {
+  console.log("DEBUG : isModerator");
+  var isModeratorReturn = false;
+
+  try {
+    // Requete sql pour verifier moderateur oui/non
+    sql = "SELECT moderator FROM user WHERE id ='" + userId + "';";
+
+    console.log("DEBUG  isModerator sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+
+        console.log("erreur isModerator  " + err);
+      } else {
+        // OK
+        console.log("DEBUG: isModerator OK");
+        console.log(data);
+        //const result = Object.values(JSON.parse(JSON.stringify(data)));
+        const result = JSON.parse(JSON.stringify(data));
+        isModeratorReturn = result.moderator;
+      }
+    });
+  } catch (err) {
+    console.log("isModerator erreur: " + err);
+  }
+  return isModeratorReturn;
+}
 
 /*------------------------------------------------------------------------
 authPost
@@ -109,6 +149,8 @@ module.exports = (req, res, next) => {
     console.log("DEBUG : fonction authPost: decodedToken : " + decodedToken);
 
     const userId = decodedToken.userId; //userId deduit du token
+
+    //cherche userID est moderator
 
     //REcherche propriétaire du post
     const postUserId = getPostOwner(req.params.id);
