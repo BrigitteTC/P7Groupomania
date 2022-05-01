@@ -20,7 +20,7 @@ ATTENTION: pour DELETE et PUT
   req.params.id: est l'id du post donné dans l'URL
   userId = id du user proprietaire du post.
 
-  Por authentifier un post:
+  Pour authentifier un post:
   Il faut vérifier que celui qui envoie la requete est bien le proprietaire du post.
 ------------------------------------------------*/
 
@@ -65,11 +65,12 @@ function getPostOwner(postId) {
         console.log("erreur getPostOwner  " + err);
       } else {
         // OK
-        console.log("DEBUG: getPostOwner OK");
+
         console.log(data);
         //const result = Object.values(JSON.parse(JSON.stringify(data)));
         const result = JSON.parse(JSON.stringify(data));
         postUserId = result.userId;
+        console.log("DEBUG: getPostOwner postUserId= " + postUserId);
       }
     });
   } catch (err) {
@@ -112,11 +113,12 @@ function isModerator(userId) {
         console.log("erreur isModerator  " + err);
       } else {
         // OK
-        console.log("DEBUG: isModerator OK");
+
         console.log(data);
         //const result = Object.values(JSON.parse(JSON.stringify(data)));
         const result = JSON.parse(JSON.stringify(data));
         isModeratorReturn = result.moderator;
+        console.log("DEBUG: isModerator return = " + isModeratorReturn);
       }
     });
   } catch (err) {
@@ -150,17 +152,8 @@ module.exports = (req, res, next) => {
 
     const userId = decodedToken.userId; //userId deduit du token
 
-    //REcherche propriétaire du post
-    const postUserId = getPostOwner(req.params.id);
-
-    //verif user du token = proprietaire du post
-
-    console.log("DEBUG : fonction authPost: req.params.id : " + req.params.id);
-
-    console.log("DEBUG ft authPost postUserId  " + postUserId);
-
-    // verifie user moderateur ou proprietaire du post
-    if (postUserId == userId || isModerator(userId)) {
+    // verifie user authentifie
+    if (userId) {
       console.log("DEBUG : fonction authPost: decodedToken.userId : " + userId);
 
       req.auth = { userId }; //attribue le userId à l'objet requete (clé et var du meme nom)

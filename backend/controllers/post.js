@@ -23,6 +23,100 @@ const jwt = require("jsonwebtoken");
 // connection database groupomania
 const connection = require("../mysqlp7").connection;
 
+/*-----------------------------------------------------------
+function: getPostOwner
+
+Objet: donne le proprietaire d'un post
+
+Parametres:
+  entrée: id du post
+  sortie: userId du post
+
+Algorithme
+  requete sql sur table post
+    recherche userId correspondant à l'Id du post
+----------------------------------------------------------------------
+*/
+function getPostOwner(postId) {
+  console.log("DEBUG : getPostOwner");
+  var postUserId = "";
+
+  try {
+    // Requete sql pour lire tour les post
+    sql = "SELECT userId FROM post WHERE id ='" + postId + "';";
+
+    console.log("DEBUG  getPostOwner sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+
+        console.log("erreur getPostOwner  " + err);
+      } else {
+        // OK
+
+        console.log(data);
+        //const result = Object.values(JSON.parse(JSON.stringify(data)));
+        const result = JSON.parse(JSON.stringify(data));
+        postUserId = result.userId;
+        console.log("DEBUG: getPostOwner postUserId= " + postUserId);
+      }
+    });
+  } catch (err) {
+    console.log("getPostOwner erreur: " + err);
+  }
+  return postUserId;
+}
+
+/*------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------
+function: isModerator
+
+Objet: Vérifie si un utilisateur est moderateur 
+
+Parametres:
+  Entrée: token
+  Sortie: 
+
+
+Algorithme:
+
+----------------------------------------------------------------------------
+*/
+function isModerator(userId) {
+  console.log("DEBUG : ft isModerator");
+  var isModeratorReturn = false;
+
+  try {
+    // Requete sql pour verifier moderateur oui/non
+    sql = "SELECT moderator FROM user WHERE id ='" + userId + "';";
+
+    console.log("DEBUG  ft isModerator sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+
+        console.log("erreur isModerator  " + err);
+      } else {
+        // OK
+
+        console.log("retour query ismoderator  : " + data);
+        //const result = Object.values(JSON.parse(JSON.stringify(data)));
+        const result = JSON.parse(JSON.stringify(data));
+        isModeratorReturn = result.moderator;
+        console.log("DEBUG: isModerator return = " + isModeratorReturn);
+      }
+    });
+  } catch (err) {
+    console.log("isModerator erreur: " + err);
+  }
+
+  console.log("retour de isModerator :  " + isModeratorReturn);
+  return isModeratorReturn;
+}
+
 /*----------------------------------------------------------------------------------
 Fonction: getUserId
 
@@ -180,7 +274,37 @@ remarque:
     de tous les éléments de req.body . 
 -------------------------------------------------------------------------------*/
 exports.modifyPost = (req, res, next) => {
+  console.log("DEBUG ft  modifyPost");
   try {
+    //REcherche propriétaire du post
+    const postUserId = getPostOwner(req.params.id);
+
+    console.log("DEBUG ft modifyPost postUserId  " + postUserId);
+
+    const moderator = isModerator(req.auth.userId);
+    console.log("DEBUG ft modifyPost moderator  " + moderator);
+
+    // verifie user moderateur ou proprietaire du post
+    //req.auth.userId = user qui a lancé la requete identifié par son token
+    if (postUserId == req.auth.userId || moderator == true) {
+      console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
+
+      sql =
+        "UPDATE post SET post='" +
+        req.body.post +
+        " WHERE id='" +
+        req.params.id +
+        ';"';
+
+      console.log("DEBUG modifyPost sql=  " + sql);
+
+      // verif userId de la requete correspond à celui du token
+      // test à faire plus tard
+      // verifier user = moderateur
+      // ou user = proprietaire du post ou du comment
+      //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
+      res.status(200).json("modif OK");
+    }
   } catch (err) {
     console.log("erreur: " + err);
     res.status(500).json({
