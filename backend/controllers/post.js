@@ -58,8 +58,10 @@ function getPostOwner(postId) {
           "DEBUG: ft getPostOwner: retour de la query sql: data=  " + data
         );
         //const result = Object.values(JSON.parse(JSON.stringify(data)));
-        const result = JSON.parse(JSON.stringify(data));
-        postUserId = result.userId;
+        //const result = JSON.parse(JSON.stringify(data));
+        const result = Object.values(JSON.parse(JSON.stringify(data)));
+        const obj = result[0];
+        postUserId = obj.userId;
         console.log("DEBUG: getPostOwner postUserId= " + postUserId);
       }
     });
@@ -74,9 +76,6 @@ function getPostOwner(postId) {
 
 /*------------------------------------------------------------------------
 
-
-
---------------------------------------------------------------------------
 function: isModerator
 
 Objet: Vérifie si un utilisateur est moderateur 
@@ -107,13 +106,12 @@ function isModerator(userId) {
       } else {
         // OK
 
+        const result = Object.values(JSON.parse(JSON.stringify(data)));
+        const obj = result[0];
+        isModeratorReturn = obj.moderator;
         console.log(
-          "DEBUG: ft isModerator: retour query ismoderator  : " + data
+          "DEBUG: ft isModerator: isModeratorReturn = " + isModeratorReturn
         );
-        //const result = Object.values(JSON.parse(JSON.stringify(data)));
-        const result = JSON.parse(JSON.stringify(data));
-        isModeratorReturn = result.moderator;
-        console.log("DEBUG: isModeratorReturn = " + isModeratorReturn);
       }
     });
   } catch (err) {
