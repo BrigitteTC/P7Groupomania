@@ -296,7 +296,18 @@ exports.modifyPost = (req, res, next) => {
 
     // verifie user moderateur ou proprietaire du post
     //req.auth.userId = user qui a lancé la requete identifié par son token
-    if (postUserId == req.auth.userId || moderator == true) {
+    let userAuth = false; //sera a true su user autorisé à passer la requete
+    if (postUserId == req.auth.userId) {
+      userAuth = true;
+    }
+
+    if (moderator == true) {
+      userAuth = true;
+    }
+    console.log("DEBUG : ft modifyPost: userAuth = " + userAuth);
+
+    //if (postUserId == req.auth.userId || moderator == true) {
+    if (userAuth == true) {
       console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
 
       sql =
