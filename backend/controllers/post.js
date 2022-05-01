@@ -54,7 +54,9 @@ function getPostOwner(postId) {
       } else {
         // OK
 
-        console.log(data);
+        console.log(
+          "DEBUG: ft getPostOwner: retour de la query sql: data=  " + data
+        );
         //const result = Object.values(JSON.parse(JSON.stringify(data)));
         const result = JSON.parse(JSON.stringify(data));
         postUserId = result.userId;
@@ -64,6 +66,9 @@ function getPostOwner(postId) {
   } catch (err) {
     console.log("getPostOwner erreur: " + err);
   }
+  console.log(
+    "DEBUG: ft getPostOwner: retour de getPostOwner: postUserId=  " + postUserId
+  );
   return postUserId;
 }
 
@@ -102,18 +107,23 @@ function isModerator(userId) {
       } else {
         // OK
 
-        console.log("retour query ismoderator  : " + data);
+        console.log(
+          "DEBUG: ft isModerator: retour query ismoderator  : " + data
+        );
         //const result = Object.values(JSON.parse(JSON.stringify(data)));
         const result = JSON.parse(JSON.stringify(data));
         isModeratorReturn = result.moderator;
-        console.log("DEBUG: isModerator return = " + isModeratorReturn);
+        console.log("DEBUG: isModeratorReturn = " + isModeratorReturn);
       }
     });
   } catch (err) {
     console.log("isModerator erreur: " + err);
   }
 
-  console.log("retour de isModerator :  " + isModeratorReturn);
+  console.log(
+    "DEBUG:  ft isModerator: retour de isModerator : isModeratorReturn=  " +
+      isModeratorReturn
+  );
   return isModeratorReturn;
 }
 
@@ -279,10 +289,12 @@ exports.modifyPost = (req, res, next) => {
     //REcherche propriétaire du post
     const postUserId = getPostOwner(req.params.id);
 
-    console.log("DEBUG ft modifyPost postUserId  " + postUserId);
+    console.log("DEBUG ft modifyPost postUserId =  " + postUserId);
 
     const moderator = isModerator(req.auth.userId);
-    console.log("DEBUG ft modifyPost moderator  " + moderator);
+    console.log("DEBUG ft modifyPost moderator = " + moderator);
+
+    console.log("DEBUG ft modifyPost req.auth.userId =  " + req.auth.userId);
 
     // verifie user moderateur ou proprietaire du post
     //req.auth.userId = user qui a lancé la requete identifié par son token
