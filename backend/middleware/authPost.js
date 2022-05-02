@@ -35,98 +35,6 @@ const jwt = require("jsonwebtoken");
 // connection database groupomania
 const connection = require("../mysqlp7").connection;
 
-/*-----------------------------------------------------------
-function: getPostOwner
-
-Objet: donne le proprietaire d'un post
-
-Parametres:
-  entrée: id du post
-  sortie: userId du post
-
-Algorithme
-  requete sql sur table post
-    recherche userId correspondant à l'Id du post
-----------------------------------------------------------------------
-*/
-function getPostOwner(postId) {
-  console.log("DEBUG : getPostOwner");
-  var postUserId = "";
-
-  try {
-    // Requete sql pour lire tour les post
-    sql = "SELECT userId FROM post WHERE id ='" + postId + "';";
-
-    console.log("DEBUG  getPostOwner sql: " + sql);
-    connection.query(sql, (err, data, fields) => {
-      if (err) {
-        // Reponse avec code et message d'erreur
-
-        console.log("erreur getPostOwner  " + err);
-      } else {
-        // OK
-
-        console.log(data);
-        //const result = Object.values(JSON.parse(JSON.stringify(data)));
-        const result = JSON.parse(JSON.stringify(data));
-        postUserId = result.userId;
-        console.log("DEBUG: getPostOwner postUserId= " + postUserId);
-      }
-    });
-  } catch (err) {
-    console.log("getPostOwner erreur: " + err);
-  }
-  return postUserId;
-}
-
-/*------------------------------------------------------------------------
-
-
-
---------------------------------------------------------------------------
-function: isModerator
-
-Objet: Vérifie si un utilisateur est moderateur 
-
-Parametres:
-  Entrée: token
-  Sortie: 
-
-
-Algorithme:
-
-----------------------------------------------------------------------------
-*/
-function isModerator(userId) {
-  console.log("DEBUG : isModerator");
-  var isModeratorReturn = false;
-
-  try {
-    // Requete sql pour verifier moderateur oui/non
-    sql = "SELECT moderator FROM user WHERE id ='" + userId + "';";
-
-    console.log("DEBUG  isModerator sql: " + sql);
-    connection.query(sql, (err, data, fields) => {
-      if (err) {
-        // Reponse avec code et message d'erreur
-
-        console.log("erreur isModerator  " + err);
-      } else {
-        // OK
-
-        console.log(data);
-        //const result = Object.values(JSON.parse(JSON.stringify(data)));
-        const result = JSON.parse(JSON.stringify(data));
-        isModeratorReturn = result.moderator;
-        console.log("DEBUG: isModerator return = " + isModeratorReturn);
-      }
-    });
-  } catch (err) {
-    console.log("isModerator erreur: " + err);
-  }
-  return isModeratorReturn;
-}
-
 /*------------------------------------------------------------------------
 authPost
 
@@ -151,6 +59,7 @@ module.exports = (req, res, next) => {
     console.log("DEBUG : fonction authPost: decodedToken : " + decodedToken);
 
     const userId = decodedToken.userId; //userId deduit du token
+    console.log("DEBUG : fonction authPost: userId : " + userId);
 
     // verifie user authentifie
     if (userId) {
@@ -164,6 +73,7 @@ module.exports = (req, res, next) => {
       // verifier user = moderateur
       // ou user = proprietaire du post ou du comment
       //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
+      console.log("DEBUG: authPost: user authentifie on passe a la suite");
       next();
     }
   } catch (err) {

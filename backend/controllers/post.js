@@ -289,56 +289,56 @@ exports.modifyPost = (req, res, next) => {
   console.log("DEBUG ft  modifyPost");
   try {
     //REcherche propriétaire du post
-    const postUserId = getPostOwner(req.params.id);
+    //const postUserId = getPostOwner(req.params.id);
 
-    console.log("DEBUG ft modifyPost postUserId =  " + postUserId);
+    //console.log("DEBUG ft modifyPost postUserId =  " + postUserId);
 
-    const moderator = isModerator(req.auth.userId);
-    console.log("DEBUG ft modifyPost moderator = " + moderator);
+    //const moderator = isModerator(req.auth.userId);
+    //console.log("DEBUG ft modifyPost moderator = " + moderator);
 
     console.log("DEBUG ft modifyPost req.auth.userId =  " + req.auth.userId);
 
     // verifie user moderateur ou proprietaire du post
     //req.auth.userId = user qui a lancé la requete identifié par son token
-    let userAuth = false; //sera a true su user autorisé à passer la requete
-    if (postUserId == req.auth.userId) {
-      userAuth = true;
-    }
+    //let userAuth = false; //sera a true su user autorisé à passer la requete
+    //if (postUserId == req.auth.userId) {
+    //  userAuth = true;
+    //}
 
-    if (moderator == true) {
-      userAuth = true;
-    }
-    console.log("DEBUG : ft modifyPost: userAuth = " + userAuth);
+    //if (moderator == true) {
+    //  userAuth = true;
+    //}
+    //console.log("DEBUG : ft modifyPost: userAuth = " + userAuth);
 
-    userAuth = true; //DEBUG: force a true en attendant les then en cascade.
+    //userAuth = true; //DEBUG: force a true en attendant les then en cascade.
     //if (postUserId == req.auth.userId || moderator == true) {
-    if (userAuth == true) {
-      console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
+    //if (userAuth == true) {
+    console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
 
-      sql =
-        "UPDATE post SET post='" +
-        req.body.post +
-        "' WHERE id='" +
-        req.params.id +
-        "';";
+    sql =
+      "UPDATE post SET post='" +
+      req.body.post +
+      "' WHERE id='" +
+      req.params.id +
+      "';";
 
-      console.log("DEBUG modifyPost sql=  " + sql);
-      connection.query(sql, (err, data, fields) => {
-        if (err) {
-          // Reponse avec code et message d'erreur
-          res.status(400).json({
-            message: "code: " + err.code + " message: " + err.sqlMessage,
-          });
-          console.log("erreur" + err);
-        } else {
-          // OK
-          console.log("DEBUG: modifyPost OK");
-          console.log(data);
+    console.log("DEBUG modifyPost sql=  " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: modifyPost OK");
+        console.log(data);
 
-          res.status(200).json("modif OK");
-        }
-      });
-    }
+        res.status(200).json("modif OK");
+      }
+    });
+    //}
   } catch (err) {
     console.log("erreur: " + err);
     res.status(500).json({
@@ -467,45 +467,40 @@ Algo:
 -------------------------------------------------------------------------------*/
 
 exports.createComment = (req, res, next) => {
-  console.log("DEBUG createPost");
+  console.log("DEBUG createComment");
   try {
     //const userId = getUserId(req);
 
-    let imageUrl = req.body.imageUrl;
-    /* on verra plus tard pour recuperer l'image rentree par le user
-    imageUrl = `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
-*/
-    // Requete sql pour creer le post
-    let userId = req.auth.userId; //userId déduit du token du header
+    // Requete sql pour creer le commentaire
+    const userId = req.auth.userId; //userId déduit du token du header
+    const postId = req.params.id;
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
-      "INSERT INTO post (post, imageUrl, userId) VALUES ('" +
-      req.body.post +
+      "INSERT INTO comment (comment, postId, userId) VALUES ('" +
+      req.body.comment +
       "','" +
-      imageUrl +
+      postId +
       "','" +
       userId +
       "');";
 
-    console.log("DEBUG  createPost sql: " + sql);
+    console.log("DEBUG  createComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
         res.status(400).json({
           message: "code: " + err.code + " message: " + err.sqlMessage,
         });
-        console.log("erreur" + err);
+        console.log("CreateComment erreur req sql" + err);
       } else {
-        // OK post cree
-        console.log("post cree");
+        // OK  comment cree
+        console.log("commentaire cree");
 
-        res.status(201).json({ message: "post créé" });
+        res.status(201).json({ message: "comment créé" });
       }
     });
   } catch (err) {
-    console.log("createPost  erreur: " + err);
+    console.log("createComment  erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });
