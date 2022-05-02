@@ -53,7 +53,7 @@ URL: http://localhost:3000/api/auth/signup
 Headers:
 Authorization: Bearer null
 Body:
-JSON avec: email, passwd et pseudo
+rows format JSON avec: email, passwd et pseudo
 ex: {"email":"titi@test.fr","password":"titi","pseudo":"titi"}
 
 Réponse:

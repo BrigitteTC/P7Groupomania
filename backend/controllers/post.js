@@ -275,7 +275,11 @@ Algo:
       2: l'utilisateur modifie l'image = nouvelle image à traiter..
       on supprime l'ancienne image dans le dossier image
   
-   
+         // verif userId de la requete correspond à celui du token
+      // test à faire plus tard
+      // verifier user = moderateur
+      // ou user = proprietaire du post ou du comment
+      //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
 
 remarque:
     L'opérateur spread ... est utilisé pour faire une copie 
@@ -306,6 +310,7 @@ exports.modifyPost = (req, res, next) => {
     }
     console.log("DEBUG : ft modifyPost: userAuth = " + userAuth);
 
+    userAuth = true; //DEBUG: force a true en attendant les then en cascade.
     //if (postUserId == req.auth.userId || moderator == true) {
     if (userAuth == true) {
       console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
@@ -313,18 +318,26 @@ exports.modifyPost = (req, res, next) => {
       sql =
         "UPDATE post SET post='" +
         req.body.post +
-        " WHERE id='" +
+        "' WHERE id='" +
         req.params.id +
-        ';"';
+        "';";
 
       console.log("DEBUG modifyPost sql=  " + sql);
+      connection.query(sql, (err, data, fields) => {
+        if (err) {
+          // Reponse avec code et message d'erreur
+          res.status(400).json({
+            message: "code: " + err.code + " message: " + err.sqlMessage,
+          });
+          console.log("erreur" + err);
+        } else {
+          // OK
+          console.log("DEBUG: modifyPost OK");
+          console.log(data);
 
-      // verif userId de la requete correspond à celui du token
-      // test à faire plus tard
-      // verifier user = moderateur
-      // ou user = proprietaire du post ou du comment
-      //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId existe
-      res.status(200).json("modif OK");
+          res.status(200).json("modif OK");
+        }
+      });
     }
   } catch (err) {
     console.log("erreur: " + err);
