@@ -45,7 +45,7 @@ function getPostOwner(postId) {
     // Requete sql pour lire tour les post
     sql = "SELECT userId FROM post WHERE id ='" + postId + "';";
 
-    console.log("DEBUG  getPostOwner sql: " + sql);
+    console.log("DEBUG  1 : getPostOwner sql: " + sql);
     connection.query(sql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
@@ -473,7 +473,7 @@ exports.createComment = (req, res, next) => {
 
     // Requete sql pour creer le commentaire
     const userId = req.auth.userId; //userId déduit du token du header
-    const postId = req.params.id;
+    const postId = req.params.id; //id du post dans l'adresse URL
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
       "INSERT INTO comment (comment, postId, userId) VALUES ('" +
