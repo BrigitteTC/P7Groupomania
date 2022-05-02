@@ -467,9 +467,45 @@ Algo:
 -------------------------------------------------------------------------------*/
 
 exports.createComment = (req, res, next) => {
+  console.log("DEBUG createPost");
   try {
+    //const userId = getUserId(req);
+
+    let imageUrl = req.body.imageUrl;
+    /* on verra plus tard pour recuperer l'image rentree par le user
+    imageUrl = `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
+*/
+    // Requete sql pour creer le post
+    let userId = req.auth.userId; //userId déduit du token du header
+    console.log("DEBUG   req.auth.userId  :  " + userId);
+    sql =
+      "INSERT INTO post (post, imageUrl, userId) VALUES ('" +
+      req.body.post +
+      "','" +
+      imageUrl +
+      "','" +
+      userId +
+      "');";
+
+    console.log("DEBUG  createPost sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK post cree
+        console.log("post cree");
+
+        res.status(201).json({ message: "post créé" });
+      }
+    });
   } catch (err) {
-    console.log("erreur: " + err);
+    console.log("createPost  erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });
