@@ -20,6 +20,9 @@ require("dotenv").config();
 // connection database groupomania
 const connection = require("../mysqlp7").connection;
 
+//table des utilisateurs
+const usersTable = require("../mysqlp7").usersTable;
+
 /*--------------------------------------------------------------------------
  ft signup :
  
@@ -38,7 +41,9 @@ exports.signup = (req, res, next) => {
       .hash(req.body.password, 10)
       .then((hash) => {
         sql =
-          "INSERT INTO user (email, passwd, pseudo) VALUES ('" +
+          "INSERT INTO " +
+          usersTable +
+          " (email, passwd, pseudo) VALUES ('" +
           req.body.email +
           "','" +
           hash +
@@ -46,6 +51,7 @@ exports.signup = (req, res, next) => {
           req.body.pseudo +
           "');";
 
+        console.log("DEBUG signup: sql = " + sql);
         connection.query(sql, (err, data, fields) => {
           if (err) {
             // Reponse avec code et message d'erreur
@@ -138,7 +144,12 @@ exports.login = (req, res, next) => {
     console.log("DEBUG : fonction exports.login");
     const secretKey = process.env.SECRET_KEY;
 
-    const sql = "SELECT * FROM user WHERE email = '" + req.body.email + "';";
+    const sql =
+      "SELECT * FROM " +
+      usersTable +
+      " WHERE email = '" +
+      req.body.email +
+      "';";
 
     console.log("DEBUG: login  requete sql = " + sql);
 
@@ -235,7 +246,9 @@ exports.modifyUser = (req, res, next) => {
       .hash(req.body.password, 10)
       .then((hash) => {
         sql =
-          "UPDATE user SET email ='" +
+          "UPDATE " +
+          usersTable +
+          " SET email ='" +
           req.body.email +
           "', passwd ='" +
           hash +
@@ -293,7 +306,8 @@ exports.deleteUser = (req, res, next) => {
   try {
     console.log("DEBUG : fonction exports.deleteUser");
 
-    const sql = "DELETE  FROM user WHERE id = '" + req.params.id + "';";
+    const sql =
+      "DELETE  FROM " + usersTable + " WHERE id = '" + req.params.id + "';";
 
     console.log("DEBUG: deleteUser: requete sql = " + sql);
 
@@ -306,11 +320,7 @@ exports.deleteUser = (req, res, next) => {
         console.log("erreur" + err);
       } else {
         try {
-          //result est un tableau avec 1 seul elt
-
-          console.log("DEBUG: deleteUser  data= " + data);
-          console.log("DEBUG: deleteUser  fields= " + fields);
-          //
+          //Retour message avec status
 
           res.status(200).json({ message: "Utilisateur supprimé" });
 
