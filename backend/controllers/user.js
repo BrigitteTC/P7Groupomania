@@ -99,7 +99,7 @@ Algo:
   Réponse de mysql avec les infos suivantes:
   [
   RowDataPacket {
-    id: 32,
+    userId: 32,
     email: 'titi16.1@test.fr',
     passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
     pseudo: 'titi16',
@@ -116,7 +116,7 @@ result = 1 tableau avec 1 seul elt
 result = 
 [
 {
-    id: 32,
+    userId: 32,
     email: 'titi16.1@test.fr',
     passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
     pseudo: 'titi16',
@@ -126,7 +126,7 @@ result =
 
 obj=result[0]=
 {
-    id: 32,
+    userId: 32,
     email: 'titi16.1@test.fr',
     passwd: '$2b$10$IK9u4N/bEGC3oVAwk9UzUOWB2.2O9qAh0zzlpUiublkMpFxWJ.od6',
     pseudo: 'titi16',
@@ -134,7 +134,7 @@ obj=result[0]=
   }
 
 On peut récupérer chaque item par
-const id=obj.id
+const userId=obj.userId
 const passwd= obj.passwd 
 ...
 
@@ -171,9 +171,9 @@ exports.login = (req, res, next) => {
 
           const passwd = obj.passwd;
           const moderator = obj.moderator;
-          const id = obj.id;
+          const userId = obj.userId;
 
-          console.log("DEBUG: login  id= " + id);
+          console.log("DEBUG: login  userId= " + userId);
           //
           //bcrypt pour vérifier le mot de passe envoyé par l'utilisateur avec le hash enregistré
           //Si correct renvoi du TOKEN au frontend
@@ -181,9 +181,9 @@ exports.login = (req, res, next) => {
 
           bcrypt
             .compare(req.body.password, passwd)
-            .then((valid) => {
+            .then((valuserId) => {
               console.log("DEBUG: bcrypt");
-              if (!valid) {
+              if (!valuserId) {
                 console.log("DEBUG: bcrypt: passwd incorrect");
 
                 return res
@@ -195,14 +195,14 @@ exports.login = (req, res, next) => {
               //token signé avec clé secrete et qui expire dans 24h avec chaine alleatoire
               const token = jwt.sign(
                 {
-                  userId: id,
+                  userId: userId,
                 },
                 secretKey,
                 { expiresIn: "24h" }
               );
               console.log("DEBUG: login  token:  " + token);
               res.status(200).json({
-                userId: id,
+                userId: userId,
                 moderator: moderator,
                 token: token,
               });
@@ -233,7 +233,7 @@ Objet: modifier le profil d'un utilisateur.
 verbe: PUT
 
 Algo:
-  Idem signup
+  userIdem signup
   On mets à jour les 3 paramètres email, passwd haxh et pseudo
   Hash du passwd 
 
@@ -254,8 +254,8 @@ exports.modifyUser = (req, res, next) => {
           hash +
           "', pseudo = '" +
           req.body.pseudo +
-          "' WHERE id= '" +
-          req.params.id +
+          "' WHERE userId= '" +
+          req.params.userId +
           "';";
 
         console.log("DEBUG ft modifyUser: sql=" + sql);
@@ -299,7 +299,7 @@ verbe: DELETE
 
 Algo:
   Vérif de l'utilisateur
-  query mysal: DELETE from user evec id du user
+  query mysal: DELETE from "table user" avec userId du user
 
 ----------------------------------------------------------------*/
 exports.deleteUser = (req, res, next) => {
@@ -307,7 +307,11 @@ exports.deleteUser = (req, res, next) => {
     console.log("DEBUG : fonction exports.deleteUser");
 
     const sql =
-      "DELETE  FROM " + usersTable + " WHERE id = '" + req.params.id + "';";
+      "DELETE  FROM " +
+      usersTable +
+      " WHERE userId = '" +
+      req.params.userId +
+      "';";
 
     console.log("DEBUG: deleteUser: requete sql = " + sql);
 

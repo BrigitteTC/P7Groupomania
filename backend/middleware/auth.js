@@ -54,11 +54,11 @@ module.exports = (req, res, next) => {
       "DEBUG : fonction auth: verif req.auth.userId: " + req.auth.userId
     );
     console.log(
-      "DEBUG : fonction auth: verif req.params.id : " + req.params.id
+      "DEBUG : fonction auth: verif req.params.userId : " + req.params.userId
     );
 
     // test id du token correspond à l'Id de la route DELETE
-    if (req.params.id != req.auth.userId) {
+    if (req.params.userId != req.auth.userId) {
       console.log("DEBUG : fonction auth: 403: unauthorized request");
       throw "403: unauthorized request";
     } else {

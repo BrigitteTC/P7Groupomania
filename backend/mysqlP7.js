@@ -27,7 +27,7 @@ const connection = mysql.createConnection({
 });
 
 //tables
-const usersTable = "user"; //table des utilisateurs
+const usersTable = "users"; //table des utilisateurs
 
 exports.connection = connection;
 exports.usersTable = usersTable;

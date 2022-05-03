@@ -22,10 +22,10 @@ router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 
 //Route PUT pour modification d'un utilisateur
-router.put("/:id", auth, userCtrl.modifyUser);
+router.put("/:userId", auth, userCtrl.modifyUser);
 
 //Suppression d'un utilisateur  DELETE
-router.delete("/:id", auth, userCtrl.deleteUser);
+router.delete("/:userId", auth, userCtrl.deleteUser);
 
 //export du router
 module.exports = router;
