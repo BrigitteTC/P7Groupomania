@@ -634,7 +634,57 @@ exports.modifyComment = (req, res, next) => {
   res.status(201).json({ message: "modifyComment OK" });
 };
 
+/*-----------------------------------------------------------------------------------
+Fonction: getOnelComment
+
+Objet: lecture d'uncommentaires d'un post
+
+verbe= GET
+
+algo:
+requete mysql SELECT * where postId= postId and id=id
+table: comment
+
+Parametres:
+
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/
+
+  id: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/id
+
+Réponse:
+  commentaire
+  ou
+  message d'erreur si pb
+------------------------------------------------------*/
+
 exports.getOneComment = (req, res, next) => {
   console.log("DEBUG getOneComment");
-  res.status(201).json({ message: "getOneComment OK" });
+  try {
+    // Requete sql pour lire le commentaire
+    sql = "SELECT * FROM comment WHERE postId= '" + req.params.postId + "';";
+
+    console.log("DEBUG  getOneComment sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: getOneComment OK");
+        console.log(data);
+
+        res.status(201).json({ message: "getOneComment OK", comment: data });
+      }
+    });
+  } catch (err) {
+    console.log("getOneComment erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
 };
