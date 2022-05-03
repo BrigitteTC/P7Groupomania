@@ -23,6 +23,10 @@ const jwt = require("jsonwebtoken");
 // connection database groupomania
 const connection = require("../mysqlp7").connection;
 
+//Tables des posts et des commentaires
+const postsTable = require("../mysqlp7").postsTable;
+const commentsTable = require("../mysqlp7").commentsTable;
+
 /*-----------------------------------------------------------
 function: getPostOwner
 
@@ -188,7 +192,9 @@ exports.createPost = (req, res, next) => {
     let userId = req.auth.userId; //userId déduit du token du header
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
-      "INSERT INTO post (post, imageUrl, userId) VALUES ('" +
+      "INSERT INTO " +
+      postsTable +
+      " (post, imageUrl, userId) VALUES ('" +
       req.body.post +
       "','" +
       imageUrl +
@@ -232,7 +238,12 @@ exports.getOnePost = (req, res, next) => {
   console.log("DEBUG getOnePost");
   try {
     // Requete sql pour lire le post
-    sql = "SELECT * FROM post  WHERE id = '" + req.params.id + "';";
+    sql =
+      "SELECT * FROM  " +
+      postsTable +
+      "   WHERE postId = '" +
+      req.params.postId +
+      "';";
 
     console.log("DEBUG  getOnePost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -316,10 +327,12 @@ exports.modifyPost = (req, res, next) => {
     console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
 
     sql =
-      "UPDATE post SET post='" +
+      "UPDATE  " +
+      postsTable +
+      "  SET post='" +
       req.body.post +
-      "' WHERE id='" +
-      req.params.id +
+      "' WHERE postId='" +
+      req.params.postId +
       "';";
 
     console.log("DEBUG modifyPost sql=  " + sql);
@@ -391,7 +404,12 @@ exports.deletePost = (req, res, next) => {
   console.log("DEBUG deletePost");
   try {
     // Requete sql pour detruirele post
-    sql = "DELETE FROM post  WHERE id = '" + req.params.id + "';";
+    sql =
+      "DELETE FROM  " +
+      postsTable +
+      "   WHERE postId = '" +
+      req.params.postId +
+      "';";
 
     console.log("DEBUG  deletePost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -427,7 +445,7 @@ exports.getAllPost = (req, res, next) => {
   console.log("DEBUG getAllPost");
   try {
     // Requete sql pour lire tour les post
-    sql = "SELECT * FROM post ;";
+    sql = "SELECT * FROM  " + postsTable + "  ;";
 
     console.log("DEBUG  getAllPost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -442,7 +460,7 @@ exports.getAllPost = (req, res, next) => {
         console.log("DEBUG: getAllPost OK");
         console.log(data);
 
-        res.status(200).json({ message: "getAllPost OK", data });
+        res.status(200).json({ message: "getAllPost OK", posts: data });
       }
     });
   } catch (err) {

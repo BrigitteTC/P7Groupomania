@@ -28,6 +28,10 @@ const connection = mysql.createConnection({
 
 //tables
 const usersTable = "users"; //table des utilisateurs
+const postsTable = "posts"; //table des posts
+const commentsTable = "comments"; //table des commentaires
 
 exports.connection = connection;
 exports.usersTable = usersTable;
+exports.postsTable = postsTable;
+exports.commentsTable = commentsTable;

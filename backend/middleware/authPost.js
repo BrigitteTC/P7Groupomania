@@ -24,9 +24,6 @@ ATTENTION: pour DELETE et PUT
   Il faut vérifier que celui qui envoie la requete est bien le proprietaire du post.
 ------------------------------------------------*/
 
-//configure dotenv pour les variables d'environnement
-require("dotenv").config();
-
 //jsonwebtoken pour vérifier les token
 
 const jwt = require("jsonwebtoken");
