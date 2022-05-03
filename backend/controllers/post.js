@@ -624,3 +624,21 @@ exports.getAllComment = (req, res, next) => {
     });
   }
 };
+
+/*----------------------------------------------------
+ft gestion des commentaires
+-------------------------------------------------------*/
+exports.getAllComment = (req, res, next) => {
+  console.log("DEBUG getAllComment");
+  res.status(201).json({ message: "getAllComment OK" });
+};
+
+exports.modifyComment = (req, res, next) => {
+  console.log("DEBUG modifyComment");
+  res.status(201).json({ message: "modifyComment OK" });
+};
+
+exports.getOneComment = (req, res, next) => {
+  console.log("DEBUG getOneComment");
+  res.status(201).json({ message: "getOneComment OK" });
+};
