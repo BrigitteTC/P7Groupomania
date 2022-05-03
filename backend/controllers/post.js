@@ -504,7 +504,9 @@ exports.createComment = (req, res, next) => {
     const postId = req.params.postId; //id du post dans l'adresse URL
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
-      "INSERT INTO comment (comment, postId, userId) VALUES ('" +
+      "INSERT INTO  " +
+      commentsTable +
+      "  (comment, postId, userId) VALUES ('" +
       req.body.comment +
       "','" +
       postId +
@@ -562,7 +564,12 @@ exports.getAllComment = (req, res, next) => {
   console.log("DEBUG getAllComment");
   try {
     // Requete sql pour lire tour les commentaires
-    sql = "SELECT * FROM comment WHERE postId= '" + req.params.postId + "';";
+    sql =
+      "SELECT * FROM  " +
+      commentsTable +
+      "  WHERE postId= '" +
+      req.params.postId +
+      "';";
 
     console.log("DEBUG  getAllComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -617,7 +624,12 @@ exports.getOneComment = (req, res, next) => {
   console.log("DEBUG getOneComment");
   try {
     // Requete sql pour lire le commentaire
-    sql = "SELECT * FROM comment WHERE Id= '" + req.params.id + "';";
+    sql =
+      "SELECT * FROM  " +
+      commentsTable +
+      "  WHERE commentId = '" +
+      req.params.commentId +
+      "';";
 
     console.log("DEBUG  getOneComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -651,7 +663,7 @@ Objet: modification du  commentaire d'un post
 verbe= PUT
 
 algo:
-requete mysql SELECT * where  id=id
+requete mysql SELECT * where  id=id du comment
 table: comment
 
 Parametres:
@@ -674,10 +686,12 @@ exports.modifyComment = (req, res, next) => {
     // Requete sql pour modifier le commentaire
 
     sql =
-      "UPDATE comment SET comment='" +
+      "UPDATE  " +
+      commentsTable +
+      "  SET comment='" +
       req.body.comment +
-      "' WHERE id='" +
-      req.params.id +
+      "' WHERE commentId='" +
+      req.params.commentId +
       "';";
 
     console.log("DEBUG  modifyComment sql: " + sql);
@@ -734,7 +748,12 @@ exports.deleteComment = (req, res, next) => {
 
     // Requete sql pour detruire le commentaire
 
-    sql = "DELETE from comment where id ='" + req.params.id + "';";
+    sql =
+      "DELETE from  " +
+      commentsTable +
+      "  where commentId ='" +
+      req.params.commentId +
+      "';";
 
     console.log("DEBUG  deleteComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
