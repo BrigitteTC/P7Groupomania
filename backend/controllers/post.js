@@ -571,3 +571,56 @@ exports.deleteComment = (req, res, next) => {
     });
   }
 };
+
+/*-----------------------------------------------------------------------------------
+Fonction: getAllComment
+
+Objet: lecture de tous les commentaires d'un post
+
+verbe= GET
+
+algo:
+requete mysql SELECT * where postId= 
+table: comment
+
+Parametres:
+
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/
+
+
+Réponse:
+  Comment supprimé
+  ou
+  message d'erreur si pb
+------------------------------------------------------*/
+
+exports.getAllComment = (req, res, next) => {
+  console.log("DEBUG getAllComment");
+  try {
+    // Requete sql pour lire tour les commentaires
+    sql = "SELECT * FROM comment WHERE postId= '" + req.params.postId + "';";
+
+    console.log("DEBUG  getAllComment sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: getAllComment OK");
+        console.log(data);
+
+        res.status(201).json({ message: "getAllComment OK", comment: data });
+      }
+    });
+  } catch (err) {
+    console.log("getAllComment erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+};
