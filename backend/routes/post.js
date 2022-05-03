@@ -27,7 +27,7 @@ router.get("/:id", authPost, postCtrl.getOnePost);
 router.delete("/:id", authPost, multer, postCtrl.deletePost);
 
 //Route pour les commentaires
-router.post("/:id/comment", authPost, postCtrl.createComment);
+router.post("/:postId/comment", authPost, postCtrl.createComment);
 
 //export du router
 module.exports = router;

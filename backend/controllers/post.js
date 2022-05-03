@@ -461,9 +461,19 @@ Objet: Creation d'un commentaire sur un post
 verbe: POST
 
 Algo:
+requete mysql INSERT INTO avec les parametres du comment
+table: comment
 
+Parametres:
+userId: déduit du token donné dans le header
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId
+comment: param du body
 
-
+Réponse:
+  Comment cree
+  ou
+  message d'erreur si pb
 -------------------------------------------------------------------------------*/
 
 exports.createComment = (req, res, next) => {
@@ -473,7 +483,7 @@ exports.createComment = (req, res, next) => {
 
     // Requete sql pour creer le commentaire
     const userId = req.auth.userId; //userId déduit du token du header
-    const postId = req.params.id; //id du post dans l'adresse URL
+    const postId = req.params.postId; //id du post dans l'adresse URL
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
       "INSERT INTO comment (comment, postId, userId) VALUES ('" +
@@ -501,6 +511,63 @@ exports.createComment = (req, res, next) => {
     });
   } catch (err) {
     console.log("createComment  erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+};
+
+/*-----------------------------------------------------------------------------------
+Fonction: deleteComment
+
+Objet: Suppression d'un commentaire sur un post
+
+verbe: DELETE
+
+Algo:
+requete mysql DELETE avec les parametres du comment
+table: comment
+
+Parametres:
+userId: déduit du token donné dans le header
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId
+comment: param du body
+
+Réponse:
+  Comment supprimé
+  ou
+  message d'erreur si pb
+-------------------------------------------------------------------------------*/
+
+exports.deleteComment = (req, res, next) => {
+  console.log("DEBUG deleteComment");
+  try {
+    //const userId = getUserId(req);
+
+    // Requete sql pour creer le commentaire
+    const userId = req.auth.userId; //userId déduit du token du header
+    const postId = req.params.id; //id du post dans l'adresse URL
+    console.log("DEBUG   req.auth.userId  :  " + userId);
+    sql = "DELETE from comment where id ='" + req.params.id + "');";
+
+    console.log("DEBUG  deleteComment sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("deleteComment erreur req sql" + err);
+      } else {
+        // OK  comment cree
+        console.log("commentaire cree");
+
+        res.status(201).json({ message: "comment créé" });
+      }
+    });
+  } catch (err) {
+    console.log("deleteComment  erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });
