@@ -244,9 +244,9 @@ exports.getOnePost = (req, res, next) => {
         console.log("erreur" + err);
       } else {
         // OK
-        console.log("ℹ️DEBUG: getOnepost OK");
+        console.log("DEBUG: getOnepost OK");
 
-        res.status(201).json({ message: "post lu", post: data });
+        res.status(200).json({ message: "post lu", post: data });
       }
     });
   } catch (err) {
@@ -405,7 +405,7 @@ exports.deletePost = (req, res, next) => {
         // OK
         console.log("DEBUG: deletepost OK");
 
-        res.status(201).json({ message: "post zigouillé" });
+        res.status(200).json({ message: "post zigouillé" });
       }
     });
   } catch (err) {
@@ -442,7 +442,7 @@ exports.getAllPost = (req, res, next) => {
         console.log("DEBUG: getAllPost OK");
         console.log(data);
 
-        res.status(201).json({ message: "getAllPost OK", data });
+        res.status(200).json({ message: "getAllPost OK", data });
       }
     });
   } catch (err) {
@@ -518,6 +518,175 @@ exports.createComment = (req, res, next) => {
 };
 
 /*-----------------------------------------------------------------------------------
+Fonction: getAllComment
+
+Objet: lecture de tous les commentaires d'un post
+
+verbe= GET
+
+algo:
+requete mysql SELECT * where postId= postId
+table: comment
+
+Parametres:
+
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/
+
+
+Réponse:
+  Tableau avec tous les commentaires du post
+  ou
+  message d'erreur si pb
+------------------------------------------------------*/
+
+exports.getAllComment = (req, res, next) => {
+  console.log("DEBUG getAllComment");
+  try {
+    // Requete sql pour lire tour les commentaires
+    sql = "SELECT * FROM comment WHERE postId= '" + req.params.postId + "';";
+
+    console.log("DEBUG  getAllComment sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: getAllComment OK");
+        console.log(data);
+
+        res.status(200).json({ message: "getAllComment OK", comment: data });
+      }
+    });
+  } catch (err) {
+    console.log("getAllComment erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+};
+
+/*-----------------------------------------------------------------------------------
+Fonction: getOneComment
+
+Objet: lecture d'uncommentaires d'un post
+
+verbe= GET
+
+algo:
+requete mysql SELECT * where postId= postId and id=id
+table: comment
+
+Parametres:
+
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/
+
+  id: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/id
+
+Réponse:
+  commentaire
+  ou
+  message d'erreur si pb
+------------------------------------------------------*/
+
+exports.getOneComment = (req, res, next) => {
+  console.log("DEBUG getOneComment");
+  try {
+    // Requete sql pour lire le commentaire
+    sql = "SELECT * FROM comment WHERE Id= '" + req.params.id + "';";
+
+    console.log("DEBUG  getOneComment sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: getOneComment OK");
+        console.log(data);
+
+        res.status(200).json({ message: "getOneComment OK", comment: data });
+      }
+    });
+  } catch (err) {
+    console.log("getOneComment erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+};
+
+/*-----------------------------------------------------------------------------------
+Fonction: modifyComment
+
+Objet: modification du  commentaire d'un post
+
+verbe= PUT
+
+algo:
+requete mysql SELECT * where  id=id
+table: comment
+
+Parametres:
+
+postId: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/
+
+  id: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/id
+
+Réponse:
+  commentaire modifié
+  ou
+  message d'erreur si pb
+------------------------------------------------------*/
+
+exports.modifyComment = (req, res, next) => {
+  console.log("DEBUG modifyComment");
+  try {
+    // Requete sql pour modifier le commentaire
+
+    sql =
+      "UPDATE comment SET comment='" +
+      req.body.comment +
+      "' WHERE id='" +
+      req.params.id +
+      "';";
+
+    console.log("DEBUG  modifyComment sql: " + sql);
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        console.log("DEBUG: modifyComment OK");
+        console.log(data);
+
+        res.status(200).json({ message: "commentaire modifié" });
+      }
+    });
+  } catch (err) {
+    console.log("modifyComment erreur: " + err);
+    res.status(500).json({
+      error: new Error("Erreur server"),
+    });
+  }
+};
+
+/*-----------------------------------------------------------------------------------
 Fonction: deleteComment
 
 Objet: Suppression d'un commentaire sur un post
@@ -561,133 +730,11 @@ exports.deleteComment = (req, res, next) => {
         // OK  comment cree
         console.log("commentaire supprimé");
 
-        res.status(201).json({ message: "comment supprimé" });
+        res.status(200).json({ message: "comment supprimé" });
       }
     });
   } catch (err) {
     console.log("deleteComment  erreur: " + err);
-    res.status(500).json({
-      error: new Error("Erreur server"),
-    });
-  }
-};
-
-/*-----------------------------------------------------------------------------------
-Fonction: getAllComment
-
-Objet: lecture de tous les commentaires d'un post
-
-verbe= GET
-
-algo:
-requete mysql SELECT * where postId= postId
-table: comment
-
-Parametres:
-
-postId: déduit de l'adresse URL:
-  http://localhost:3000/api/post/postId/comment/
-
-
-Réponse:
-  Tableau avec tous les commentaires du post
-  ou
-  message d'erreur si pb
-------------------------------------------------------*/
-
-exports.getAllComment = (req, res, next) => {
-  console.log("DEBUG getAllComment");
-  try {
-    // Requete sql pour lire tour les commentaires
-    sql = "SELECT * FROM comment WHERE postId= '" + req.params.postId + "';";
-
-    console.log("DEBUG  getAllComment sql: " + sql);
-    connection.query(sql, (err, data, fields) => {
-      if (err) {
-        // Reponse avec code et message d'erreur
-        res.status(400).json({
-          message: "code: " + err.code + " message: " + err.sqlMessage,
-        });
-        console.log("erreur" + err);
-      } else {
-        // OK
-        console.log("DEBUG: getAllComment OK");
-        console.log(data);
-
-        res.status(201).json({ message: "getAllComment OK", comment: data });
-      }
-    });
-  } catch (err) {
-    console.log("getAllComment erreur: " + err);
-    res.status(500).json({
-      error: new Error("Erreur server"),
-    });
-  }
-};
-
-/*----------------------------------------------------
-ft gestion des commentaires
--------------------------------------------------------*/
-
-exports.modifyComment = (req, res, next) => {
-  console.log("DEBUG modifyComment");
-  res.status(201).json({ message: "modifyComment OK" });
-};
-
-/*-----------------------------------------------------------------------------------
-Fonction: getOnelComment
-
-Objet: lecture d'uncommentaires d'un post
-
-verbe= GET
-
-algo:
-requete mysql SELECT * where postId= postId and id=id
-table: comment
-
-Parametres:
-
-postId: déduit de l'adresse URL:
-  http://localhost:3000/api/post/postId/comment/
-
-  id: déduit de l'adresse URL:
-  http://localhost:3000/api/post/postId/comment/id
-
-Réponse:
-  commentaire
-  ou
-  message d'erreur si pb
-------------------------------------------------------*/
-
-exports.getOneComment = (req, res, next) => {
-  console.log("DEBUG getOneComment");
-  try {
-    // Requete sql pour lire le commentaire
-    sql =
-      "SELECT * FROM comment WHERE postId= '" +
-      req.params.postId +
-      "' AND id = '" +
-      req.params.id +
-      "';";
-
-    console.log("DEBUG  getOneComment sql: " + sql);
-    connection.query(sql, (err, data, fields) => {
-      if (err) {
-        // Reponse avec code et message d'erreur
-        res.status(400).json({
-          message: "code: " + err.code + " message: " + err.sqlMessage,
-        });
-        console.log("erreur" + err);
-      } else {
-        // OK
-        console.log("DEBUG: getOneComment OK");
-        console.log(data);
-
-        res.status(201).json({ message: "getOneComment OK", comment: data });
-      }
-    });
-  } catch (err) {
-    console.log("getOneComment erreur: " + err);
     res.status(500).json({
       error: new Error("Erreur server"),
     });
