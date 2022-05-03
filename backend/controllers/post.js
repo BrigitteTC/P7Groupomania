@@ -663,7 +663,12 @@ exports.getOneComment = (req, res, next) => {
   console.log("DEBUG getOneComment");
   try {
     // Requete sql pour lire le commentaire
-    sql = "SELECT * FROM comment WHERE postId= '" + req.params.postId + "';";
+    sql =
+      "SELECT * FROM comment WHERE postId= '" +
+      req.params.postId +
+      "' AND id = '" +
+      req.params.id +
+      "';";
 
     console.log("DEBUG  getOneComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
