@@ -529,10 +529,10 @@ requete mysql DELETE avec les parametres du comment
 table: comment
 
 Parametres:
-userId: déduit du token donné dans le header
-postId: déduit de l'adresse URL:
-  http://localhost:3000/api/post/postId
-comment: param du body
+
+id: déduit de l'adresse URL:
+  http://localhost:3000/api/post/postId/comment/id
+
 
 Réponse:
   Comment supprimé
@@ -545,10 +545,8 @@ exports.deleteComment = (req, res, next) => {
   try {
     //const userId = getUserId(req);
 
-    // Requete sql pour creer le commentaire
-    const userId = req.auth.userId; //userId déduit du token du header
-    const postId = req.params.id; //id du post dans l'adresse URL
-    console.log("DEBUG   req.auth.userId  :  " + userId);
+    // Requete sql pour detruire le commentaire
+
     sql = "DELETE from comment where id ='" + req.params.id + "');";
 
     console.log("DEBUG  deleteComment sql: " + sql);
