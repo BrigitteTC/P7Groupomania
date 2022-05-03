@@ -31,17 +31,43 @@ postId INTEGER NOT NULL,
 comment text
 );
 
-mysql> DESCRIBE user;
-+-----------+--------------+------+-----+---------+----------------+
-| Field | Type | Null | Key | Default | Extra |
-+-----------+--------------+------+-----+---------+----------------+
-| id | int | NO | PRI | NULL | auto_increment |
-| email | varchar(255) | NO | UNI | NULL | |
-| passwd | varchar(100) | NO | | NULL | |
-| pseudo | varchar(100) | NO | UNI | NULL | |
-| moderator | tinyint(1) | NO | | 0 | |
-+-----------+--------------+------+-----+---------+----------------+
-5 rows in set (0.00 sec)
+CREATE TABLE users (
+userId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+email VARCHAR(255) NOT NULL UNIQUE ,
+passwd VARCHAR(100) NOT NULL,
+pseudo VARCHAR(100) NOT NULL UNIQUE ,
+moderator BOOLEAN DEFAULT false
+);
+Query OK, 0 rows affected (0.12 sec)
+
+CREATE TABLE posts (
+postId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+userId INTEGER NOT NULL,
+post text,
+imageUrl VARCHAR(500),
+FOREIGN KEY (userId)
+REFERENCES users (userId)
+ON DELETE CASCADE
+);
+Query OK, 0 rows affected (0.09 sec)
+
+CREATE TABLE comments (
+commentId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+userId INTEGER NOT NULL,
+postId INTEGER NOT NULL,
+comment text,
+FOREIGN KEY (userId)
+REFERENCES users (userId)
+ON DELETE CASCADE,
+FOREIGN KEY (postId)
+REFERENCES posts (postId)
+ON DELETE CASCADE
+);
+
+Query OK, 0 rows affected (0.09 sec)
+
+#--------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 #DEBUG:
 
