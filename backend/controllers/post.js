@@ -547,7 +547,7 @@ exports.deleteComment = (req, res, next) => {
 
     // Requete sql pour detruire le commentaire
 
-    sql = "DELETE from comment where id ='" + req.params.id + "');";
+    sql = "DELETE from comment where id ='" + req.params.id + "';";
 
     console.log("DEBUG  deleteComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -559,9 +559,9 @@ exports.deleteComment = (req, res, next) => {
         console.log("deleteComment erreur req sql" + err);
       } else {
         // OK  comment cree
-        console.log("commentaire cree");
+        console.log("commentaire supprimé");
 
-        res.status(201).json({ message: "comment créé" });
+        res.status(201).json({ message: "comment supprimé" });
       }
     });
   } catch (err) {
@@ -580,7 +580,7 @@ Objet: lecture de tous les commentaires d'un post
 verbe= GET
 
 algo:
-requete mysql SELECT * where postId= 
+requete mysql SELECT * where postId= postId
 table: comment
 
 Parametres:
@@ -590,7 +590,7 @@ postId: déduit de l'adresse URL:
 
 
 Réponse:
-  Comment supprimé
+  Tableau avec tous les commentaires du post
   ou
   message d'erreur si pb
 ------------------------------------------------------*/
@@ -628,10 +628,6 @@ exports.getAllComment = (req, res, next) => {
 /*----------------------------------------------------
 ft gestion des commentaires
 -------------------------------------------------------*/
-exports.getAllComment = (req, res, next) => {
-  console.log("DEBUG getAllComment");
-  res.status(201).json({ message: "getAllComment OK" });
-};
 
 exports.modifyComment = (req, res, next) => {
   console.log("DEBUG modifyComment");

@@ -34,7 +34,7 @@ router.put("/:postId/comment/:id", authPost, postCtrl.modifyComment);
 router.get("/:postId/comment", authPost, postCtrl.getAllComment);
 router.get("/:postId/comment/:id", authPost, postCtrl.getOneComment);
 
-router.delete("/:postId/comment/:id", authPost, postCtrl.getAllComment);
+router.delete("/:postId/comment/:id", authPost, postCtrl.deleteComment);
 
 //export du router
 module.exports = router;
