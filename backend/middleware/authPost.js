@@ -65,41 +65,12 @@ module.exports = (req, res, next) => {
       req.auth = { userId }; //attribue le userId à l'objet requete (clé et var du meme nom)
       console.log("DEBUG : fonction authPost: req.auth : " + req.auth.userId);
 
-      // verif userId de la requete correspond à celui du token
-      // test à faire plus tard
+      // Verifs à faire plus tard:
+      //
+      //
       // verifier user = moderateur
       // ou user = proprietaire du post ou du comment
       //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId
-
-      // req2
-      module.exports = (req, res, next) => {
-        console.log("DEBUG : fonction authPost");
-        try {
-          console.log(
-            "DEBUG : fonction authPost: req.headers.authorization : " +
-              req.headers.authorization
-          );
-
-          // traitement no 2 req sql
-
-          // req3
-          module.exports = (req, res, next) => {
-            console.log("DEBUG : fonction authPost");
-            try {
-              console.log(
-                "DEBUG : fonction authPost: req.headers.authorization : " +
-                  req.headers.authorization
-              );
-
-              // traitement no 2 req sql
-            } catch (err) {
-              console.log("erreur authPost:  " + err);
-            }
-          };
-        } catch (err) {
-          console.log("erreur authPost:  " + err);
-        }
-      };
 
       //
 
