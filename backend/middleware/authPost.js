@@ -32,6 +32,11 @@ const jwt = require("jsonwebtoken");
 // connection database groupomania
 const connection = require("../mysqlp7").connection;
 
+//Tables des posts et des commentaires
+const usersTable = require("../mysqlp7").usersTable;
+const postsTable = require("../mysqlp7").postsTable;
+const commentsTable = require("../mysqlp7").commentsTable;
+
 /*------------------------------------------------------------------------
 authPost
 
@@ -69,13 +74,70 @@ module.exports = (req, res, next) => {
       //
       //
       // verifier user = moderateur
-      // ou user = proprietaire du post ou du comment
-      //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId
 
-      //
+      // Is moderator Begin
+      // Requete sql pour verifier moderateur oui/non
+      sql =
+        "SELECT moderator FROM " +
+        usersTable +
+        " WHERE userId ='" +
+        userId +
+        "';";
 
-      console.log("DEBUG: authPost: user authentifie on passe a la suite");
-      next();
+      console.log("DEBUG  ft authPost isModerator sql: " + sql);
+      connection.query(sql, (err, data, fields) => {
+        if (err) {
+          // Reponse avec code et message d'erreur
+
+          console.log("erreur isModerator  " + err);
+          console.log("erreur authPost:  " + err);
+          res.status(401).json({
+            error: new Error("Invalid request!"),
+          });
+        } else {
+          // OK
+          console.log("DEBUG: ft isModerator: retour sql OK");
+          console.log("DEBUG data " + data);
+          console.log("DEBUG fields " + fields);
+          console.log("DEBUG data length  " + JSON.stringify(data).length);
+          // test longueur des data vide = on a un objet json
+          if (JSON.stringify(data).length > 2) {
+            const result = Object.values(JSON.parse(JSON.stringify(data)));
+            const obj = result[0];
+
+            console.log(
+              "DEBUG: ft isModerator: isModerator = " + obj.moderator
+            );
+
+            if (obj.moderator == 1) {
+              console.log(
+                "DEBUG: authPost: user moderator on passe a la suite"
+              );
+              next();
+
+              // Is Moderator: End
+
+              //
+            } else {
+              console.log("DEBUG: methode:" + req.method);
+              //POST: user authentifie
+              // PUT ou DELETE: test proprietaire du post pour un PUT ou DELETE
+              // ou user = proprietaire du post ou du comment
+              //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId
+
+              console.log(
+                "DEBUG: authPost: user authentifie on passe à la suite"
+              );
+              next();
+            }
+          } else {
+            console.log("DEBUG: invalid request");
+            res.status(401).json({
+              error: new Error("Invalid request!"),
+            });
+          }
+        }
+      });
     }
   } catch (err) {
     console.log("erreur authPost:  " + err);
