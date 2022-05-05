@@ -346,7 +346,6 @@ exports.modifyPost = (req, res, next) => {
       } else {
         // OK
         console.log("DEBUG: modifyPost OK");
-        console.log(data);
 
         res.status(200).json("modif OK");
       }

@@ -66,6 +66,10 @@ ON DELETE CASCADE
 
 Query OK, 0 rows affected (0.09 sec)
 
+// Pour mettre un user moderator:
+ex: user dont userId= 5
+mysql> UPDATE users SET moderator='1' WHERE userId=5;
+
 #--------------------------------------------------------------------
 #--------------------------------------------------------------------
 

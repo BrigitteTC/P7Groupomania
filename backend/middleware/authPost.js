@@ -8,8 +8,28 @@ auteur: BTC
 Gestion authentification des utilisateurs pour les posts
 pour protéger les routes sensibles
 
+Algo:
+Test user authentifié
+
+SI authentifié
+  Si methode = POST ou GET
+    next()
+  sinon
+    Si (utilisateur = moderateur)
+      next()
+    Sinon
+      Si (utilisateur = post/comment owner)
+        next()
+      sinon
+        Retour requete non autorisée
+      FSI
+    FSI
+  FSI
+FSI
+
 
 ATTENTION: pour DELETE et PUT
+  Ne pas mettre le userId dans le body mais:
   Utilisation de req.auth pour authentifier l'utilisateur
   car la vérification du user envoyé par le body peut être falsifiée
   par une personne malveillante qui utiliserait POSTMAN par exemple pour envoyer une
@@ -17,11 +37,10 @@ ATTENTION: pour DELETE et PUT
 
 
   req.auth.userId: est l'id déduit du token du header.
-  req.params.id: est l'id du post donné dans l'URL
+  req.params.postId: est l'id du post donné dans l'URL
   userId = id du user proprietaire du post.
 
-  Pour authentifier un post:
-  Il faut vérifier que celui qui envoie la requete est bien le proprietaire du post.
+
 ------------------------------------------------*/
 
 //jsonwebtoken pour vérifier les token
@@ -77,15 +96,15 @@ module.exports = (req, res, next) => {
 
       // Is moderator Begin
       // Requete sql pour verifier moderateur oui/non
-      sql =
+      sqlModerator =
         "SELECT moderator FROM " +
         usersTable +
         " WHERE userId ='" +
         userId +
         "';";
 
-      console.log("DEBUG  ft authPost isModerator sql: " + sql);
-      connection.query(sql, (err, data, fields) => {
+      console.log("DEBUG  ft authPost isModerator sql: " + sqlModerator);
+      connection.query(sqlModerator, (err, data, fields) => {
         if (err) {
           // Reponse avec code et message d'erreur
 
@@ -100,7 +119,7 @@ module.exports = (req, res, next) => {
           console.log("DEBUG data " + data);
           console.log("DEBUG fields " + fields);
           console.log("DEBUG data length  " + JSON.stringify(data).length);
-          // test longueur des data vide = on a un objet json
+          // test longueur des data >2 = on a un objet json rempli
           if (JSON.stringify(data).length > 2) {
             const result = Object.values(JSON.parse(JSON.stringify(data)));
             const obj = result[0];
@@ -109,6 +128,7 @@ module.exports = (req, res, next) => {
               "DEBUG: ft isModerator: isModerator = " + obj.moderator
             );
 
+            //SI Moderateur
             if (obj.moderator == 1) {
               console.log(
                 "DEBUG: authPost: user moderator on passe a la suite"
@@ -117,19 +137,40 @@ module.exports = (req, res, next) => {
 
               // Is Moderator: End
 
-              //
+              // SINON  SI Methode = POST ou GET
             } else {
+              //SI methode = POST ou GET
               console.log("DEBUG: methode:" + req.method);
-              //POST: user authentifie
-              // PUT ou DELETE: test proprietaire du post pour un PUT ou DELETE
-              // ou user = proprietaire du post ou du comment
-              //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId
+              if (req.method == "POST" || req.method == "GET") {
+                //POST: user authentifie
+                // PUT ou DELETE: test proprietaire du post pour un PUT ou DELETE
+                // ou user = proprietaire du post ou du comment
+                //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId
 
-              console.log(
-                "DEBUG: authPost: user authentifie on passe à la suite"
-              );
-              next();
-            }
+                console.log(
+                  "DEBUG: authPost: POST ou GET user authentifie on passe à la suite"
+                );
+                next();
+              } //FIN SI methode = POST ou GET
+              else {
+                //SI methode = PUT ou DELETE
+                console.log(
+                  "DEBUG: authPost: PUT OU DELETE user authentifie on passe à la suite"
+                );
+                //SI user = post owner
+                // Requete sql pour verifier post owner
+                sqlPostOwner =
+                  "SELECT userId FROM " +
+                  postsTable +
+                  " WHERE postId ='" +
+                  req.params.postId +
+                  "';";
+                console.log("DEBUG  ft authPost postOwnersql: " + sqlPostOwner);
+
+                ////////// A completer *****************************////////
+                next();
+              }
+            } // FIN SI moderator
           } else {
             console.log("DEBUG: invalid request");
             res.status(401).json({
@@ -137,8 +178,8 @@ module.exports = (req, res, next) => {
             });
           }
         }
-      });
-    }
+      }); // Fin sql query moderator
+    } // FIN if (userId)
   } catch (err) {
     console.log("erreur authPost:  " + err);
     res.status(401).json({
