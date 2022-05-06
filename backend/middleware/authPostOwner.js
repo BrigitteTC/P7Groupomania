@@ -66,14 +66,14 @@ module.exports = (req, res, next) => {
       userId +
       "';";
 
-    console.log("DEBUG  ft authPost isModerator sql: " + sqlModerator);
+    console.log("DEBUG  ft authPostOwner isModerator sql: " + sqlModerator);
     connection.query(sqlModerator, (err, data, fields) => {
       //Query SQL moderator
       if (err) {
         // Reponse avec code et message d'erreur
 
         console.log("erreur isModerator  " + err);
-        console.log("erreur authPost:  " + err);
+        console.log("erreur authPostOwner:  " + err);
         res.status(401).json({
           error: new Error("Invalid request!"),
         });
@@ -93,7 +93,9 @@ module.exports = (req, res, next) => {
 
           //SI Moderateur
           if (obj.moderator == 1) {
-            console.log("DEBUG: authPost: user moderator on passe a la suite");
+            console.log(
+              "DEBUG: authPostOwner: user moderator on passe a la suite"
+            );
             next();
 
             // SINON  Test user = owner
@@ -106,7 +108,9 @@ module.exports = (req, res, next) => {
               " WHERE postId ='" +
               req.params.postId +
               "';";
-            console.log("DEBUG  ft authPost postOwnersql: " + sqlPostOwner);
+            console.log(
+              "DEBUG  ft authPostOwner postOwnersql: " + sqlPostOwner
+            );
 
             connection.query(sqlPostOwner, (err, data, fields) => {
               if (err) {
@@ -139,7 +143,7 @@ module.exports = (req, res, next) => {
                   //SI Owner
                   if (objOwner.userId == userId) {
                     console.log(
-                      "DEBUG: authPost: user propriétaire on passe a la suite"
+                      "DEBUG: authPostOwner: user propriétaire on passe a la suite"
                     );
                     next();
                   } else {
@@ -147,7 +151,9 @@ module.exports = (req, res, next) => {
                     console.log(
                       "DEBUG : fonction auth: 403: unauthorized request"
                     );
-                    throw "403: unauthorized request";
+                    res.status(403).json({
+                      error: new Error("unauthorized request"),
+                    });
                   } // FIN SI Owner
                 } else {
                   console.log("DEBUG: invalid request");
@@ -168,7 +174,7 @@ module.exports = (req, res, next) => {
       } // Fin traitement query SQL moderator OK
     }); // End query SQL moderator
   } catch (err) {
-    console.log("erreur authPost:  " + err);
+    console.log("erreur authPostOwner:  " + err);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });

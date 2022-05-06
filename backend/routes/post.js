@@ -14,7 +14,7 @@ const router = express.Router();
 const postCtrl = require("../controllers/post");
 
 const authPost = require("../middleware/authPost");
-const multer = require("../middleware/multer-config");
+const authPostOwner = require("../middleware/authPostOwner");
 
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
