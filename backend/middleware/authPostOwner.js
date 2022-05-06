@@ -1,7 +1,7 @@
 //Groupomania
 
 /*----------------------------------------
-middleware/authPost.js
+middleware/authPostOwner.js
 Date de création: 27/04/2022
 auteur: BTC
 
@@ -9,12 +9,9 @@ Gestion authentification des utilisateurs pour les posts
 pour protéger les routes sensibles
 
 Algo:
-Test user authentifié
 
-SI authentifié
-  Si methode = POST ou GET
-    next()
-  sinon
+Middleware appelé si le user est authentifié.
+
     Si (utilisateur = moderateur)
       next()
     Sinon
@@ -24,16 +21,9 @@ SI authentifié
         Retour requete non autorisée
       FSI
     FSI
-  FSI
-FSI
 
 
-ATTENTION: pour DELETE et PUT
-  Ne pas mettre le userId dans le body mais:
-  Utilisation de req.auth pour authentifier l'utilisateur
-  car la vérification du user envoyé par le body peut être falsifiée
-  par une personne malveillante qui utiliserait POSTMAN par exemple pour envoyer une
-  requete.
+
 
 
   req.auth.userId: est l'id déduit du token du header.
@@ -57,133 +47,130 @@ const postsTable = require("../mysqlp7").postsTable;
 const commentsTable = require("../mysqlp7").commentsTable;
 
 /*------------------------------------------------------------------------
-authPost
+authPostOwner
 
 
 -------------------------------------------------------------------------**/
 
 module.exports = (req, res, next) => {
-  console.log("DEBUG : fonction authPost");
+  console.log("DEBUG : fonction authPostOwner");
   try {
-    //on récupère le token dans le header = 2ieme elt du header apres le bearer
-    const token = req.headers.authorization.split(" ")[1];
-    console.log(
-      "DEBUG : fonction authPost: req.headers.authorization : " +
-        req.headers.authorization
-    );
-    console.log("DEBUG : fonction authPost: token : " + token);
-    const secretKey = process.env.SECRET_KEY;
-    console.log("DEBUG : fonction authPost: secretKey : " + secretKey);
+    // verifier user = moderateur
+    const userId = req.auth.userId;
+    // Is moderator Begin
+    // Requete sql pour verifier moderateur oui/non
+    sqlModerator =
+      "SELECT moderator FROM " +
+      usersTable +
+      " WHERE userId ='" +
+      userId +
+      "';";
 
-    // on décode le token avec verify et clé secrete
-    const decodedToken = jwt.verify(token, secretKey);
-    console.log("DEBUG : fonction authPost: decodedToken : " + decodedToken);
+    console.log("DEBUG  ft authPost isModerator sql: " + sqlModerator);
+    connection.query(sqlModerator, (err, data, fields) => {
+      //Query SQL moderator
+      if (err) {
+        // Reponse avec code et message d'erreur
 
-    const userId = decodedToken.userId; //userId deduit du token
-    console.log("DEBUG : fonction authPost: userId : " + userId);
+        console.log("erreur isModerator  " + err);
+        console.log("erreur authPost:  " + err);
+        res.status(401).json({
+          error: new Error("Invalid request!"),
+        });
+      } else {
+        //  query SQL moderator OK
+        //
+        console.log("DEBUG: ft isModerator: retour sql OK");
+        console.log("DEBUG data " + data);
+        console.log("DEBUG fields " + fields);
+        console.log("DEBUG data length  " + JSON.stringify(data).length);
+        // test longueur des data >2 = on a un objet json rempli
+        if (JSON.stringify(data).length > 2) {
+          const result = Object.values(JSON.parse(JSON.stringify(data)));
+          const obj = result[0];
 
-    // verifie user authentifie
-    if (userId) {
-      console.log("DEBUG : fonction authPost: decodedToken.userId : " + userId);
+          console.log("DEBUG: ft isModerator: isModerator = " + obj.moderator);
 
-      req.auth = { userId }; //attribue le userId à l'objet requete (clé et var du meme nom)
-      console.log("DEBUG : fonction authPost: req.auth : " + req.auth.userId);
+          //SI Moderateur
+          if (obj.moderator == 1) {
+            console.log("DEBUG: authPost: user moderator on passe a la suite");
+            next();
 
-      // Verifs à faire plus tard:
-      //
-      //
-      // verifier user = moderateur
+            // SINON  Test user = owner
+          } else {
+            // le user n'est pas moderateur. Verif si il est propriétaire
+            // Verif propriétaire
+            sqlPostOwner =
+              "SELECT userId FROM " +
+              postsTable +
+              " WHERE postId ='" +
+              req.params.postId +
+              "';";
+            console.log("DEBUG  ft authPost postOwnersql: " + sqlPostOwner);
 
-      // Is moderator Begin
-      // Requete sql pour verifier moderateur oui/non
-      sqlModerator =
-        "SELECT moderator FROM " +
-        usersTable +
-        " WHERE userId ='" +
-        userId +
-        "';";
+            connection.query(sqlPostOwner, (err, data, fields) => {
+              if (err) {
+                // retour query en erreur: Reponse avec code et message d'erreur
 
-      console.log("DEBUG  ft authPost isModerator sql: " + sqlModerator);
-      connection.query(sqlModerator, (err, data, fields) => {
-        if (err) {
-          // Reponse avec code et message d'erreur
+                console.log("erreur sqlPostOwner  " + err);
 
-          console.log("erreur isModerator  " + err);
-          console.log("erreur authPost:  " + err);
+                res.status(401).json({
+                  error: new Error("Invalid request!"),
+                });
+              } else {
+                // Retour query OK
+                // Verif userId retourné = userId de celui qui a lancé la requete
+                // Debut Verif userId
+                console.log("DEBUG: sqlPostOwner: retour sql OK");
+                console.log("DEBUG sqlPostOwner data " + data);
+                console.log("DEBUG sqlPostOwner fields " + fields);
+                console.log(
+                  "DEBUG data length  " + JSON.stringify(data).length
+                );
+                // test longueur des data >2 = on a un objet json rempli
+                if (JSON.stringify(data).length > 2) {
+                  // Data non vide
+                  const resultOwner = Object.values(
+                    JSON.parse(JSON.stringify(data))
+                  );
+                  const objOwner = resultOwner[0];
+
+                  console.log("DEBUG: sqlPostOwner = " + objOwner.userId);
+                  //SI Owner
+                  if (objOwner.userId == userId) {
+                    console.log(
+                      "DEBUG: authPost: user propriétaire on passe a la suite"
+                    );
+                    next();
+                  } else {
+                    //REtour user invalide
+                    console.log(
+                      "DEBUG : fonction auth: 403: unauthorized request"
+                    );
+                    throw "403: unauthorized request";
+                  } // FIN SI Owner
+                } else {
+                  console.log("DEBUG: invalid request");
+                  res.status(401).json({
+                    error: new Error("Invalid request!"),
+                  });
+                } // Fin test data non vides
+              } // FIN verif userId = owner du post
+            });
+          } // Fin verif propriétaire
+        } // Fin test data non vides au retour de la requete moderator
+        else {
+          console.log("DEBUG: invalid request");
           res.status(401).json({
             error: new Error("Invalid request!"),
           });
-        } else {
-          // OK
-          console.log("DEBUG: ft isModerator: retour sql OK");
-          console.log("DEBUG data " + data);
-          console.log("DEBUG fields " + fields);
-          console.log("DEBUG data length  " + JSON.stringify(data).length);
-          // test longueur des data >2 = on a un objet json rempli
-          if (JSON.stringify(data).length > 2) {
-            const result = Object.values(JSON.parse(JSON.stringify(data)));
-            const obj = result[0];
-
-            console.log(
-              "DEBUG: ft isModerator: isModerator = " + obj.moderator
-            );
-
-            //SI Moderateur
-            if (obj.moderator == 1) {
-              console.log(
-                "DEBUG: authPost: user moderator on passe a la suite"
-              );
-              next();
-
-              // Is Moderator: End
-
-              // SINON  SI Methode = POST ou GET
-            } else {
-              //SI methode = POST ou GET
-              console.log("DEBUG: methode:" + req.method);
-              if (req.method == "POST" || req.method == "GET") {
-                //POST: user authentifie
-                // PUT ou DELETE: test proprietaire du post pour un PUT ou DELETE
-                // ou user = proprietaire du post ou du comment
-                //       cad: il faut req.auth.userId = req.boby.userId si req.boby.userId
-
-                console.log(
-                  "DEBUG: authPost: POST ou GET user authentifie on passe à la suite"
-                );
-                next();
-              } //FIN SI methode = POST ou GET
-              else {
-                //SI methode = PUT ou DELETE
-                console.log(
-                  "DEBUG: authPost: PUT OU DELETE user authentifie on passe à la suite"
-                );
-                //SI user = post owner
-                // Requete sql pour verifier post owner
-                sqlPostOwner =
-                  "SELECT userId FROM " +
-                  postsTable +
-                  " WHERE postId ='" +
-                  req.params.postId +
-                  "';";
-                console.log("DEBUG  ft authPost postOwnersql: " + sqlPostOwner);
-
-                ////////// A completer *****************************////////
-                next();
-              }
-            } // FIN SI moderator
-          } else {
-            console.log("DEBUG: invalid request");
-            res.status(401).json({
-              error: new Error("Invalid request!"),
-            });
-          }
-        }
-      }); // Fin sql query moderator
-    } // FIN if (userId)
+        } // cas data vides
+      } // Fin traitement query SQL moderator OK
+    }); // End query SQL moderator
   } catch (err) {
     console.log("erreur authPost:  " + err);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });
-  }
-};
+  } //fin catch ft
+}; //fin module.exports
