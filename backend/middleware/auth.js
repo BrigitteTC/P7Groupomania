@@ -11,13 +11,9 @@ pour protéger les routes sensibles
 
 ATTENTION: pour DELETE et PUT
   Utilisation de req.auth pour authentifier l'utilisateur
-  car la vérification du user envoyé par le body peut être falsifiée
-  par une personne malveillante qui utiliserait POSTDAM par exemple pour envoyer une
-  requete.
-
 
   req.auth.userId: est l'id déduit du token du header.
-  req.params.id: est l'id donné dans l'URL
+  req.params.userId: est l'id donné dans l'URL
 ------------------------------------------------*/
 
 //configure dotenv pour les variables d'environnement
@@ -57,7 +53,7 @@ module.exports = (req, res, next) => {
       "DEBUG : fonction auth: verif req.params.userId : " + req.params.userId
     );
 
-    // test id du token correspond à l'Id de la route DELETE
+    // test id du token correspond à l'Id de la route DELETE ou PUT
     if (req.params.userId != req.auth.userId) {
       console.log("DEBUG : fonction auth: 403: unauthorized request");
       throw "403: unauthorized request";
