@@ -9,28 +9,6 @@ Tables de mySQL:
 Creation de la base de données:
 CREATE DATABASE groupomania;
 
-CREATE TABLE user (
-id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-email VARCHAR(255) NOT NULL UNIQUE ,
-email VARCHAR(100) NOT NULL,
-pseudo VARCHAR(100), NOT NULL UNIQUE ,
-moderator BOOLEAN DEFAULT false
-);
-
-CREATE TABLE post (
-id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-userId INTEGER NOT NULL,
-post text,
-imageUrl VARCHAR(500)
-);
-
-CREATE TABLE comment (
-id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-userId INTEGER NOT NULL,
-postId INTEGER NOT NULL,
-comment text
-);
-
 CREATE TABLE users (
 userId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 email VARCHAR(255) NOT NULL UNIQUE ,
@@ -38,7 +16,6 @@ passwd VARCHAR(100) NOT NULL,
 pseudo VARCHAR(100) NOT NULL UNIQUE ,
 moderator BOOLEAN DEFAULT false
 );
-Query OK, 0 rows affected (0.12 sec)
 
 CREATE TABLE posts (
 postId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -49,7 +26,6 @@ FOREIGN KEY (userId)
 REFERENCES users (userId)
 ON DELETE CASCADE
 );
-Query OK, 0 rows affected (0.09 sec)
 
 CREATE TABLE comments (
 commentId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -64,8 +40,6 @@ REFERENCES posts (postId)
 ON DELETE CASCADE
 );
 
-Query OK, 0 rows affected (0.09 sec)
-
 // Pour mettre un user moderator:
 ex: user dont userId= 5
 mysql> UPDATE users SET moderator='1' WHERE userId=5;
@@ -75,7 +49,7 @@ mysql> UPDATE users SET moderator='1' WHERE userId=5;
 
 #DEBUG:
 
-Table user:
+Table users:
 
 signup:
 methode: POST
@@ -148,7 +122,7 @@ message: "Utilisateur supprimé"
 #---------------------------------------------
 #---------------------------------------------
 
-Table post
+Table posts
 
 createPost:
 methode: POST
