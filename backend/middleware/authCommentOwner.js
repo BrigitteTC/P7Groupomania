@@ -104,7 +104,7 @@ module.exports = (req, res, next) => {
             // Verif propriétaire
             sqlCommentOwner =
               "SELECT userId FROM " +
-              commentTable +
+              commentsTable +
               " WHERE commentId ='" +
               req.params.commentId +
               "';";

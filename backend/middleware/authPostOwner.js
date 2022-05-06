@@ -15,7 +15,7 @@ Middleware appelé si le user est authentifié.
     Si (utilisateur = moderateur)
       next()
     Sinon
-      Si (utilisateur = post/comment owner)
+      Si (utilisateur = post owner)
         next()
       sinon
         Retour requete non autorisée
@@ -44,7 +44,6 @@ const connection = require("../mysqlp7").connection;
 //Tables des posts et des commentaires
 const usersTable = require("../mysqlp7").usersTable;
 const postsTable = require("../mysqlp7").postsTable;
-const commentsTable = require("../mysqlp7").commentsTable;
 
 /*------------------------------------------------------------------------
 authPostOwner
