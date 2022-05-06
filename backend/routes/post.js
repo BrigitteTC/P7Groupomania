@@ -15,6 +15,7 @@ const postCtrl = require("../controllers/post");
 
 const authPost = require("../middleware/authPost");
 const authPostOwner = require("../middleware/authPostOwner");
+const authCommentOwner = require("../middleware/authCommentOwner");
 
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
@@ -33,9 +34,19 @@ router.post("/:postId/comment", authPost, postCtrl.createComment);
 router.get("/:postId/comment", authPost, postCtrl.getAllComment);
 router.get("/:postId/comment/:commentId", authPost, postCtrl.getOneComment);
 
-router.put("/:postId/comment/:commentId", authPost, postCtrl.modifyComment);
+router.put(
+  "/:postId/comment/:commentId",
+  authPost,
+  authCommentOwner,
+  postCtrl.modifyComment
+);
 
-router.delete("/:postId/comment/:commentId", authPost, postCtrl.deleteComment);
+router.delete(
+  "/:postId/comment/:commentId",
+  authPost,
+  authCommentOwner,
+  postCtrl.deleteComment
+);
 
 //export du router
 module.exports = router;

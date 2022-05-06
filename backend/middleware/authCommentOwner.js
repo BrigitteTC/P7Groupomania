@@ -1,11 +1,11 @@
 //Groupomania
 
 /*----------------------------------------
-middleware/authPostOwner.js
+middleware/authCommentOwner.js
 Date de création: 06/05/2022
 auteur: BTC
 
-Gestion authentification des utilisateurs pour les posts
+Gestion authentification des utilisateurs pour les commentaires
 pour protéger les routes sensibles
 
 Algo:
@@ -15,7 +15,7 @@ Middleware appelé si le user est authentifié.
     Si (utilisateur = moderateur)
       next()
     Sinon
-      Si (utilisateur = post/comment owner)
+      Si (utilisateur = comment owner)
         next()
       sinon
         Retour requete non autorisée
@@ -43,17 +43,17 @@ const connection = require("../mysqlp7").connection;
 
 //Tables des posts et des commentaires
 const usersTable = require("../mysqlp7").usersTable;
-const postsTable = require("../mysqlp7").postsTable;
+
 const commentsTable = require("../mysqlp7").commentsTable;
 
 /*------------------------------------------------------------------------
-authPostOwner
+authCommentOwner
 
 
 -------------------------------------------------------------------------**/
 
 module.exports = (req, res, next) => {
-  console.log("DEBUG : fonction authPostOwner");
+  console.log("DEBUG : fonction authCommentOwner");
   try {
     // verifier user = moderateur
     const userId = req.auth.userId;
@@ -66,14 +66,14 @@ module.exports = (req, res, next) => {
       userId +
       "';";
 
-    console.log("DEBUG  ft authPostOwner isModerator sql: " + sqlModerator);
+    console.log("DEBUG  ft authCommentOwner isModerator sql: " + sqlModerator);
     connection.query(sqlModerator, (err, data, fields) => {
       //Query SQL moderator
       if (err) {
         // Reponse avec code et message d'erreur
 
         console.log("erreur isModerator  " + err);
-        console.log("erreur authPostOwner:  " + err);
+        console.log("erreur authCommentOwner:  " + err);
         res.status(401).json({
           error: new Error("Invalid request!"),
         });
@@ -94,7 +94,7 @@ module.exports = (req, res, next) => {
           //SI Moderateur
           if (obj.moderator == 1) {
             console.log(
-              "DEBUG: authPostOwner: user moderator on passe a la suite"
+              "DEBUG: authCommentOwner: user moderator on passe a la suite"
             );
             next();
 
@@ -102,17 +102,17 @@ module.exports = (req, res, next) => {
           } else {
             // le user n'est pas moderateur. Verif si il est propriétaire
             // Verif propriétaire
-            sqlPostOwner =
+            sqlCommentOwner =
               "SELECT userId FROM " +
-              postsTable +
-              " WHERE postId ='" +
-              req.params.postId +
+              commentTable +
+              " WHERE commentId ='" +
+              req.params.commentId +
               "';";
             console.log(
-              "DEBUG  ft authPostOwner postOwnersql: " + sqlPostOwner
+              "DEBUG  ft authCommentOwner sqlCommentOwner: " + sqlCommentOwner
             );
 
-            connection.query(sqlPostOwner, (err, data, fields) => {
+            connection.query(sqlCommentOwner, (err, data, fields) => {
               if (err) {
                 // retour query en erreur: Reponse avec code et message d'erreur
 
@@ -143,7 +143,7 @@ module.exports = (req, res, next) => {
                   //SI Owner
                   if (objOwner.userId == userId) {
                     console.log(
-                      "DEBUG: authPostOwner: user propriétaire on passe a la suite"
+                      "DEBUG: authCommentOwner: user propriétaire on passe a la suite"
                     );
                     next();
                   } else {
@@ -174,7 +174,7 @@ module.exports = (req, res, next) => {
       } // Fin traitement query SQL moderator OK
     }); // End query SQL moderator
   } catch (err) {
-    console.log("erreur authPostOwner:  " + err);
+    console.log("erreur authCommentOwner:  " + err);
     res.status(401).json({
       error: new Error("Invalid request!"),
     });
