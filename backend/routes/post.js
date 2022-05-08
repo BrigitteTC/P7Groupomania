@@ -8,23 +8,23 @@ auteur: BTC
 Création d'un routeur pour toutes les routes des élements des forums.
 -------------------------------------------------
 
-Middleware d'authentifications:
+Middlewares d'authentifications:
 
 posts:
 POST et GET:
-  authPost: vérifie que celui qui passe la requete esr authentifié.
+  authPost: vérifie que celui qui passe la requete est authentifié.
 
 PUT et DELETE:
-  authPost: vérifie que celui qui passe la requete esr authentifié.
+  authPost: vérifie que celui qui passe la requete est authentifié.
   authPostOwner: Vérifie que celui qui passe la requete est moderateur ou propriétaire
 
 
 comments:
 POST et GET:
-  authPost: vérifie que celui qui passe la requete esr authentifié.
+  authPost: vérifie que celui qui passe la requete est authentifié.
 
 PUT et DELETE:
-  authPost: vérifie que celui qui passe la requete esr authentifié.
+  authPost: vérifie que celui qui passe la requete est authentifié.
   authCommentOwner: Vérifie que celui qui passe la requete est moderateur ou propriétaire
 
 
@@ -50,7 +50,7 @@ router.put("/:postId", authPost, authPostOwner, postCtrl.modifyPost);
 
 router.delete("/:postId", authPost, authPostOwner, postCtrl.deletePost);
 
-//Route pour les commentaires
+//Routes pour les commentaires
 router.post("/:postId/comment", authPost, postCtrl.createComment);
 
 router.get("/:postId/comment", authPost, postCtrl.getAllComment);
