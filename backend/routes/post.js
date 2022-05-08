@@ -7,6 +7,28 @@ auteur: BTC
 
 Création d'un routeur pour toutes les routes des élements des forums.
 -------------------------------------------------
+
+Middleware d'authentifications:
+
+posts:
+POST et GET:
+  authPost: vérifie que celui qui passe la requete esr authentifié.
+
+PUT et DELETE:
+  authPost: vérifie que celui qui passe la requete esr authentifié.
+  authPostOwner: Vérifie que celui qui passe la requete est moderateur ou propriétaire
+
+
+comments:
+POST et GET:
+  authPost: vérifie que celui qui passe la requete esr authentifié.
+
+PUT et DELETE:
+  authPost: vérifie que celui qui passe la requete esr authentifié.
+  authCommentOwner: Vérifie que celui qui passe la requete est moderateur ou propriétaire
+
+
+
 */
 const express = require("express");
 const router = express.Router();
