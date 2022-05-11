@@ -202,14 +202,10 @@ async function boutonValiderFt(event, newUserCoordCheck) {
       const retourServeur = await sendDataToServer(C_routeSIGNUP, data);
       if (retourServeur === "OK") {
         //user créé avec succes
-        const url = "../index.html";
-        //On va sur la page confirmation
-        //window.location.href = url;
-      } else {
-        //probleme ds la creatino du user
-        alerteMsg(retourServeur);
+        const url = C_page_accueil;
+        //On change de page
+        window.location.href = url;
       }
-
       ///
     } else {
       //Au moins un des champs du formulaire n'est pas conrrect
@@ -264,12 +260,11 @@ async function sendDataToServer(url = "", data = {}) {
       alerteMsg(
         "user cree avec succes  - Vous devez vous connecter à votre compte"
       );
+      retourFt = "OK";
     } else {
       //error
       alerteMsg(retourServer.message);
     }
-
-    retourFt = reponseStatus + " " + retourServer.message;
   } catch (e) {
     console.log("Erreur sendDataToServer  " + e);
   }

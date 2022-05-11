@@ -12,6 +12,11 @@ const C_routeSIGNUP = "http://localhost:3000/api/auth/signup";
 const C_routeLOGIN = "http://localhost:3000/api/auth/login";
 const C_routePOSTS = "http://localhost:3000/api/post";
 
+// Pages html
+const C_page_Login = "../html/login";
+const C_page_accueil = "../index.html";
+const C_page_posts = "../posts.html";
+
 //Construction de la clé du local storage
 // cle= nom_couleur
 const C_separatorKey = "_";
