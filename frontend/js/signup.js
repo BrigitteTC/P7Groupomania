@@ -253,23 +253,23 @@ async function sendDataToServer(url = "", data = {}) {
       body: JSON.stringify(data),
     });
 
-    if (response.ok) {
-      const retourServer = await response.json();
-      const reponseStatus = response.status;
-      console.log("response.status  :  " + reponseStatus);
-      // nouveau user cree
+    const retourServer = await response.json();
+    const reponseStatus = response.status;
+    console.log("response.status  :  " + reponseStatus);
+    // nouveau user cree
 
-      console.log("retourServer.message     : " + retourServer.message);
+    console.log("retourServer.message     : " + retourServer.message);
 
+    if (reponseStatus === 201) {
       alerteMsg(
         "user cree avec succes  - Vous devez vous connecter à votre compte"
       );
-
-      retourFt = reponseStatus + " " + retourServer.message;
     } else {
-      console.error("Retour du serveur:", response.status);
-      retourServer = response.status;
+      //error
+      alerteMsg(retourServer.message);
     }
+
+    retourFt = reponseStatus + " " + retourServer.message;
   } catch (e) {
     console.log("Erreur sendDataToServer  " + e);
   }
