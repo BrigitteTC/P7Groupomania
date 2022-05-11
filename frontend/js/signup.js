@@ -11,16 +11,16 @@ Récupération des données utilisateur et envoi au serveur.
 *******************************************************************/
 
 //-------------------------------------------------------------------------
-//callPosts(orderId);
+//callPosts();
 //
 // Objet: appelle la page posts
 //
 // Parametres:
-//  Entréé: numéro de commande
+//  Entréé: nrien
 //  Sortie: rien
 //
 // Algo
-//  maj le HTML pour ajouter un lien sur la page confirmation avec le numéro de commande
+//  maj le HTML pour changer de page
 //-----------------------------------------------------------------
 function callPosts() {
   try {
