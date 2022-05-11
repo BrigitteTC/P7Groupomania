@@ -7,6 +7,23 @@
 //---------------------------------------------------
 // 11/05/2022
 //---------------------------------------------------
+
+//------------------------------------------------------------------------------
+// function: initMsgForm
+// Objet: initialise les messages d'erreur sous chaque champ du formulaire
+//
+//-------------------------------------------------------------------------------
+
+function initMsgForm(label) {
+  try {
+    let labelErrorMsg = label + C_formErrorMsg;
+    let eltLabel = document.getElementById(labelErrorMsg);
+    eltLabel.innerHTML = C_msgForm_vide;
+  } catch (e) {
+    console.log("initMsgForm  " + e);
+  }
+}
+
 //-------------------------------------------------------------------------------
 //function:    verifFieldForm()
 //
@@ -60,4 +77,52 @@ function verifFieldForm(paramIdElt, paramErrorIdElt, patern) {
     B_paramVerif = false;
   }
   return B_paramVerif;
+}
+
+//-------------------------------------------------------------------------
+//callLogin;
+//
+// Objet: appelle la page login
+//
+// Parametres:
+//  Entréé: rien
+//  Sortie: rien
+//
+// Algo
+//  appell page login
+//-----------------------------------------------------------------
+function callLogin() {
+  try {
+    //url de destination
+    let url = "../html/login.html";
+
+    //On va sur la page confirmation
+    window.location.href = url;
+  } catch (e) {
+    console.log("callLogin:" + e);
+  }
+}
+
+//-------------------------------------------------------------------------
+//callPosts();
+//
+// Objet: appelle la page posts
+//
+// Parametres:
+//  Entréé: nrien
+//  Sortie: rien
+//
+// Algo
+//  maj le HTML pour changer de page
+//-----------------------------------------------------------------
+function callPosts() {
+  try {
+    //url de destination
+    let url = "../html/posts.html";
+
+    //On va sur la page confirmation
+    window.location.href = url;
+  } catch (e) {
+    console.log("callPosts:" + e);
+  }
 }

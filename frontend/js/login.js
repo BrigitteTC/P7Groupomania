@@ -115,10 +115,10 @@ async function boutonLoginValiderFt(event, newUserCoordCheck) {
 
       console.log("data = " + JSON.stringify(data));
 
-      const retourServeur = await sendDataLoginToServer(C_routeSIGNUP, data);
+      const retourServeur = await sendDataLoginToServer(C_routeLOGIN, data);
       if (retourServeur === "OK") {
         //user créé avec succes
-        const url = C_page_accueil;
+        const url = C_page_posts;
         //On change de page
         window.location.href = url;
       }
@@ -140,14 +140,13 @@ async function boutonLoginValiderFt(event, newUserCoordCheck) {
 //Format du message
 //{
 // body: {
-//    pseudo: string,
 //    passwd: string,
 //    email: string
 // }
 
 //
 //body, qui contient tous les champs du formulaire
-// (email, passwd et pseudo) préalablement vérifiés.
+// (email, passwd ) préalablement vérifiés.
 //-------------------------------------------------------------------------------
 
 async function sendDataLoginToServer(url = "", data = {}) {
@@ -168,17 +167,14 @@ async function sendDataLoginToServer(url = "", data = {}) {
     const retourServer = await response.json();
     const reponseStatus = response.status;
     console.log("response.status  :  " + reponseStatus);
-    // nouveau user cree
 
-    console.log("retourServer.message     : " + retourServer.message);
-
-    if (reponseStatus === 201) {
-      alerteMsg(
-        "user cree avec succes  - Vous devez vous connecter à votre compte"
-      );
+    if (reponseStatus === 200) {
+      // user connecté
+      alerteMsg("Connexion OK");
       retourFt = "OK";
     } else {
       //error
+      console.log("retourServer.message     : " + retourServer.message);
       alerteMsg(retourServer.message);
     }
   } catch (e) {
@@ -255,7 +251,7 @@ async function loginFt() {
     //on récupère les infos du produit passé dans l'URL
     console.log("ft login");
     //Affichage msg pour remplir le formulaire
-    displayForm();
+    displayLoginForm();
 
     //Validation des entrées dans le formulaire
     waitLoginFillForm();

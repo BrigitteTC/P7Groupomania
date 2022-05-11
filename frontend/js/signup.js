@@ -252,17 +252,16 @@ async function sendDataToServer(url = "", data = {}) {
     const retourServer = await response.json();
     const reponseStatus = response.status;
     console.log("response.status  :  " + reponseStatus);
-    // nouveau user cree
-
-    console.log("retourServer.message     : " + retourServer.message);
 
     if (reponseStatus === 201) {
+      // nouveau user cree
       alerteMsg(
         "user cree avec succes  - Vous devez vous connecter à votre compte"
       );
       retourFt = "OK";
     } else {
       //error
+      console.log("retourServer.message     : " + retourServer.message);
       alerteMsg(retourServer.message);
     }
   } catch (e) {
