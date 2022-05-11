@@ -66,15 +66,7 @@ const expressionEmailName = RegExp(
     userInLocalStorageOK  = trus si infos du user OK / False sinon
     */
 class localStorageUser {
-  constructor(
-    userName,
-    pseudo,
-    userId,
-    token,
-    moderator,
-    userInLocalStorageOK
-  ) {
-    this.userName = userName;
+  constructor(pseudo, userId, token, moderator, userInLocalStorageOK) {
     this.pseudo = pseudo;
     this.userId = userId;
     this.token = token;
