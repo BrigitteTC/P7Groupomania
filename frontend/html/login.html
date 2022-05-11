@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>login</title>
+
+    <meta charset="utf-8" />
+    <meta name="description" content="Réseau social d'entreprise" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/login.css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <div id="app">
+      <header>
+        <div class="limitedWidthBlockContainer informations">
+          <div class="limitedWidthBlock">
+            <ul>
+              <li>
+                <img
+                  src="../images/icons/phone.svg"
+                  alt="logo de téléphone"
+                  class="informations__phone"
+                />{{tel}}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="limitedWidthBlockContainer menu">
+          <div class="limitedWidthBlock">
+            <a href="../index.html">
+              <img
+                class="logo"
+                src="../images/logo.png"
+                alt="Logo de l'entreprise"
+              />
+            </a>
+
+            <p class="titles">Connectez vous à votre compte</p>
+            <nav>
+              <ul>
+                <a href="../index.html"><li>accueil</li></a>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <main class="limitedWidthBlockContainer">
+        <section class="items" id="items">
+          <div class="cart__order">
+            <form method="get" class="cart__order__form">
+              <div class="cart__order__form__question">
+                <label for="email">Email: </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  v-model="email"
+                  required
+                />
+                <p id="emailErrorMsg"></p>
+              </div>
+
+              <div class="cart__order__form__question">
+                <label for="passwd">Passwd: </label>
+                <input
+                  type="passwd"
+                  name="passwd"
+                  id="passwd"
+                  v-model="passwd"
+                  required
+                />
+                <p id="emailErrorMsg"></p>
+              </div>
+
+              <div class="cart__order__form__submit">
+                <input
+                  v-on:click="checkForm"
+                  type="submit"
+                  value="Valider"
+                  id="order"
+                />
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="limitedWidthBlockContainer footerMain">
+          <div class="limitedWidthBlock">
+            <div>
+              <img
+                class="logo"
+                src="../images/logo.png"
+                alt="Logo de l'entreprise"
+              />
+            </div>
+            <div>
+              <p>{{adresse}} <br />{{ville}}</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data: {
+          adresse: "rue de l'horizon",
+          ville: "19300 labas sur Correze",
+          tel: "01 23 45 67 89",
+        },
+      });
+
+      const appForm = new Vue({
+        el: "#items",
+        components: {},
+        data() {
+          return {
+            errors: [],
+            email: null,
+            passwd: null,
+          };
+          console.log("login: checkform");
+        },
+        methods: {
+          checkForm: function (e) {
+            alert("click");
+            console.log("login: checkform");
+            // Clear errors
+            this.errors = [];
+
+            // Check if the passwd is not empty and length <= 50
+            if (!this.passwd || this.passwd.length > 50) {
+              this.errors.push("Le mot de passe ne doit pas être vide!");
+            }
+
+            // Check if the email is not empty and match the email pattern
+            var re =
+              /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/;
+            if (!this.email || !re.test(this.email)) {
+              this.errors.push(
+                "l'email ne doit pas être vide et doit être valide !"
+              );
+            }
+
+            if (!this.errors.length) {
+              {
+                // Envoi login an serveur
+                this.loading = true;
+                this.userId = null;
+                console.log("appel POST pour login axios");
+                axios
+                  .post(`http://localhost:3000/api/auth/login`, {
+                    headers: {
+                      Authorization: "Bearer null",
+                    },
+                    body: { email: this.email, password: this.passwd },
+                  })
+                  .then((response) => {
+                    console.log("reponse du back", response);
+                    // JSON responses are
+                    // automatically parsed
+                    console.log("reponse du back data", response.data);
+                    this.userId = response.data.userId;
+                  })
+
+                  // Dealing with errors
+                  .catch((error) => {
+                    console.log("error", error);
+                    this.errored = true;
+                  });
+              }
+              return true;
+            }
+
+            e.preventDefault();
+          },
+        },
+
+        //-----------------------------------------
+      });
+    </script>
+  </body>
+</html>
