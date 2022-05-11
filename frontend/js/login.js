@@ -137,16 +137,25 @@ async function boutonLoginValiderFt(event, newUserCoordCheck) {
 //--------------------------------------------------------------------------------
 //sendDataLoginToServer
 //
-//Format du message
-//{
-// body: {
-//    passwd: string,
-//    email: string
-// }
-
+//Objet: envoi login au serveur.
 //
-//body, qui contient tous les champs du formulaire
-// (email, passwd ) préalablement vérifiés.
+//  parametres:
+//    entrée: URL
+//    data
+// Algo
+//    envoi requete POST  avec
+//      Route de login
+//      Format du message
+//        {
+//         body: {
+//            passwd: string,
+//            email: string
+//                }
+//
+//    Test retour du serveur
+//        Si connexion OK (status = 200)
+//            Affiche msg à l'ecran
+//            Stock les infos utilisateur dans le local storage.
 //-------------------------------------------------------------------------------
 
 async function sendDataLoginToServer(url = "", data = {}) {
@@ -170,7 +179,7 @@ async function sendDataLoginToServer(url = "", data = {}) {
 
     if (reponseStatus === 200) {
       // user connecté
-      alerteMsg("Connexion OK");
+      alerteMsg("Connexion OK  - Bonjour " + retourServer.pseudo);
 
       // Maj local storage avec le nouveau user connecté
 
@@ -181,11 +190,13 @@ async function sendDataLoginToServer(url = "", data = {}) {
       userConnected.pseudo = retourServer.pseudo;
       userConnected.userInLocalStorageOK = true;
 
+      // Maj de la clé user dans le local storage
       localStorage.setItem("user", JSON.stringify(userConnected));
-      let ProductSelected = JSON.parse(localStorage.getItem("user")); //elt selectionné
-      console.log("lecture du local storage : " + ProductSelected);
 
       // Verif lecture du local storage
+      let ProductSelected = JSON.parse(localStorage.getItem("user")); //elt selectionné
+      console.log("lecture du local storage : " + ProductSelected.token);
+      alerteMsg("lecture du local storage : " + ProductSelected.token);
 
       retourFt = "OK";
     } else {

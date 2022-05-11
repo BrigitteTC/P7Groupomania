@@ -40,11 +40,17 @@
           // Creating loader
           this.loading = true;
           this.posts = null;
-          const userToken = localStorage.getItem("user").token;
+
+          // Lecture du local storage poru récupérer les infos
+          let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+          const userToken = userInLocalStorage.token; // le token
+
           console.log("token" + userToken);
           console.log("appel GET axios");
-          const bearerToken = "Bearer" + userToken;
+          const bearerToken = "Bearer " + userToken;
           console.log(" bearerToken  :  " + bearerToken);
+
+          //appel axios pour GET posts
           axios
             .get(`http://localhost:3000/api/post/`, {
               headers: {
