@@ -240,7 +240,7 @@ async function boutonValiderFt(event, newUserCoordCheck) {
 
 async function sendDataToServer(url = "", data = {}) {
   let response; //réponse du fetch
-  let retourServer = "KO"; //réponse du serveur
+  let retourFt = "KO"; //retour de la ft
   try {
     console.log("envoi de des données au serveur" + JSON.stringify(data));
 
@@ -254,82 +254,28 @@ async function sendDataToServer(url = "", data = {}) {
     });
 
     if (response.ok) {
-      if (response.status == 201) {
-        retourServer = await response.json();
-        console.log("response.status  :  " + response.status);
-        // nouveau user cree
+      const retourServer = await response.json();
+      const reponseStatus = response.status;
+      console.log("response.status  :  " + reponseStatus);
+      // nouveau user cree
 
-        console.log("retourServer.message     : " + retourServer.message);
+      console.log("retourServer.message     : " + retourServer.message);
 
-        alerteMsg(
-          "user cree avec succes  - Vous devez vous connecter à votre compte"
-        );
+      alerteMsg(
+        "user cree avec succes  - Vous devez vous connecter à votre compte"
+      );
 
-        retourServer = response.status + " " + retourServer.message;
-      } else {
-        console.error("REtour du serveur:", response.status);
-        retourServer = response.status;
-      }
+      retourFt = reponseStatus + " " + retourServer.message;
     } else {
-      console.error("REtour du serveur:", response.status);
+      console.error("Retour du serveur:", response.status);
       retourServer = response.status;
     }
   } catch (e) {
-    console.log("sendDataToServer  " + e);
+    console.log("Erreur sendDataToServer  " + e);
   }
 
-  console.log("sendDataToServer");
-  return retourServer;
-}
-
-//---------------------------------------------------------------
-//--------------------------------------------------------------------------------
-//sendDataToServer
-//
-//Format du message
-//{
-// body: {
-//    pseudo: string,
-//    passwd: string,
-//    email: string
-// }
-
-//
-//body, qui contient tous les champs du formulaire
-// (email, passwd et pseudo) préalablement vérifiés.
-//-------------------------------------------------------------------------------
-
-async function OldsendDataToServer(url = "", data = {}) {
-  let response; //réponse du fetch
-  let retourServer = "KO"; //réponse du serveur
-  try {
-    console.log("envoi de des données au serveur  " + JSON.stringify(data));
-    await fetch(url, {
-      method: "POST", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "bearer null",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Retour de fetch");
-        console.log("Success:", data);
-        console.log("message: ", data.message);
-
-        retourServer = data.message;
-      })
-
-      .catch((error) => {
-        console.error("Error serveur :", error);
-      });
-  } catch (e) {
-    console.log("sendDataToServer  " + e);
-  }
-
-  console.log("sendDataToServer");
-  return retourServer;
+  console.log("retour sendDataToServer  : " + retourFt);
+  return retourFt;
 }
 
 //-------------------------------------------------------------------------------
