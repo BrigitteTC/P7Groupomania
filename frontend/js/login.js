@@ -5,61 +5,13 @@ signup.js
 date: 9/05/2022
 auteur: BTC
 
-Script pour mettre à jour la page signup
+Script pour mettre à jour la page login
 
 Récupération des données utilisateur et envoi au serveur.
 *******************************************************************/
 
-//-------------------------------------------------------------------------
-//callPosts();
-//
-// Objet: appelle la page posts
-//
-// Parametres:
-//  Entréé: nrien
-//  Sortie: rien
-//
-// Algo
-//  maj le HTML pour changer de page
-//-----------------------------------------------------------------
-function callPosts() {
-  try {
-    //url de destination
-    let url = "../html/posts.html";
-
-    //On va sur la page confirmation
-    window.location.href = url;
-  } catch (e) {
-    console.log("callPosts:" + e);
-  }
-}
-
-//-------------------------------------------------------------------------
-//callLogin;
-//
-// Objet: appelle la page login
-//
-// Parametres:
-//  Entréé: rien
-//  Sortie: rien
-//
-// Algo
-//  appell page login
-//-----------------------------------------------------------------
-function callLogin() {
-  try {
-    //url de destination
-    let url = "../html/login.html";
-
-    //On va sur la page confirmation
-    window.location.href = url;
-  } catch (e) {
-    console.log("callLogin:" + e);
-  }
-}
-
 //-------------------------------------------------------------------------------
-//function:    waitFillForm()
+//function:    waitLoginFillForm()
 //
 //Objet: Attente des entrées sur les champs du formulaire et affiche un message d'erreur
 //  si saisie invalide
@@ -73,30 +25,19 @@ function callLogin() {
 //  Affichage message d'erreur si saisie invalide
 //
 // Liste des id du formulaire:
-//    id = "pseudo"  type text
 //    id = "passwd";  type text
 //    id = "email";     type email
-//
-// format: /^[A-Za-zé'ïöëè -]+$/;
-// un ou plusieurs caractères en majuscules
-// ou minuscules, un tiret, une apostrophe ou une espace.
-// et aussi les e i et o accentués
 //-----------------------------------------------------------------------------
-async function waitFillForm() {
+async function waitLoginFillForm() {
   try {
-    console.log("ft waitFillForm");
+    console.log("ft waitLoginFillForm");
     // class de booleans pour verif champs du formulaire
     let newUserCoordCheck = new userCoordCheck(false, false, false);
 
     //pseudo
-    let pseudoForm = document.getElementById(C_formpseudo);
-    let pseudoError = document.getElementById(C_formpseudo + C_formErrorMsg);
+    // pour le login: check forcé à true car le champ n'est pas dans le formulaire
 
-    //Listener sur les champs du formulaire
-    pseudoForm.addEventListener("change", function () {
-      // Vérif valeur entrée
-      newUserCoordCheck.pseudo = verifFieldForm(pseudoForm, pseudoError, "");
-    });
+    newUserCoordCheck.pseudo = true;
 
     //passwd
     //    id = "passwd";  type text
@@ -124,15 +65,15 @@ async function waitFillForm() {
     //bouton Valider
     let eltButton = document.getElementById(C_formorder);
     eltButton.addEventListener("click", function (event) {
-      boutonValiderFt(event, newUserCoordCheck);
+      boutonLoginValiderFt(event, newUserCoordCheck);
     });
   } catch (e) {
-    console.log("waitFillForm  " + e);
+    console.log("waitLoginFillForm  " + e);
   }
 }
 
 //--------------------------------------------------------------------------------
-// function: boutonValiderFt(event, newUserCoordCheck);
+// function: boutonLoginValiderFt(event, newUserCoordCheck);
 // Objet: traite le click sur le bouton Valider
 //
 // Parametres:
@@ -144,62 +85,37 @@ async function waitFillForm() {
 
 //
 //  Format de l'objet à envoyer:
-//      dataToPost={
+//      {
 //        header:{authorization: {bearer:null}}
 //        body: {
 //          email: string;
 //          passwd: string,
-//          pseudo: string,
+//
 //    }}
 //
 //---------------------------------------------------------------------------------------------
 
-async function boutonValiderFt(event, newUserCoordCheck) {
+async function boutonLoginValiderFt(event, newUserCoordCheck) {
   try {
     console.log("on a cliqué sur le bouton Valider");
 
     event.preventDefault(); //evite le rechargt de la page
 
     //test champs du formulaire corrects
-    if (
-      newUserCoordCheck.pseudo === true &&
-      newUserCoordCheck.passwd === true &&
-      newUserCoordCheck.email === true
-    ) {
+    if (newUserCoordCheck.passwd === true && newUserCoordCheck.email === true) {
       var newUserCoord = new userCoord();
-      newUserCoord = updateUserforOrder(); //Maj  coordonnées de l'utilisateur
-
-      let pseudo = newUserCoord.pseudo;
+      newUserCoord = updateUserLoginforOrder(); //Maj  coordonnées de l'utilisateur
 
       let passwd = newUserCoord.passwd;
 
       let email = newUserCoord.email;
 
-      //Objet à envoyer
-
-      //Envoi la commande à l'API
-      //let response = await sendDataToServer(C_serverPOST, dataToPost).then(
-      // await sendDataToServer(C_routeSIGNUP, dataToPost).then((data) => {
-      //  console.log("retour serveur = " + data); // JSON data parsed by `data.json()` call
-      //   console.log(response);
-      //Envoi validation/
-      // test retour serveur
-      // message d'alerte si ou message OK si OK avec affichage page login
-      //callLogin();
-      //url de destination
-      //let url = "../index.html";
-
-      //On va sur la page confirmation
-      //window.location.href = url;
-      //});
-
-      /// envoi POST
-      let data = { email: email, password: passwd, pseudo: pseudo };
+      /// envoi data par POST
+      let data = { email: email, password: passwd };
 
       console.log("data = " + JSON.stringify(data));
 
-      //const retourServeur = await sendDataToServer(C_routeSIGNUP, data);
-      const retourServeur = await sendDataToServer(C_routeSIGNUP, data);
+      const retourServeur = await sendDataLoginToServer(C_routeSIGNUP, data);
       if (retourServeur === "OK") {
         //user créé avec succes
         const url = C_page_accueil;
@@ -214,12 +130,12 @@ async function boutonValiderFt(event, newUserCoordCheck) {
       );
     }
   } catch (e) {
-    console.log("boutonValiderFt  " + e);
+    console.log("boutonLoginValiderFt  " + e);
   }
 }
 
 //--------------------------------------------------------------------------------
-//sendDataToServer
+//sendDataLoginToServer
 //
 //Format du message
 //{
@@ -234,7 +150,7 @@ async function boutonValiderFt(event, newUserCoordCheck) {
 // (email, passwd et pseudo) préalablement vérifiés.
 //-------------------------------------------------------------------------------
 
-async function sendDataToServer(url = "", data = {}) {
+async function sendDataLoginToServer(url = "", data = {}) {
   let response; //réponse du fetch
   let retourFt = "KO"; //retour de la ft
   try {
@@ -266,15 +182,15 @@ async function sendDataToServer(url = "", data = {}) {
       alerteMsg(retourServer.message);
     }
   } catch (e) {
-    console.log("Erreur sendDataToServer  " + e);
+    console.log("Erreur sendDataLoginToServer  " + e);
   }
 
-  console.log("retour sendDataToServer  : " + retourFt);
+  console.log("retour sendDataLoginToServer  : " + retourFt);
   return retourFt;
 }
 
 //-------------------------------------------------------------------------------
-//function: updateUserforOrder;
+//function: updateUserLoginforOrder;
 //Objet: Mise à jour de l'objet avec les coordonnées de l'utilisateur à envoyer dans la requete POST
 //
 // Parametres:
@@ -284,121 +200,23 @@ async function sendDataToServer(url = "", data = {}) {
 // Algo:
 //  Va chercher les elements retrés dans le formulaire en ft des ids
 //---------------------------------------------------------------------------------------------
-function updateUserforOrder() {
+function updateUserLoginforOrder() {
   newUserCoord = new userCoord("", "", "");
 
   try {
-    //pseudo
-    newUserCoord.pseudo = document.getElementById(C_formpseudo).value;
-
-    //passwd
-    newUserCoord.passwd = document.getElementById(C_formpasswd).value;
-
     //email
     newUserCoord.email = document.getElementById(C_formemail).value;
+    //passwd
+    newUserCoord.passwd = document.getElementById(C_formpasswd).value;
   } catch (e) {
-    console.log("updateUserforOrder  " + e);
+    console.log("updateUserLoginforOrder  " + e);
   }
 
   return newUserCoord;
 }
 
-//-------------------------------------------------------------------------------
-//function:    verifFieldForm()
-//
-//Objet: Vérifie un champ de formulaire en ft d'une regex passée en param
-//
-// Parametres:
-//  Entrée:
-//    id du champ à vérifier
-//    id champ erreur correspondant
-//    regex
-//
-//  Sortie: boolean true si verif OK, false sinon
-//
-//Algo:
-//  Récupère la chaine de caracteres rentrée.
-//  la compare avec la regex
-//  retourne vrai si comparaison OK et false sinon
-//-----------------------------------------------------------------------------
-function verifFieldForm(paramIdElt, paramErrorIdElt, patern) {
-  let B_paramVerif = true; //valeur de retour vrai/false
-  let entree = String(paramIdElt.value);
-
-  console.log("verifFieldForm");
-  try {
-    if (entree !== "") {
-      if (patern !== "") {
-        //Teste la valeur rentrée correspond à la patern
-        if (patern.test(entree)) {
-          // S'il y a un message d''erreur affiché et que le champ
-          // est valide, on retire l'erreur
-          paramErrorIdElt.innerHTML = ""; // On réinitialise le contenu
-          console.log("entrée  " + paramIdElt.value + " OK");
-        } else {
-          paramErrorIdElt.innerHTML = C_msgForm_invalid;
-          console.log("entrée  " + paramIdElt.value + " KO");
-          B_paramVerif = false;
-        }
-      } else {
-        //pas de patern à verifier on valide la valeur saisie
-        paramErrorIdElt.innerHTML = ""; // On réinitialise le contenu
-        console.log("entrée  " + paramIdElt.value + " OK");
-      }
-    } else {
-      //entrée vide
-      paramErrorIdElt.innerHTML = C_msgForm_vide;
-      console.log("entrée  " + "vide");
-      B_paramVerif = false;
-    }
-  } catch (e) {
-    console.log("verifFieldForm  " + entree + e);
-    B_paramVerif = false;
-  }
-  return B_paramVerif;
-}
-//-------------------------------------------------------------------------------
-//function:    waitClickOrder()
-//
-//Objet: Attente click sur bouton Valider et traitement correspondant
-//
-// Parametres:
-//  Entrée: rien
-//  Sortie: rien
-//
-//Algo:
-//  Ecoute sur l'elet avec id="order"
-//
-//-----------------------------------------------------------------------------
-function waitClickOrder() {
-  try {
-    const eltButton = document.getElementById(C_formorder);
-    eltButton.addEventListener("click", function () {
-      console.log("on a cliqué sur le bouton Valider");
-      // Envoi des infos vers page confirmation
-    });
-  } catch (e) {
-    console.log("waitClickOrder  " + e);
-  }
-}
-
 //------------------------------------------------------------------------------
-// function: initMsgForm
-// Objet: initialise les messages d'erreur sous chaque champ du formulaire
-//
-
-function initMsgForm(label) {
-  try {
-    let labelErrorMsg = label + C_formErrorMsg;
-    let eltLabel = document.getElementById(labelErrorMsg);
-    eltLabel.innerHTML = C_msgForm_vide;
-  } catch (e) {
-    console.log("initMsgForm  " + e);
-  }
-}
-
-//------------------------------------------------------------------------------
-// function: displayForm();
+// function: displayLoginForm();
 //
 // Objet: Affiche les messages de requis en dessous les champs du formulaire
 //
@@ -408,30 +226,23 @@ function initMsgForm(label) {
 //  Affiche un message sous chaque ligne du formulaire avec les consignes
 //  Invalide le bouton "Valider"
 //------------------------------------------------------------------------------
-function displayForm() {
+function displayLoginForm() {
   try {
-    console.log("ft displayForm ");
+    console.log("ft displayLoginForm ");
     //email
     //    id = "email";     type email
     initMsgForm(C_formemail);
 
     //Passwd:
     initMsgForm(C_formpasswd);
-
-    //Pseudo
-    initMsgForm(C_formpseudo);
-
-    //invalide le bouton "Valider"
-    const eltButton = document.getElementById(C_formorder);
-    //eltButton.disabled = true;
   } catch (e) {
-    console.log("displayForm  " + e);
+    console.log("Erreur displayLoginForm  " + e);
   }
 }
 
 //----------------------------------------------------------------
-// ft signup
-// nom: signup
+// ft login
+// nom: login
 // Objet: Point d'entrée de la ft
 //
 //  retour: rien
@@ -439,15 +250,15 @@ function displayForm() {
 // algo:
 //
 //-------------------------------------------------------------
-async function signupFt() {
+async function loginFt() {
   try {
     //on récupère les infos du produit passé dans l'URL
-    console.log("ft signup");
+    console.log("ft login");
     //Affichage msg pour remplir le formulaire
     displayForm();
 
     //Validation des entrées dans le formulaire
-    waitFillForm();
+    waitLoginFillForm();
   } catch (e) {
     console.log("Erreur signupFt: " + e);
   }
@@ -455,4 +266,4 @@ async function signupFt() {
 
 // Appel de la ft point d'entrée
 
-signupFt();
+loginFt();
