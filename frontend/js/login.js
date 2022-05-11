@@ -120,7 +120,7 @@ async function boutonLoginValiderFt(event, newUserCoordCheck) {
         //user créé avec succes
         const url = C_page_posts;
         //On change de page
-        window.location.href = url;
+        // DEBUG : on reste sur la page login      window.location.href = url;
       }
       ///
     } else {
@@ -182,6 +182,10 @@ async function sendDataLoginToServer(url = "", data = {}) {
       userConnected.userInLocalStorageOK = true;
 
       localStorage.setItem("user", JSON.stringify(userConnected));
+      let ProductSelected = JSON.parse(localStorage.getItem("user")); //elt selectionné
+      console.log("lecture du local storage : " + ProductSelected);
+
+      // Verif lecture du local storage
 
       retourFt = "OK";
     } else {
