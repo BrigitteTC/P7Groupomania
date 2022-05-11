@@ -174,14 +174,14 @@ async function sendDataLoginToServer(url = "", data = {}) {
 
       // Maj local storage avec le nouveau user connecté
 
-      let = new localStorageUser("", 0, "", 0, false);
+      let userConnected = new localStorageUser("", 0, "", 0, false);
       userConnected.userId = retourServer.userId;
       userConnected.umoderator = retourServer.umoderator;
       userConnected.token = retourServer.token;
       userConnected.pseudo = retourServer.pseudo;
       userConnected.userInLocalStorageOK = true;
 
-      localStorage.setItem(user, JSON.stringify(userConnected));
+      localStorage.setItem("user", JSON.stringify(userConnected));
 
       retourFt = "OK";
     } else {
