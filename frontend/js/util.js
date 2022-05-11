@@ -57,11 +57,29 @@ const expressionEmailName = RegExp(
 //class pour chaque parametre du panier
 
 //class pour le user loggué dans le local storage
+/*
+    userName,  = username 
+    pseudo, = pseudo de l'utilisateur
+    userId, = userId dans la base Mysql
+    token,  = token renvoyé par mysql si connexion OK
+    moderator, = 0 pour oui / 1 pour non
+    userInLocalStorageOK  = trus si infos du user OK / False sinon
+    */
 class localStorageUser {
-  constructor(userId, token, moderator) {
+  constructor(
+    userName,
+    pseudo,
+    userId,
+    token,
+    moderator,
+    userInLocalStorageOK
+  ) {
+    this.userName = userName;
+    this.pseudo = pseudo;
     this.userId = userId;
     this.token = token;
     this.moderator = moderator;
+    this.userInLocalStorageOK = userInLocalStorageOK;
   }
 }
 

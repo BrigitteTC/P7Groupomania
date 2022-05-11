@@ -172,6 +172,7 @@ exports.login = (req, res, next) => {
           const passwd = obj.passwd;
           const moderator = obj.moderator;
           const userId = obj.userId;
+          const pseudo = obj.pseudo;
 
           console.log("DEBUG: login  userId= " + userId);
           //
@@ -205,6 +206,7 @@ exports.login = (req, res, next) => {
                 userId: userId,
                 moderator: moderator,
                 token: token,
+                pseudo: pseudo,
               });
             })
             .catch((err) =>
