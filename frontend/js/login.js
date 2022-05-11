@@ -120,7 +120,7 @@ async function boutonLoginValiderFt(event, newUserCoordCheck) {
         //user créé avec succes
         const url = C_page_posts;
         //On change de page
-        // DEBUG : on reste sur la page login      window.location.href = url;
+        window.location.href = url;
       }
       ///
     } else {
