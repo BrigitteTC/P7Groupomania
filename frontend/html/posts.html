@@ -40,12 +40,15 @@
           // Creating loader
           this.loading = true;
           this.posts = null;
+          const userToken = localStorage.getItem("user").token;
+          console.log("token" + userToken);
           console.log("appel GET axios");
+          const bearerToken = "Bearer" + userToken;
+          console.log(" bearerToken  :  " + bearerToken);
           axios
             .get(`http://localhost:3000/api/post/`, {
               headers: {
-                Authorization:
-                  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1MjAyNTEyOCwiZXhwIjoxNjUyMTExNTI4fQ.nfjQrgDRfL-gRzkSCCscOgw77cxpXz5vrVebx3t-qCk",
+                Authorization: bearerToken,
               },
             })
             .then((response) => {

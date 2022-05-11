@@ -176,7 +176,7 @@ async function sendDataLoginToServer(url = "", data = {}) {
 
       let userConnected = new localStorageUser("", 0, "", 0, false);
       userConnected.userId = retourServer.userId;
-      userConnected.umoderator = retourServer.umoderator;
+      userConnected.moderator = retourServer.moderator;
       userConnected.token = retourServer.token;
       userConnected.pseudo = retourServer.pseudo;
       userConnected.userInLocalStorageOK = true;
