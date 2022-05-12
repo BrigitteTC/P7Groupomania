@@ -195,8 +195,9 @@ async function sendDataLoginToServer(url = "", data = {}) {
 
       // Verif lecture du local storage
       let ProductSelected = JSON.parse(localStorage.getItem("user")); //elt selectionné
-      console.log("lecture du local storage : " + ProductSelected.token);
-      alerteMsg("lecture du local storage : " + ProductSelected.token);
+      console.log(
+        "lecture du local storage  token  : " + ProductSelected.token
+      );
 
       retourFt = "OK";
     } else {
