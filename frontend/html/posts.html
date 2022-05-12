@@ -20,7 +20,7 @@
         <div v-else>
           <h4 v-if="loading">Loading...</h4>
           <div v-for="item in posts" :key="post" class="post">
-            {{item.post}}
+            {{item.post}} {{item.userId}}
           </div>
         </div>
       </div>
@@ -58,13 +58,13 @@
             })
             .then((response) => {
               console.log("reponse du back", response);
-              // JSON responses are
-              // automatically parsed
-              console.log("reponse du back data", response.data);
+              // JSON response
+              console.log("reponse du back data", response.data.posts);
+              console.log("reponse du back status", response.status);
               this.posts = response.data.posts;
             })
 
-            // Dealing with errors
+            // catch pour erreur
             .catch((error) => {
               console.log("error", error);
               this.errored = true;
