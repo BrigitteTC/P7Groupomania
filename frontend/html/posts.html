@@ -74,14 +74,27 @@
                     <div v-for="item in posts" :key="post" class="post">
                       <div class="postsList">
                         <article class="postArticle">
-                          <div class="postHeader">
-                            <div class="postDate">{{item.postDate}}</div>
-                            <div class="postOwner">{{item.pseudo}}</div>
+                          <div class="postItem">
+                            <div class="postHeader">
+                              <div class="postDate">
+                                <p>Date: {{item.postDate}}</p>
+                              </div>
+                              <div class="postOwner">
+                                <p>par: {{item.pseudo}}</p>
+                              </div>
+                            </div>
+                            <div class="postInfos">
+                              <div class="postText"><p>{{item.post}}</p></div>
+                              <div class="commentList">
+                                <div class="commentHeader">
+                                  <h3>Commentaires</h3>
+                                </div>
+                                <div class="commentText">
+                                  <p>{{item.commentDate}} : {{item.comment}}</p>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div class="postText">post: {{item.post}}</div>
-                          <div class = commentList>
-                            Commentaires 
-                            <div class= commentText>{{item.commentDate}}{{item.comment}}</div>
                         </article>
                       </div>
                     </div>
