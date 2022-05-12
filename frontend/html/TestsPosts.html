@@ -18,12 +18,13 @@
       rel="stylesheet"
     />
     <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/posts.css" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
 
   <body>
-    <!--<div id="app">-->
+    
       <header>
         <div class="limitedWidthBlockContainer informations">
           <div class="limitedWidthBlock">
@@ -33,7 +34,7 @@
                   src="../images/icons/phone.svg"
                   alt="logo de téléphone"
                   class="informations__phone"
-                />{{tel}}
+                />012345678
               </li>
             </ul>
           </div>
@@ -61,7 +62,7 @@
       
       <div class="limitedWidthBlock" id="limitedWidthBlock">
         <div class="cartAndFormContainer" id="cartAndFormContainer">
-          <h1>Remarques en folies</h1>
+          <h1>Les publications de l'entreprise</h1>
           <section class="cart">
             <section id="cart__items">
 
@@ -71,15 +72,16 @@
                 <div class="users">
                   <div v-if="errored">
                     <p>
-                      We're sorry, we're not able to retrieve this information at the
-                      moment, please try back later
+                      Serveur indisponible
                     </p>
                   </div>
 
                   <div v-else>
-                    <h4 v-if="loading">Loading...  les posts de l'entreprise</h4>
+                    <h4 v-if="loading">Loading...  dernières nouvelles</h4>
                     <div v-for="item in posts" :key="post" class="post">
+                      <div class="cart__item__content">
                       post: {{item.post}}   par  userId : {{item.userId}}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -130,7 +132,7 @@
               />
             </div>
             <div>
-              <p>{{adresse}} <br />{{ville}}</p>
+              <!--<p>{{adresse}} <br />{{ville}}</p>-->
             </div>
           </div>
         </div>
