@@ -459,8 +459,6 @@ exports.getAllPost = (req, res, next) => {
         console.log("DEBUG: getAllPost OK");
         console.log(data);
 
-        // REq SQL pour trouver le pseudo du propriétaire du post
-
         res.status(200).json({ message: "getAllPost OK", posts: data });
       }
     });

@@ -18,9 +18,9 @@
         </div>
 
         <div v-else>
-          <h4 v-if="loading">Loading...</h4>
+          <h4 v-if="loading">Loading... les posts de l'entreprise</h4>
           <div v-for="item in posts" :key="post" class="post">
-            {{item.post}} {{item.userId}}
+            posts: {{item.post}} by userId: {{item.userId}}
           </div>
         </div>
       </div>

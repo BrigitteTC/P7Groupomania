@@ -4,6 +4,12 @@ Projet P7 Openclassroom Groupomania
 
 ---
 
+Backend avec base de données mySQL.
+
+Variables d'environnement:
+Fichier .env situé dans\P7Groupomania\backend pour mettre les variables d'environnement
+relatives à la base de données MySQL et à la clé secrete du hash du passwd.
+
 Tables de mySQL:
 
 Creation de la base de données:
@@ -47,7 +53,7 @@ mysql> UPDATE users SET moderator='1' WHERE userId=5;
 #--------------------------------------------------------------------
 #--------------------------------------------------------------------
 
-#DEBUG:
+#Tests de l'API
 
 Table users:
 
@@ -80,6 +86,7 @@ status: 200
 token
 userId
 moderateur: 0/1
+pseudo
 
 ---
 
