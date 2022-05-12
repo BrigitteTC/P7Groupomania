@@ -183,25 +183,29 @@ exports.createPost = (req, res, next) => {
   try {
     //const userId = getUserId(req);
 
-    let imageUrl = req.body.imageUrl;
+    const imageUrl = req.body.imageUrl;
     /* on verra plus tard pour recuperer l'image rentree par le user
     imageUrl = `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
 */
     // Requete sql pour creer le post
-    let userId = req.auth.userId; //userId déduit du token du header
+    const userId = req.auth.userId; //userId déduit du token du header
+    let newDate = new Date();
+    //let dateDuPost = newDate.tolocaleString("fr-FR"); // date du post
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
       "INSERT INTO " +
       postsTable +
-      " (post, imageUrl, userId) VALUES ('" +
+      " (post, imageUrl, userId, PostDate) VALUES ('" +
       req.body.post +
       "','" +
       imageUrl +
       "','" +
       userId +
-      "');";
+      "' ," +
+      "NOW()" +
+      ");";
 
     console.log("DEBUG  createPost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
