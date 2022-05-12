@@ -26,6 +26,7 @@ const connection = require("../mysqlp7").connection;
 //Tables des posts et des commentaires
 const postsTable = require("../mysqlp7").postsTable;
 const commentsTable = require("../mysqlp7").commentsTable;
+const usersTable = require("../mysqlp7").usersTable;
 
 /*-----------------------------------------------------------
 function: getPostOwner
@@ -443,8 +444,24 @@ verbe= GET
 exports.getAllPost = (req, res, next) => {
   console.log("DEBUG getAllPost");
   try {
-    // Requete sql pour lire tour les post
-    sql = "SELECT * FROM  " + postsTable + "  ;";
+    // Requete sql pour lire tour les post avec le user et les comments correspondants.
+
+    sql =
+      "SELECT * FROM  " +
+      postsTable +
+      " LEFT OUTER JOIN " +
+      usersTable +
+      " ON  " +
+      postsTable +
+      ".userId=" +
+      usersTable +
+      ".userId  LEFT OUTER JOIN " +
+      commentsTable +
+      " ON " +
+      postsTable +
+      ".postId=" +
+      commentsTable +
+      ".postId;";
 
     console.log("DEBUG  getAllPost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
