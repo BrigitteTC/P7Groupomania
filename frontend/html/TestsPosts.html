@@ -4,6 +4,10 @@
     <title>Groupomania</title>
 
     <meta charset="utf-8" />
+
+        
+          <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <meta name="description" content="Réseau social d'entreprise" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
 
@@ -73,9 +77,9 @@
                   </div>
 
                   <div v-else>
-                    <h4 v-if="loading">Loading...</h4>
+                    <h4 v-if="loading">Loading...  les posts de l'entreprise</h4>
                     <div v-for="item in posts" :key="post" class="post">
-                      {{item.post}}
+                      post: {{item.post}}   par  userId : {{item.userId}}
                     </div>
                   </div>
                 </div>
@@ -132,7 +136,7 @@
         </div>
       </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
 
 
         <script>
@@ -151,7 +155,7 @@
           this.loading = true;
           this.posts = null;
 
-          // Lecture du local storage poru récupérer les infos
+          // Lecture du local storage pour récupérer les infos du user
           let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
           const userToken = userInLocalStorage.token; // le token
 
