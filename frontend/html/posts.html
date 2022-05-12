@@ -72,13 +72,18 @@
                   <div v-else>
                     <h4 v-if="loading">Loading... dernières nouvelles</h4>
                     <div v-for="item in posts" :key="post" class="post">
-                      <article>
-                        <div class="cart__item__content">
-                          post: {{item.post}} par userId : {{item.userId}}
-                          <div>{{item.pseudo}}</div>
-                          <div>Commentaire {{item.comment}}</div>
-                        </div>
-                      </article>
+                      <div class="postsList">
+                        <article class="postArticle">
+                          <div class="postHeader">
+                            <div class="postDate">{{item.postDate}}</div>
+                            <div class="postOwner">{{item.pseudo}}</div>
+                          </div>
+                          <div class="postText">post: {{item.post}}</div>
+                          <div class = commentList>
+                            Commentaires 
+                            <div class= commentText>{{item.commentDate}}{{item.comment}}</div>
+                        </article>
+                      </div>
                     </div>
                   </div>
                 </div>
