@@ -176,13 +176,12 @@ Objet: création d'un post
 
 verbe: POST
 
+INSERT dans mysql avec userId et date d'insertion
 -------------------------------------------------------------------------------*/
 
 exports.createPost = (req, res, next) => {
   console.log("DEBUG createPost");
   try {
-    //const userId = getUserId(req);
-
     const imageUrl = req.body.imageUrl;
     /* on verra plus tard pour recuperer l'image rentree par le user
     imageUrl = `${req.protocol}://${req.get("host")}/images/${
@@ -191,8 +190,7 @@ exports.createPost = (req, res, next) => {
 */
     // Requete sql pour creer le post
     const userId = req.auth.userId; //userId déduit du token du header
-    let newDate = new Date();
-    //let dateDuPost = newDate.tolocaleString("fr-FR"); // date du post
+
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
       "INSERT INTO " +
@@ -511,7 +509,7 @@ postId: déduit de l'adresse URL:
 comment: param du body
 
 Réponse:
-  Comment cree
+  Comment cree avec date d'insertion
   ou
   message d'erreur si pb
 -------------------------------------------------------------------------------*/
@@ -528,13 +526,15 @@ exports.createComment = (req, res, next) => {
     sql =
       "INSERT INTO  " +
       commentsTable +
-      "  (comment, postId, userId) VALUES ('" +
+      "  (comment, postId, userId,commentDate) VALUES ('" +
       req.body.comment +
       "','" +
       postId +
       "','" +
       userId +
-      "');";
+      "' ," +
+      "NOW()" +
+      ");";
 
     console.log("DEBUG  createComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
