@@ -446,40 +446,16 @@ verbe= GET
 exports.getAllPost = (req, res, next) => {
   console.log("DEBUG getAllPost");
   try {
-    // Requete sql pour lire tour les post avec le user et les comments correspondants.
+    // Requete sql pour lire tour les post avec le user  correspondant.
     // REquete sur table posts
     // puis  jointure LEFT sur table users par userId pour avoir le pseudo de l'auteur du post
-    // puis jointture LEFT sur table comments par userId pour avoir les commentaires du post
-    // puis jointture LEFT entre table comments et users sur userId pour avoir le pseudo du commentaire
-    /* Exemple de requete
-    sql: SELECT * FROM  posts LEFT OUTER JOIN users ON  posts.userId=users.userId  LEFT OUTER JOIN comments ON posts.postId=comments.postId;
-*/
-    sql =
-      "SELECT * FROM  " +
-      postsTable +
-      " LEFT OUTER JOIN " +
-      usersTable +
-      " ON  " +
-      postsTable +
-      ".userId=" +
-      usersTable +
-      ".userId  LEFT OUTER JOIN " +
-      commentsTable +
-      " ON " +
-      postsTable +
-      ".postId=" +
-      commentsTable +
-      ".postId;";
-
+    //
     /* Exemple de requete
     sql: 
     SELECT * FROM  posts 
     LEFT OUTER JOIN users 
-    ON  posts.userId=users.userId  
-    LEFT OUTER JOIN comments 
-    ON posts.postId=comments.postId;
+    ON  posts.userId=users.userId  ;
 */
-
     sql =
       "SELECT * FROM  " +
       postsTable +
@@ -489,19 +465,7 @@ exports.getAllPost = (req, res, next) => {
       postsTable +
       ".userId=" +
       usersTable +
-      ".userId  LEFT OUTER JOIN " +
-      commentsTable +
-      " ON " +
-      postsTable +
-      ".postId=" +
-      commentsTable +
-      ".postId LEFT OUTER JOIN " +
-      usersTable +
-      " as commentUsersTable ON  " +
-      commentsTable +
-      ".userId=" +
-      usersTable +
-      ".userId ;";
+      ".userId  ;";
 
     console.log("DEBUG  getAllPost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
