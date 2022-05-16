@@ -23,7 +23,7 @@ p {
   display: flex;
 
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   border: none;
 
   margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
