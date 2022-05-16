@@ -582,6 +582,12 @@ Réponse:
   Tableau avec tous les commentaires du post
   ou
   message d'erreur si pb
+
+Req poru lire les commentaires:
+sELECT avec jointure sur table des users pour récupérer le pseudo
+et sélection sur le post
+ex:
+SELECT * FROM  comments   LEFT OUTER JOIN users ON  comments.userId=users.userId  WHERE postId= '15';
 ------------------------------------------------------*/
 
 exports.getAllComment = (req, res, next) => {
@@ -591,9 +597,15 @@ exports.getAllComment = (req, res, next) => {
     sql =
       "SELECT * FROM  " +
       commentsTable +
-      "  WHERE postId= '" +
+      " LEFT OUTER JOIN " +
+      usersTable +
+      " ON  " +
+      commentsTable +
+      ".userId=" +
+      usersTable +
+      ".userId WHERE postId= '" +
       req.params.postId +
-      "';";
+      "' ;";
 
     console.log("DEBUG  getAllComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {

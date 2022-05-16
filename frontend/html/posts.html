@@ -87,9 +87,9 @@
                       </button>
 
                       <div >
-<div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
-  <p> Date:  {{itemComment.commentDate}} {{itemComment.comment}}</p>
-</div>
+                        <div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
+                          <p> Date:  {{itemComment.commentDate}} par {{itemComment.userId}} {{itemComment.comment}}</p>
+                        </div>
 
                       </div>
                   </div>
