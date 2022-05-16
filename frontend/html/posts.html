@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <meta name="description" content="Réseau social d'entreprise" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico" /> -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,59 +53,43 @@
           </nav>
         </div>
       </div>
-    </header>
+    <!-- <main>** -->
+    <main id="app">
+      <h1>les posts des salariés de Groupomania</h1>
 
-    <main class="limitedWidthBlockContainer">
-      <div class="limitedWidthBlock" id="limitedWidthBlock">
-        <div class="cartAndFormContainer" id="cartAndFormContainer">
-          <h1>Les publications de l'entreprise</h1>
-          <section class="cart">
-            <section id="cart__items">
-              <!--   debut affichage des posts-->
-              <div id="app-vue">
-                <h2>Les posts</h2>
-                <div class="users">
-                  <div v-if="errored">
-                    <p>Serveur indisponible</p>
-                  </div>
+      <div>
+        <div v-if="errored">
+          <p>Serveur indisponible</p>
+        </div>
 
-                  <div v-else>
-                    <h4 v-if="loading">Loading... dernières nouvelles</h4>
-                    <div v-for="item in posts" :key="post" class="post">
-                      <div class="postsList">
-                        <article class="postArticle">
-                          <div class="postItem">
-                            <div class="postHeader">
-                              <div class="postDate">
-                                <p>Date: {{item.postDate}}</p>
-                              </div>
-                              <div class="postOwner">
-                                <p>par: {{item.pseudo}}</p>
-                              </div>
+        <div v-else>
+          <h4 v-if="loading">Loading... dernières nouvelles</h4>
+          <div v-for="item in posts.posts" :key="item.postId" class="post">
+            <div class="postsList">
+              <article class="postArticle">       
+       
+                <div class="postItem">
+                  <div class="postHeader">
+                    
+                    <div class="postDate"> <p>Date: {{item.postDate}}</p>
                             </div>
-                            <div class="postInfos">
-                              <div class="postText"><p>{{item.post}}</p></div>
-                              <!-- <div class="commentList"> -->
-                                <!-- <div class="commentHeader"> -->
-                                  <!-- <h3>Commentaires</h3> -->
-                                <!-- </div> -->
-                                <!-- <div class="commentText"> -->
-                                <!-- <p>{{item.commentDate}} : {{item.comment}}</p> -->
-                                <!-- </div> -->
-                              <!-- </div> -->
-                            <!-- </div> -->
-                          </div>
-                        </article>
-                      </div>
+                    <div class="postOwner">
+                      <p>par: {{item.pseudo}}</p>
                     </div>
                   </div>
+                  <div class="postInfos">
+                    <div class="postText"><p>{{item.post}}</p></div>
+                  </div>
                 </div>
-              </div>
-            </section>
-          </section>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </main>
+
+
+      <!-- Footer -->
 
     <footer>
       <div class="limitedWidthBlockContainer footerMain">
@@ -123,53 +107,54 @@
         </div>
       </div>
     </footer>
-
+    <script src="https://unpkg.com/vue@next"></script>
     <script>
-      new Vue({
-        el: "#app-vue",
-
+      const RootComponent = {
+        //les data
         data() {
           return {
-            posts: null,
+            nom: "Brigitte",
+            posts: [],
+
             loading: false,
             errored: false,
           };
         },
+
+        //methode pour récupérer les posts
         created() {
           // Creating loader
           this.loading = true;
-          this.posts = null;
 
           // Lecture du local storage pour récupérer les infos du user
           let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
           const userToken = userInLocalStorage.token; // le token
 
           const bearerToken = "Bearer " + userToken;
-          console.log(" bearerToken  :  " + bearerToken);
-
-          //appel axios pour GET posts
-          console.log("appel GET axios");
-          axios
-            .get(`http://localhost:3000/api/post/`, {
-              headers: {
-                Authorization: bearerToken,
-              },
+          fetch("http://localhost:3000/api/post/", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: bearerToken,
+            },
+          })
+            .then((response) => response.json()) //reponse du fetch
+            .catch((error) => {
+              console.log("Fetch error: ", error);
+              this.errored = true;
             })
             .then((response) => {
-              console.log("reponse du back", response);
-              // JSON response
-
-              console.log("reponse du back data", response.data);
-              this.posts = response.data.posts;
+              this.posts = response; //this permet d'acceder aux données de l'application
             })
-
-            // Dealing with errors
             .catch((error) => {
-              console.log("error", error);
+              console.log("Response error: ", error);
               this.errored = true;
             });
         },
-      });
+      };
+
+      const app = Vue.createApp(RootComponent).mount("#app");
+      console.log(app);
     </script>
   </body>
 </html>
