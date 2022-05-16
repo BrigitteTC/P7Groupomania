@@ -34,6 +34,7 @@ p {
   display: flex;
   flex-direction: column; /* vertical*/
   justify-content: space-around;
+  background: white;
   border: 3px solid black;
   margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
