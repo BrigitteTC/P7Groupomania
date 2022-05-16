@@ -81,10 +81,17 @@
                   <div class="postInfos">
                     <div class="postText"><p> post n° {{item.postId}} : {{item.post}}</p></div>
                       <button @click="displayComments(item.postId)">
-                        <div class=commentsList>
+                        
                         Afficher les commentaires
-                        </div>
+                       
                       </button>
+
+                      <div class=commentsList>
+<div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
+  <p>Date: {{itemComment.commentDate}}  par {{itemComment.comments.userId}}  {{itemComment.comment}}</p>
+</div>
+
+                      </div>
                   </div>
                 </div>
               </article>
