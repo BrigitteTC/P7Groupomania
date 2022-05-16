@@ -56,6 +56,15 @@
     <!-- <main>** -->
     <main id="app">
       <h1>les posts des salariés de Groupomania</h1>
+      <div>
+        <!-- Bouton pour créer un post -->
+        <button @click="createPost()">    
+                        
+          Créer un post
+                       
+        </button>
+
+      </div>
 
       <div>
         <div v-if="errored">
