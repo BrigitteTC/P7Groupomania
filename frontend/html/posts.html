@@ -79,30 +79,31 @@
         <div v-else>
           <h4 v-if="loading">Loading... dernières nouvelles</h4>
           <div class="postsList">
-            <div v-for="item in posts.posts" :key="item.postId" class="post">
+            <div v-for="itemPost in posts.posts" :key="itemPost.postId" class="post">
 
               <article class="postArticle">       
        
                 <div class="postItem">
                   <div class="postHeader">
                     
-                    <div class="postDate"> <p>Date: {{item.postDate}}</p>
+                    <div class="postDate"> <p>Date: {{itemPost.postDate}}</p>
                             </div>
                     <div class="postOwner">
-                      <p>par: {{item.pseudo}}</p>
+                      <p>par: {{itemPost.pseudo}}</p>
                     </div>
                   </div>
                   <div class="postInfos">
-                    <div class="postText"><p> post n° {{item.postId}} : {{item.post}}</p></div>
-                      <button @click="displayComments(item.postId)">
-                        
+                    <div class="postText"><p> post n° {{itemPost.postId}} : {{itemPost.post}}</p></div>
+                      <button @click="displayComments(itemPost.postId)">
+
                         Afficher les commentaires
+                      
                        
                       </button>
 
                       <div >
                         <div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
-                          <div v-if="item.postId==itemComment.postId">
+                          <div v-if="itemPost.postId==itemComment.postId">
                             <p> Date:  {{itemComment.commentDate}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
                           </div>
                         </div>
