@@ -19,85 +19,227 @@
   </head>
 
   <body>
-    <div id="app">
-      <header>
-        <div class="limitedWidthBlockContainer informations">
-          <div class="limitedWidthBlock">
+    <header>
+      <div class="limitedWidthBlockContainer informations">
+        <div class="limitedWidthBlock">
+          <ul>
+            <li>
+              <img
+                src="../images/icons/phone.svg"
+                alt="logo de téléphone"
+                class="informations__phone"
+              />"01 23 45 67 89"
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="limitedWidthBlockContainer menu">
+        <div class="limitedWidthBlock">
+          <a href="./index.html">
+            <img
+              class="logo"
+              src="../images/logo.png"
+              alt="Logo de l'entreprise"
+            />
+          </a>
+
+          <p class="titles">Connectez vous à votre compte utilisateur</p>
+          <nav>
             <ul>
-              <li>
-                <img
-                  src="../images/icons/phone.svg"
-                  alt="logo de téléphone"
-                  class="informations__phone"
-                />"01 23 45 67 89"
-              </li>
+              <a href="./index.html"><li>accueil</li></a>
             </ul>
-          </div>
+          </nav>
         </div>
-        <div class="limitedWidthBlockContainer menu">
-          <div class="limitedWidthBlock">
-            <a href="./index.html">
-              <img
-                class="logo"
-                src="../images/logo.png"
-                alt="Logo de l'entreprise"
+      </div>
+    </header>
+
+    <main id="app" class="limitedWidthBlockContainer">
+      <section class="items" id="items">
+        <div class="cart__order">
+          <form method="get" class="cart__order__form">
+            <div class="cart__order__form__question">
+              <label for="email">Email: </label>
+              <input
+                type="email"
+                name="email"
+                v-model="email"
+                id="email"
+                required
               />
-            </a>
-
-            <p class="titles">Connectez vous à votre compte utilisateur</p>
-            <nav>
-              <ul>
-                <a href="./index.html"><li>accueil</li></a>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      <main class="limitedWidthBlockContainer">
-        <section class="items" id="items">
-          <div class="cart__order">
-            <form method="get" class="cart__order__form">
-              <div class="cart__order__form__question">
-                <label for="email">Email: </label>
-                <input type="email" name="email" id="email" required />
-                <p id="emailErrorMsg">Valeur obligatoire requise</p>
+              <div v-if="!email">
+                <p>Valeur obligatoire requise</p>
               </div>
+            </div>
 
-              <div class="cart__order__form__question">
-                <label for="passwd">Passwd: </label>
-                <input type="passwd" name="passwd" id="passwd" required />
-                <p id="passwdErrorMsg">Valeur obligatoire requise</p>
+            <div class="cart__order__form__question">
+              <label for="passwd">Passwd: </label>
+              <input
+                type="passwd"
+                name="passwd"
+                v-model="passwd"
+                id="passwd"
+                required
+              />
+              <div v-if="!passwd">
+                <p>Valeur obligatoire requise</p>
               </div>
+            </div>
 
-              <div class="cart__order__form__submit">
-                <input type="submit" value="Valider" id="order" />
-              </div>
-            </form>
-          </div>
-        </section>
-      </main>
-
-      <footer>
-        <div class="limitedWidthBlockContainer footerMain">
-          <div class="limitedWidthBlock">
-            <div>
-              <img
-                class="logo"
-                src="../images/logo.png"
-                alt="Logo de l'entreprise"
+            <div class="cart__order__form__submit">
+              <input
+                @click="checkForm"
+                type="submit"
+                value="Valider"
+                id="order"
               />
             </div>
-            <div>
-              <p>"rue de l'horizon" <br />"19300 labas sur Correze"</p>
-            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="limitedWidthBlockContainer footerMain">
+        <div class="limitedWidthBlock">
+          <div>
+            <img
+              class="logo"
+              src="../images/logo.png"
+              alt="Logo de l'entreprise"
+            />
+          </div>
+          <div>
+            <p>"rue de l'horizon" <br />"19300 labas sur Correze"</p>
           </div>
         </div>
-      </footer>
-    </div>
-    <script src="../js/util.js"></script>
-    <script src="../js/utilLoginSignup.js"></script>
-    <script src="../js/login.js"></script>
-    <!--<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>-->
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+      const loginComponent = {
+        //les data
+        data() {
+          return {
+            email: "",
+            passwd: "",
+            loginInfos: [],
+            errors: [],
+          };
+        }, // fin des data
+
+        //----------------------------------------------------------------------------
+
+        //------------------------------------------------------------------------------------
+
+        methods: {
+          checkForm: function (e) {
+            // Clear errors
+            this.errors = [];
+
+            // Check if the passwd is not empty
+            if (!this.passwd) {
+              this.errors.push("Le mot de passe ne doit pas être vide!");
+            }
+
+            // Check if the email is not empty and match the email pattern
+            var re =
+              /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/;
+            if (!this.email || !re.test(this.email)) {
+              this.errors.push(
+                "l'email ne doit pas être vide et doit être valide !"
+              );
+            }
+
+            if (!this.errors.length) {
+              {
+                // Envoi login an serveur
+                this.loading = true;
+                this.userId = null;
+                console.log("appel POST pour login fetch");
+                const bearerToken = "Bearer null";
+                const loginUrl = "http://localhost:3000/api/auth/login"; //Url pour envoyer les infos de login
+
+                let passwd = this.passwd;
+
+                let email = this.email;
+
+                /// envoi data par POST
+                let data = { email: email, password: passwd };
+                fetch(loginUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                    this.errored = true;
+                  })
+                  .then((response) => {
+                    this.loginInfos = response.json;
+                    const reponseStatus = response.status;
+                    console.log("response.status  :  " + reponseStatus);
+                    if (reponseStatus === 200) {
+                      // user connecté
+                      alerteMsg(
+                        "Connexion OK  - Bonjour " + retourServer.pseudo
+                      );
+
+                      // Maj local storage avec le nouveau user connecté
+                      class localStorageUser {
+                        constructor(
+                          pseudo,
+                          userId,
+                          token,
+                          moderator,
+                          userInLocalStorageOK
+                        ) {
+                          this.pseudo = pseudo;
+                          this.userId = userId;
+                          this.token = token;
+                          this.moderator = moderator;
+                          this.userInLocalStorageOK = userInLocalStorageOK;
+                        }
+                      }
+
+                      let userConnected = new localStorageUser(
+                        "",
+                        0,
+                        "",
+                        0,
+                        false
+                      );
+                      userConnected.userId = retourServer.userId;
+                      userConnected.moderator = retourServer.moderator;
+                      userConnected.token = retourServer.token;
+                      userConnected.pseudo = retourServer.pseudo;
+                      userConnected.userInLocalStorageOK = true;
+
+                      // Maj de la clé user dans le local storage
+                      localStorage.setItem(
+                        "user",
+                        JSON.stringify(userConnected)
+                      );
+                    }
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                    this.errored = true;
+                  });
+              }
+              return true;
+            }
+            e.preventDefault();
+          },
+        }, // Fin des methodes
+      }; // Fin loginComponent
+
+      const app = Vue.createApp(loginComponent).mount("#app");
+      console.log(app);
+    </script>
   </body>
 </html>
