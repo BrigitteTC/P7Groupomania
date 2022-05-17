@@ -102,9 +102,10 @@
 
                       <div >
                         <div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
-                          <p> Date:  {{itemComment.commentDate}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
+                          <div v-if="item.postId==itemComment.postId">
+                            <p> Date:  {{itemComment.commentDate}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
+                          </div>
                         </div>
-
                       </div>
                   </div>
                 </div>
