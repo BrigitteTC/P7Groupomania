@@ -57,6 +57,7 @@
     <!-- <main>** -->
     <main id="app">
       <h1>les posts des salariés de Groupomania</h1>
+      <h3> Bonjour {{nom}}</h3>
       <div>
         <!-- Bouton pour créer un post -->
         <div class="cart__order__form__submit">
@@ -143,7 +144,7 @@
         //les data
         data() {
           return {
-            nom: "Brigitte",
+            nom: "",
             posts: [],
             comments: [],
 
@@ -165,6 +166,9 @@
           // Lecture du local storage pour récupérer les infos du user
           let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
           const userToken = userInLocalStorage.token; // le token
+
+          const userNom=userInLocalStorage.pseudo; // le nom affiché en entete de feuille
+          this.nom=userNom;
 
           const bearerToken = "Bearer " + userToken;
           const postUrl = "http://localhost:3000/api/post/"; //Url pour récupérer les posts
