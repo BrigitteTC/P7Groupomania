@@ -134,6 +134,7 @@
 
         methods: {
           checkForm: function (e) {
+            console.log("on a cliqué sur le bouton valider");
             // Clear errors
             this.errors = [];
 
@@ -185,9 +186,16 @@
                     this.errored = true;
                   })
                   .then((response) => {
+                    console.log("donnees recues du serveur");
                     this.loginInfos = response.json;
+                    const retourServer = response.json;
                     const reponseStatus = response.status;
-                    console.log("response.status  :  " + reponseStatus);
+                    console.log(
+                      "response.status   et data :  " +
+                        reponseStatus +
+                        reponseStatus
+                    );
+
                     if (reponseStatus === 200) {
                       // user connecté
                       alerteMsg(
