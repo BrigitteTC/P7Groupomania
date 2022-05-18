@@ -103,11 +103,11 @@
                       </button>
 
                       <div >
-                        <div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
+                        <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
                           <div v-if="itemPost.postId==itemComment.postId">
                             <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
                           </div>
-                        </div>
+                        </template>
                       </div>
                   </div>
                 </div>
