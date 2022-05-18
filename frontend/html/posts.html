@@ -111,10 +111,10 @@
                     
                     <div v-if="connectedModerator || connectedUserId==itemPost.userId">
                       <button @click="deletePost(itemPost.postId)">
-                        <span class="fas fa-trash">Delete</span>
+                        <span class="fas fa-trash">  Delete</span>
                       </button>
                       <button @click="modifyPost(itemPost.postId)">
-                        <span class="fas fa-pen">Modify</span>
+                        <span class="fas fa-pen">  Modify</span>
                       </button>
                     </div>
                   </div>
@@ -295,6 +295,48 @@
                 this.erroredComments = true;
               });
           }, //Fin displayComments
+
+//-----------------------------------------------------------------------------------------
+          // Delete post
+
+                   
+          deletePost(postId) {
+            console.log("delete post n : "+ postId);
+
+
+            // Lecture du local storage pour récupérer le token  du user
+            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+            const userToken = userInLocalStorage.token; // le token
+
+            const bearerToken = "Bearer " + userToken;
+
+            //Url  du post
+            const postUrl =
+              "http://localhost:3000/api/post/" + postId ;
+
+            fetch(postUrl, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+                this.erroredComments = true;
+              })
+              .then((response) => {
+                this.comments = response; 
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                this.erroredComments = true;
+              });
+          }, //Fin deletePost
+
+          //---------------------------------------------------------------------------
+
         }, // Fin des methodes
       }; // Fin RootComponent
 
