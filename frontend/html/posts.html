@@ -171,6 +171,7 @@
     // Suite initialisation
     // Affichage de la page au chargement
     // et appel de l'API pour afficher les posts.
+    // this permet d'acceder aux données de l'application
     //----------------------------------------------------------------------------
       created() {
 
@@ -196,8 +197,8 @@
               console.log("Fetch error: ", error);
               this.errored = true;
             })
-            .then((response) => {
-              this.posts = response; //this permet d'acceder aux données de l'application
+            .then((data) => {
+              this.posts = data; //Data renvoyées du serveur
             })
             .catch((error) => {
               console.log("Response error: ", error);
