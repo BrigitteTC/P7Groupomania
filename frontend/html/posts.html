@@ -16,6 +16,15 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+
+        <!--Fontawsome-->
+    <script
+      src="https://kit.fontawesome.com/6a1e5290f1.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Appel Normalize-->
+    <link rel="normalize" href="CSS/normalize.css" />
     <link href="../css/style.css" rel="stylesheet" />
     <link href="../css/login.css" rel="stylesheet" />
     <link href="../css/posts.css" rel="stylesheet" />
@@ -92,6 +101,16 @@
                     <div class="postOwner">
                       <p>par: {{itemPost.pseudo}}</p>
                     </div>
+                    
+
+                  <span class="fa-solid fa-trash-can"></span>
+                  <!-- La petite poubelle pour detruire le post -->
+                  <div>
+                    
+                    <span class="fas fa-trash"></span>
+                    <span class="fas fa-pen"></span>
+                  </div>
+
                   </div>
                   <div class="postInfos">
                     <div class="postText"><p> post n° {{itemPost.postId}} : {{itemPost.post}}</p></div>
