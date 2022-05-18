@@ -87,7 +87,7 @@
                 <div class="postItem">
                   <div class="postHeader">
                     
-                    <div class="postDate"> <p>Date: {{itemPost.postDate}}</p>
+                    <div class="postDate"> <p>Date: {{itemPost.date}}</p>
                             </div>
                     <div class="postOwner">
                       <p>par: {{itemPost.pseudo}}</p>
@@ -105,7 +105,7 @@
                       <div >
                         <div v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
                           <div v-if="itemPost.postId==itemComment.postId">
-                            <p> Date:  {{itemComment.commentDate}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
+                            <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
                           </div>
                         </div>
                       </div>

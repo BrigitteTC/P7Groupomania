@@ -457,9 +457,11 @@ exports.getAllPost = (req, res, next) => {
     LEFT OUTER JOIN users 
     ON  posts.userId=users.userId  
     ORDER by postDate DESC;
+
+    DATE_FORMAT(postDate,'%d/%m/%Y')AS date permet d'avoir la date formatée format français
 */
     sql =
-      "SELECT * FROM  " +
+      "SELECT *,DATE_FORMAT(postDate,'%d/%m/%Y')AS date FROM  " +
       postsTable +
       " LEFT OUTER JOIN " +
       usersTable +
@@ -599,7 +601,7 @@ exports.getAllComment = (req, res, next) => {
   try {
     // Requete sql pour lire tour les commentaires
     sql =
-      "SELECT * FROM  " +
+      "SELECT *,DATE_FORMAT(commentDate,'%d/%m/%Y')AS date FROM  " +
       commentsTable +
       " LEFT OUTER JOIN " +
       usersTable +
