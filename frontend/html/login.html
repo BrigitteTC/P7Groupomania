@@ -123,7 +123,7 @@
           return {
             email: "",
             passwd: "",
-            loginInfos: [],
+            loginInfos: "",
             errors: [],
           };
         }, // fin des data
@@ -143,20 +143,25 @@
             }
 
             // Check if the email is not empty and match the email pattern
-            var re =
-              /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/;
-            if (!this.email || !re.test(this.email)) {
+            // regex pour le mail
+            const expressionEmailName = RegExp(
+              "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
+            );
+            if (!this.email || !RegExp.test(this.email)) {
+              alerteMsg("rentrez un mail valide ex nom@domaine.fr");
               this.errors.push(
                 "l'email ne doit pas être vide et doit être valide !"
               );
+
+              this.email = "";
             }
 
             if (!this.errors.length) {
               {
-                // Envoi login an serveur
+                // Envoi login au serveur
                 this.loading = true;
-                this.userId = null;
-                console.log("appel POST pour login fetch");
+                this.loginInfos = null;
+                console.log("appel POST pour login avec fetch");
                 const bearerToken = "Bearer null";
                 const loginUrl = "http://localhost:3000/api/auth/login"; //Url pour envoyer les infos de login
 
@@ -186,7 +191,7 @@
                     if (reponseStatus === 200) {
                       // user connecté
                       alerteMsg(
-                        "Connexion OK  - Bonjour " + retourServer.pseudo
+                        "Connexion OK  - Bonjour " + this.loginInfos.pseudo
                       );
 
                       // Maj local storage avec le nouveau user connecté
@@ -224,6 +229,11 @@
                         "user",
                         JSON.stringify(userConnected)
                       );
+
+                      //user créé avec succes on va sur la page posts
+                      const postsUrl = "./posts.html";
+                      //On change de page
+                      window.location.href = postsUrl;
                     }
                   })
                   .catch((error) => {
