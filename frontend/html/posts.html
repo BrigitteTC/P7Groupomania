@@ -138,10 +138,11 @@
     </footer>
     <script src="https://unpkg.com/vue@next"></script>
 
-
-
+    //----------------------------------------------------------------------------
+    // vuejs3 
+    //----------------------------------------------------------------------------
     <script>
-          // vuejs3
+          
       const RootComponent = {
         //les data
         data() {
@@ -158,12 +159,21 @@
           };
         }, // fin des data
 
-        //----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
+    //Initialisation de la page
+    //-----------------------------------------------------------------------------
+			beforeCreate() {
+        //loader    
+				this.loading = true;
+			},
 
-        //Affichage des posts
-        created() {
-          // Creating loader
-          this.loading = true;
+    //----------------------------------------------------------------------------
+    // Suite initialisation
+    // Affichage de la page au chargement
+    // et appel de l'API pour afficher les posts.
+    //----------------------------------------------------------------------------
+      created() {
+
 
           // Lecture du local storage pour récupérer les infos du user
           let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -193,10 +203,19 @@
               console.log("Response error: ", error);
               this.errored = true;
             });
-        }, // Fin methode created
+      }, // Fin created
 
-        //------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------
+    // Page complètement chargée
+    //------------------------------------------------------------------------------------
+      mounted() {
+        // Load terminé
+				this.loading = false
+			},
 
+    //------------------------------------------------------------------------------------
+    // Les methodes
+    //------------------------------------------------------------------------------------
         methods: {
           //Affichage des commentaires du post
           displayComments(postId) {
