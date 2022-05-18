@@ -66,7 +66,7 @@
     <!-- <main>** -->
     <main id="app">
       <h1>les posts des salariés de Groupomania</h1>
-      <h3> Bonjour {{nom}}</h3>
+      <h3> Bonjour {{connectedName}}   {{connectedUserId}}</h3>
       <div>
         <!-- Bouton pour créer un post -->
         <div class="cart__order__form__submit">
@@ -103,12 +103,15 @@
                     </div>
                     
 
-                  <span class="fa-solid fa-trash-can"></span>
+                  
                   <!-- La petite poubelle pour detruire le post -->
+                  <!-- et le petit crayon pour le modifier -->
                   <div>
                     
-                    <span class="fas fa-trash"></span>
-                    <span class="fas fa-pen"></span>
+                    <div v-if="connectedModerator || connectedUserId==itemPost.userId">
+                      <span class="fas fa-trash"></span>
+                      <span class="fas fa-pen"></span>
+                    </div>
                   </div>
 
                   </div>
@@ -167,15 +170,23 @@
         //les data
         data() {
           return {
-            nom: "",
+            //nom et infos de l'utilisateur connecté
+            connectedName: "",
+            connectedUserId:"",
+            connectedModerator:false,
+
+            //tableau des posts et des commentaires
             posts: [],
             comments: [],
 
+            // etats chargement et erreurs
             loading: false,
             errored: false,
 
             loadingComments: false,
             erroredComments: false,
+
+
           };
         }, // fin des data
 
@@ -200,8 +211,13 @@
           let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
           const userToken = userInLocalStorage.token; // le token
 
-          const userNom=userInLocalStorage.pseudo; // le nom affiché en entete de feuille
-          this.nom=userNom;
+          // Les infos de l'utilisateur connecté
+          
+          this.connectedName=userInLocalStorage.pseudo; // le nom affiché en entete de feuille
+          this.connectedUserId=userInLocalStorage.userId;
+          this.connectedModerator=userInLocalStorage.moderator;
+
+          console.log("user connecte ;" + this.connectedName + this.connectedUserId + this.connectedModerator)
 
           const bearerToken = "Bearer " + userToken;
           const postUrl = "http://localhost:3000/api/post/"; //Url pour récupérer les posts
