@@ -78,6 +78,7 @@
 
         <div v-else>
           <h4 v-if="loading">Loading... dernières nouvelles</h4>
+          <h4 v-else=>Dernières nouvelles</h4>
           <div class="postsList">
             <div v-for="itemPost in posts.posts" :key="itemPost.postId" class="post">
 

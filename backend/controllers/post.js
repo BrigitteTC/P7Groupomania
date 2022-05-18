@@ -449,12 +449,14 @@ exports.getAllPost = (req, res, next) => {
     // Requete sql pour lire tour les post avec le user  correspondant.
     // REquete sur table posts
     // puis  jointure LEFT sur table users par userId pour avoir le pseudo de l'auteur du post
+    // et tri par date decroissante: le plus récent en premier
     //
     /* Exemple de requete
     sql: 
     SELECT * FROM  posts 
     LEFT OUTER JOIN users 
-    ON  posts.userId=users.userId  ;
+    ON  posts.userId=users.userId  
+    ORDER by postDate DESC;
 */
     sql =
       "SELECT * FROM  " +
@@ -465,7 +467,7 @@ exports.getAllPost = (req, res, next) => {
       postsTable +
       ".userId=" +
       usersTable +
-      ".userId  ;";
+      ".userId ORDER by postDate DESC ;";
 
     console.log("DEBUG  getAllPost sql: " + sql);
     connection.query(sql, (err, data, fields) => {
@@ -586,8 +588,10 @@ Réponse:
 Req poru lire les commentaires:
 sELECT avec jointure sur table des users pour récupérer le pseudo
 et sélection sur le post
+et tri par date décroissante : du plus récent au plus vieux
 ex:
-SELECT * FROM  comments   LEFT OUTER JOIN users ON  comments.userId=users.userId  WHERE postId= '15';
+SELECT * FROM  comments   LEFT OUTER JOIN users ON  comments.userId=users.userId  WHERE postId= '15'
+ORDER by commentDate DESC;
 ------------------------------------------------------*/
 
 exports.getAllComment = (req, res, next) => {
@@ -605,7 +609,7 @@ exports.getAllComment = (req, res, next) => {
       usersTable +
       ".userId WHERE postId= '" +
       req.params.postId +
-      "' ;";
+      "'  ORDER by commentDate DESC ;";
 
     console.log("DEBUG  getAllComment sql: " + sql);
     connection.query(sql, (err, data, fields) => {
