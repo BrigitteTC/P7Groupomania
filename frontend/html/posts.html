@@ -129,25 +129,29 @@
                        
                       </button>
 
-                      <div class="commentList">
-                        <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">      
-                          <div v-if="itemPost.postId==itemComment.postId">
-                            <div class="commentItem">
-                            <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
-                            <div v-if="connectedModerator || connectedUserId==itemComment.userId">
-                              <button @click="deletePComment(itemPost.postId,itemComment.commentId)">
-                                <span class="fas fa-trash">  Delete</span>
-                              </button>
-                              <button @click="modifyPost(itemPost.postId,itemComment.commentId)">
-                                <span class="fas fa-pen">  Modify</span>
-                              </button>
-                            </div>
-                            </div>
-                          </div>
+
+                        <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">  
+  
+                            <div v-if="itemPost.postId==itemComment.postId">
+                              <div class="commentList"> 
+                                <div class="commentItem">
+                                  <div>
+                                    <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
+                                  </div>
+                                  <div v-if="connectedModerator || connectedUserId==itemComment.userId">
+                                    <button @click="deletePComment(itemPost.postId,itemComment.commentId)">
+                                      <span class="fas fa-trash">  Delete</span>
+                                    </button>
+                                    <button @click="modifyPost(itemPost.postId,itemComment.commentId)">
+                                      <span class="fas fa-pen">  Modify</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
                           
-                          
+                            </div>
                         </template>
-                      </div>
+                      
                   </div>
                 </div>
               </article>
