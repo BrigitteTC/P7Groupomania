@@ -106,11 +106,16 @@
                   
                   <!-- La petite poubelle pour detruire le post -->
                   <!-- et le petit crayon pour le modifier -->
+                  <!-- Afficés seulement pour le moderateur ou proprietaire du post -->
                   <div>
                     
                     <div v-if="connectedModerator || connectedUserId==itemPost.userId">
-                      <span class="fas fa-trash"></span>
-                      <span class="fas fa-pen"></span>
+                      <button @click="deletePost(itemPost.postId)">
+                        <span class="fas fa-trash">Delete</span>
+                      </button>
+                      <button @click="modifyPost(itemPost.postId)">
+                        <span class="fas fa-pen">Modify</span>
+                      </button>
                     </div>
                   </div>
 
