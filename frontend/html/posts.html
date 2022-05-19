@@ -92,9 +92,16 @@
 			      <label for="newPost">Votre nouveau post</label>
 			      <input type="text" v-model="newPost" id="newPost">
 		      </div>
+
+
+          <!-- Boutons pour valider ou annuler cette creation -->
           <div>
 			      
-			      <input type="submit" value="Valider" id="order" />
+			      <input @click="validateCreationPost()" type="submit" value="Valider" id="order" />
+		      </div>
+          <div>
+			      
+			      <input @click="cancelCreationPost()" type="submit" value="Annuler" id="order" />
 		      </div>
 
         </template>
@@ -321,6 +328,9 @@
             console.log ("create post");
             this.createPostForm=true;   //affichage du formulaire de creatino de post
           },
+          validateCreationPost(){},
+
+          cancelCreationPost(){},
           //
           //-----------------------------------------------------------------------------------------
           // displayComments
