@@ -454,6 +454,58 @@
               });
           }, //Fin deleteComment
 
+
+
+
+          //-----------------------------------------------------------------------------------------
+          // modifyComment
+          // Modification d'un commentaire d'un post
+          // param: postId, commentId, newComment
+          //    methode: PUT
+          //    URL: http://localhost:3000/api/postId/comment/commentId
+          //    postId = post dont on veut le commentaires.
+          //    commentId: commentaire à modifier
+          //
+          //    newComment: Nouveau commentaire
+          //---------------------------------------------------------------------------------
+
+                   
+          modifyComment(postId,commentId) {
+            console.log("modify commentaire n° "+ commentId + " du post n : "+ postId);
+
+
+            // Lecture du local storage pour récupérer le token  du user
+            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+            const userToken = userInLocalStorage.token; // le token
+
+            const bearerToken = "Bearer " + userToken;
+
+            //Url  du comment
+            const commentUrl =
+              "http://localhost:3000/api/post/" + postId + "/comment/" + commentId ;
+
+            fetch(commentUrl, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+              
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+                this.erroredComments = true;
+              })
+              .then((response) => {
+                this.comments = response; 
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                this.erroredComments = true;
+              });
+          }, //Fin modifyComment
+
         }, // Fin des methodes
       }; // Fin RootComponent
 
