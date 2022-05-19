@@ -278,7 +278,14 @@
     // Les methodes
     //------------------------------------------------------------------------------------
         methods: {
-          //Affichage des commentaires du post
+          //
+          //-----------------------------------------------------------------------------------------
+          // displayComments
+          // Affichage des commentaires du post
+          // param: postId
+          //  methode: GET
+          //  URL: http://localhost:3000/api/post/postId/comment  
+          //---------------------------------------------------------------------------------
           displayComments(postId) {
             console.log(postId);
             // Creating loader
@@ -320,7 +327,7 @@
           // Suppression d'un post
           // param: postId
           //  methode: DELETE
-          //  URL: http://localhost:3000/api/post/:id  
+          //  URL: http://localhost:3000/api/post/postId  
           //---------------------------------------------------------------------------------
 
                    
