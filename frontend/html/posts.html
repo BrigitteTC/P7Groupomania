@@ -84,11 +84,11 @@
       </div>
 
       <div>
-        <div v-if="errored">
+        <template v-if="errored">
           <p>Serveur indisponible</p>
-        </div>
+        </template>
 
-        <div v-else>
+        <template v-else>
           <h4 v-if="loading">Loading... dernières nouvelles</h4>
           <h4 v-else=>Dernières nouvelles</h4>
           <div class="postsList">
@@ -160,7 +160,7 @@
               </article>
             </div>
           </div>
-        </div>
+        </template>
       </div>
     </main>
 
