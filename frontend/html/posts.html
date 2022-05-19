@@ -85,6 +85,19 @@
           </button>
         
         </div>
+        <template v-if= "createPostForm">
+          <!-- Affichage du formulaire de creation du post -->
+          <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+		      <div>
+			      <label for="newPost">Votre nouveau post</label>
+			      <input type="text" v-model="newPost" id="newPost">
+		      </div>
+          <div>
+			      
+			      <input type="submit" value="Valider" id="order" />
+		      </div>
+
+        </template>
       </div>
       <div>
         <template v-if="errored">
@@ -220,8 +233,11 @@
             loadingComments: false,
             erroredComments: false,
 
-            // Formulaire pour creéation ou modification posts et comments
+            // champs du formulaire pour creéation ou modification posts et comments
+            createPostForm:false, //sera true pour crer un post
             newPost:'',
+
+            createCommentForm:false, //sera true pour crer un commentaire
             newComment:"",
 
 
@@ -303,6 +319,7 @@
 
           createPost(){
             console.log ("create post");
+            this.createPostForm=true;   //affichage du formulaire de creatino de post
           },
           //
           //-----------------------------------------------------------------------------------------
