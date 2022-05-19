@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>login</title>
+
+    <meta charset="utf-8" />
+    <meta name="description" content="login user Réseau social d'entreprise" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/login.css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body>
+    <header>
+      <div class="limitedWidthBlockContainer informations">
+        <div class="limitedWidthBlock">
+          <ul>
+            <li>
+              <img
+                src="../images/icons/phone.svg"
+                alt="logo de téléphone"
+                class="informations__phone"
+              />"01 23 45 67 89"
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="limitedWidthBlockContainer menu">
+        <div class="limitedWidthBlock">
+          <a href="./index.html">
+            <img
+              class="logo"
+              src="../images/logo.png"
+              alt="Logo de l'entreprise"
+            />
+          </a>
+
+          <p class="titles">Connectez vous à votre compte utilisateur</p>
+          <nav>
+            <ul>
+              <a href="./index.html"><li>accueil</li></a>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="limitedWidthBlockContainer">
+      <section class="items" id="items">
+        <div class="cart__order">
+          <form method="get" class="cart__order__form">
+            <div class="cart__order__form__question">
+              <label for="email">Email: </label>
+              <input
+                type="email"
+                name="email"
+                v-model="email"
+                id="email"
+                required
+              />
+              <div v-if="!email">
+                <p>Valeur obligatoire requise</p>
+              </div>
+            </div>
+
+            <div class="cart__order__form__question">
+              <label for="passwd">Passwd: </label>
+              <input
+                type="passwd"
+                name="passwd"
+                v-model="passwd"
+                id="passwd"
+                required
+              />
+              <div v-if="!passwd">
+                <p>Valeur obligatoire requise</p>
+              </div>
+            </div>
+
+            <div class="cart__order__form__submit">
+              <input
+                @click="checkForm"
+                type="submit"
+                value="Valider"
+                id="order"
+              />
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="limitedWidthBlockContainer footerMain">
+        <div class="limitedWidthBlock">
+          <div>
+            <img
+              class="logo"
+              src="../images/logo.png"
+              alt="Logo de l'entreprise"
+            />
+          </div>
+          <div>
+            <p>"rue de l'horizon" <br />"19300 labas sur Correze"</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+      const loginComponent = {
+        //les data
+        data() {
+          return {
+            email: "",
+            passwd: "",
+            loginInfos: "",
+            errors: [],
+          };
+        }, // fin des data
+
+        //----------------------------------------------------------------------------
+
+        //------------------------------------------------------------------------------------
+
+        methods: {
+          checkForm: function (e) {
+            console.log("on a cliqué sur le bouton valider");
+            // Clear errors
+            this.errors = [];
+
+            // Check if the passwd is not empty
+            if (!this.passwd) {
+              this.errors.push("Le mot de passe ne doit pas être vide!");
+            }
+
+            // Check if the email is not empty and match the email pattern
+            // regex pour le mail
+            const expressionEmailName = RegExp(
+              "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
+            );
+            if (!this.email || !RegExp.test(this.email)) {
+              alerteMsg("rentrez un mail valide ex nom@domaine.fr");
+              this.errors.push(
+                "l'email ne doit pas être vide et doit être valide !"
+              );
+
+              this.email = "";
+            }
+
+            if (!this.errors.length) {
+              {
+                // Envoi login au serveur
+                this.loading = true;
+                this.loginInfos = null;
+                console.log("appel POST pour login avec fetch");
+                const bearerToken = "Bearer null";
+                const loginUrl = "http://localhost:3000/api/auth/login"; //Url pour envoyer les infos de login
+
+                let passwd = this.passwd;
+
+                let email = this.email;
+
+                /// envoi data par POST
+                let data = { email: email, password: passwd };
+                fetch(loginUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                    this.errored = true;
+                  })
+                  .then((response) => {
+                    console.log("donnees recues du serveur");
+                    this.loginInfos = response.json;
+                    const retourServer = response.json;
+                    const reponseStatus = response.status;
+                    console.log(
+                      "response.status   et data :  " +
+                        reponseStatus +
+                        reponseStatus
+                    );
+
+                    if (reponseStatus === 200) {
+                      // user connecté
+                      alerteMsg(
+                        "Connexion OK  - Bonjour " + this.loginInfos.pseudo
+                      );
+
+                      // Maj local storage avec le nouveau user connecté
+                      class localStorageUser {
+                        constructor(
+                          pseudo,
+                          userId,
+                          token,
+                          moderator,
+                          userInLocalStorageOK
+                        ) {
+                          this.pseudo = pseudo;
+                          this.userId = userId;
+                          this.token = token;
+                          this.moderator = moderator;
+                          this.userInLocalStorageOK = userInLocalStorageOK;
+                        }
+                      }
+
+                      let userConnected = new localStorageUser(
+                        "",
+                        0,
+                        "",
+                        0,
+                        false
+                      );
+                      userConnected.userId = retourServer.userId;
+                      userConnected.moderator = retourServer.moderator;
+                      userConnected.token = retourServer.token;
+                      userConnected.pseudo = retourServer.pseudo;
+                      userConnected.userInLocalStorageOK = true;
+
+                      // Maj de la clé user dans le local storage
+                      localStorage.setItem(
+                        "user",
+                        JSON.stringify(userConnected)
+                      );
+
+                      //user créé avec succes on va sur la page posts
+                      const postsUrl = "./posts.html";
+                      //On change de page
+                      window.location.href = postsUrl;
+                    }
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                    this.errored = true;
+                  });
+              }
+              return true;
+            }
+            e.preventDefault();
+          },
+        }, // Fin des methodes
+      }; // Fin loginComponent
+
+      const app = Vue.createApp(loginComponent).mount("#app");
+      console.log(app);
+    </script>
+  </body>
+</html>
