@@ -371,6 +371,7 @@
                 //test status = created
                 console.log (response.status);
                 this.createPostForm=false;
+                window.location.reload();
                 if (response.status === 201){ 
                   window.alert("post crée avec succes");
                   this.createPostForm=false;  /* on replie le formulaire*/
@@ -470,6 +471,7 @@
               })
               .then((response) => {
                 this.comments = response; 
+                window.location.reload();  // rafraichit la page
               })
               .catch((error) => {
                 console.log("Response error: ", error);
