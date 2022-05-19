@@ -68,7 +68,8 @@
       <h1>les posts des salariés de Groupomania</h1>
       <h3> Bonjour {{connectedName}}   {{connectedUserId}}</h3>
       <div v-if="connectedModerator">
-      <h3> Vous êtes moderateur</div>
+        <h3> Vous êtes moderateur</h3>
+      </div>
       <div>
         <!-- Bouton pour créer un post -->
         <div class="cart__order__form__submit">
@@ -314,8 +315,11 @@
               });
           }, //Fin displayComments
 
-//-----------------------------------------------------------------------------------------
+          //-----------------------------------------------------------------------------------------
           // Delete post
+          // Suppression d'un post
+          // param: postId
+          //---------------------------------------------------------------------------------
 
                    
           deletePost(postId) {
@@ -357,6 +361,10 @@
 
           //-----------------------------------------------------------------------------------------
           // modify post
+          // Modification d'un post
+          // Params: postId
+          //  Nouveau post
+          //-----------------------------------------------------------------------------------
 
                    
           modifyPost(postId) {
@@ -395,6 +403,51 @@
           }, //Fin modifyPost
 
           //---------------------------------------------------------------------------
+          //-----------------------------------------------------------------------------------------
+          // DeleteComment
+          // Suppression d'un commentaire d'un post
+          // param: postId, commentId
+          //    methode: DELETE
+          //    URL: http://localhost:3000/api/postId/comment/commentId
+          //    postId = post dont on veut le commentaires.
+          //    commentId: commentaire à modifier
+          //---------------------------------------------------------------------------------
+
+                   
+          deleteComment(postId,commentId) {
+            console.log("delete commentaire n° "+ commentId + " du post n : "+ postId);
+
+
+            // Lecture du local storage pour récupérer le token  du user
+            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+            const userToken = userInLocalStorage.token; // le token
+
+            const bearerToken = "Bearer " + userToken;
+
+            //Url  du comment
+            const commentUrl =
+              "http://localhost:3000/api/post/" + postId + "comment/" + commentId ;
+
+            fetch(commentUrl, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+                this.erroredComments = true;
+              })
+              .then((response) => {
+                this.comments = response; 
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                this.erroredComments = true;
+              });
+          }, //Fin deleteComment
 
         }, // Fin des methodes
       }; // Fin RootComponent
