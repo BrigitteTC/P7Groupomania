@@ -324,9 +324,9 @@ status: 200
 modifyComment:
 
 methode: PUT
-URL: http://localhost:3000/api/postId/comment/id
+URL: http://localhost:3000/api/postId/comment/commentId
 postId = post dont on veut le commentaires.
-id: commentaire à modifuer
+commentId: commentaire à modifier
 
 Headers:
 KEY: Authorisation
@@ -345,9 +345,9 @@ status: 200
 deleteComment:
 
 methode: DELETE
-URL: http://localhost:3000/api/postId/comment/id
+URL: http://localhost:3000/api/postId/comment/commentId
 postId = post auquel est associé le commentaire.
-id: id du commentaire à détruire
+commentId: id du commentaire à détruire
 
 Headers:
 KEY: Authorisation
