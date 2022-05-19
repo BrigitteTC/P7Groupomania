@@ -112,14 +112,14 @@
                   <!-- Afficés seulement pour le moderateur ou proprietaire du post -->
                   <div>
                     
-                    <div v-if="connectedModerator || connectedUserId==itemPost.userId">
+                    <template v-if="connectedModerator || connectedUserId==itemPost.userId">
                       <button @click="deletePost(itemPost.postId)">
                         <span class="fas fa-trash">  Delete</span>
                       </button>
                       <button @click="modifyPost(itemPost.postId)">
                         <span class="fas fa-pen">  Modify</span>
                       </button>
-                    </div>
+                    </template>
                   </div>
 
                   </div>
@@ -135,24 +135,24 @@
 
                         <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">  
   
-                            <div v-if="itemPost.postId==itemComment.postId">
+                            <template v-if="itemPost.postId==itemComment.postId">
                               <div class="commentList"> 
                                 <div class="commentItem">
                                   <div>
                                     <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
                                   </div>
-                                  <div v-if="connectedModerator || connectedUserId==itemComment.userId">
+                                  <template v-if="connectedModerator || connectedUserId==itemComment.userId">
                                     <button @click="deleteComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-trash">  Delete</span>
                                     </button>
                                     <button @click="modifyComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-pen">  Modify</span>
                                     </button>
-                                  </div>
+                                  </template>
                                 </div>
                               </div>
                           
-                            </div>
+                            </template>
                         </template>
                       
                   </div>
