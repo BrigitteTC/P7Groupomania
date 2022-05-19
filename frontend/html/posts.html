@@ -368,7 +368,13 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                this.comments = response; 
+                //test status = created
+                console.log (response.status);
+                this.createPostForm=false;
+                if (response.status === 201){ 
+                  window.alert("post crée avec succes");
+                  this.createPostForm=false;  /* on replie le formulaire*/
+                }
               
               
               })
@@ -378,8 +384,10 @@
               });
           }, //Fin validateCreationPost
    
-
-          cancelCreationPost(){},
+          //cancel création post  
+          cancelCreationPost(){
+            this.createPostForm=false;  // on replie le formulaire
+          },
           //
           //-----------------------------------------------------------------------------------------
           // displayComments
