@@ -16,7 +16,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet prefetch">
+   
 
         <!--Fontawsome-->
     <script
@@ -67,23 +67,25 @@
     <!-- <main>** -->
     <main id="app">
       <h1>les posts des salariés de Groupomania</h1>
-      <h3> Bonjour {{connectedName}}   {{connectedUserId}}</h3>
-      <template v-if="connectedModerator">
-        <h3> Vous êtes moderateur</h3>
-      </template>
-      <div>
+
+      <div class=" postHeader">
+        <h3> Bonjour {{connectedName}}   {{connectedUserId}}</h3>
+        <template v-if="connectedModerator">
+          <h3> Vous êtes moderateur</h3>
+        </template>
+        <div>
         <!-- Bouton pour créer un post -->
-        <div class="cart__order__form__submit">
+        
                 
              
-          <button @click="createPost()">    
+          <button class="createPostButton" @click="createPost()">    
                         
             Créer un post
                        
           </button>
+        
         </div>
       </div>
-
       <div>
         <template v-if="errored">
           <p>Serveur indisponible</p>

@@ -19,6 +19,24 @@ p {
 /************/
 /*PostsItems*/
 /************/
+
+.postHeader {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+.createPostButton {
+  display: flex;
+  justify-content: center;
+
+  font-size: 22px;
+  border-radius: 40px;
+
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 18px 28px;
+}
 .postsList {
   display: flex;
 
