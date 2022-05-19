@@ -37,6 +37,24 @@ p {
   color: white;
   padding: 18px 28px;
 }
+
+.createPostButton button {
+  display: flex;
+  justify-content: center;
+
+  font-size: 22px;
+  border-radius: 40px;
+
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 18px 28px;
+}
+
+/*survol du bouton*/
+.createPostButton button:hover {
+  box-shadow: rgb(42 18 206 / 90%) 0 0 22px 6px;
+}
+
 .postsList {
   display: flex;
 
@@ -80,9 +98,30 @@ p {
 
 .commentItem {
   display: flex;
-  flex-direction: rows; /* vertical*/
+  flex-direction: column; /* vertical*/
   justify-content: space-around;
   background: white;
+  border: 1px solid black;
+  margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+}
+
+.commentHeader {
+  display: flex;
+  flex-direction: column; /* vertical*/
+  justify-content: space-around;
+  background: rgb(241, 238, 238);
+  font-size: 11px;
+  border: 1px solid black;
+  margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+}
+
+.commentButton {
+  display: flex;
+  flex-direction: rows; /* vertical*/
+  justify-content: space-around;
+  background: grey;
   border: 1px solid black;
   margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/

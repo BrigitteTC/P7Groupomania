@@ -68,7 +68,7 @@
     <main id="app">
       <h1>les posts des salariés de Groupomania</h1>
 
-      <div class=" postHeader">
+      <div class="postHeader">
         <h3> Bonjour {{connectedName}}   {{connectedUserId}}</h3>
         <template v-if="connectedModerator">
           <h3> Vous êtes moderateur</h3>
@@ -112,7 +112,7 @@
                   
                   <!-- La petite poubelle pour detruire le post -->
                   <!-- et le petit crayon pour le modifier -->
-                  <!-- Afficés seulement pour le moderateur ou proprietaire du post -->
+                  <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
                   <div>
                     
                     <template v-if="connectedModerator || connectedUserId==itemPost.userId">
@@ -127,8 +127,10 @@
 
                   </div>
                   <div class="postInfos">
-                    <div class="postText"><p> post n° {{itemPost.postId}} : {{itemPost.post}}</p></div>
-                      <button @click="displayComments(itemPost.postId)">
+                    <div class="postText">
+                      <p> post n° {{itemPost.postId}} : {{itemPost.post}}</p>
+                    </div>
+                      <button @click="displayComments(itemPost.postId,$event)">
 
                         Afficher les commentaires
                       
@@ -141,9 +143,13 @@
                             <template v-if="itemPost.postId==itemComment.postId">
                               <div class="commentList"> 
                                 <div class="commentItem">
-                                  <div>
-                                    <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
+                                  <div class="commentHeader">
+                                    <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} </p>
+                                    <div>
+                                      <p>{{itemComment.comment}}</p>
+                                    </div>
                                   </div>
+                                  <div class="commentButtons">
                                   <template v-if="connectedModerator || connectedUserId==itemComment.userId">
                                     <button @click="deleteComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-trash">  Delete</span>
@@ -152,6 +158,7 @@
                                       <span class="fas fa-pen">  Modify</span>
                                     </button>
                                   </template>
+                                  </div>
                                 </div>
                               </div>
                           
@@ -301,10 +308,9 @@
           //  methode: GET
           //  URL: http://localhost:3000/api/post/postId/comment  
           //---------------------------------------------------------------------------------
-          displayComments(postId) {
+          displayComments(postId,event) {
             console.log(postId);
-            // Creating loader
-            this.loadingComments = true;
+
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -330,6 +336,9 @@
               })
               .then((response) => {
                 this.comments = response; //this permet d'acceder aux données de l'application
+              let ref = 'button'+postId;
+              this.$refs[ref].textContent = "Replier les commentaires"
+              
               })
               .catch((error) => {
                 console.log("Response error: ", error);
@@ -527,6 +536,20 @@
                 this.erroredComments = true;
               });
           }, //Fin modifyComment
+
+
+          //-----------------------------------------------------------
+          toggleSelection(postComments, event) {
+  					let ref = 'button'+postComments.postId
+  					if(this.selection.includes(postComments)) {
+  						this.selection.splice(this.selection.indexOf(postComments), 1)
+  						this.$refs[ref].textContent = 'Afficher les commentaires'
+  					} else {
+  						this.selection.push(postComments)
+  						this.$refs[ref].textContent = 'Replier les commentaires'
+  						
+  					}
+  				}
 
         }, // Fin des methodes
       }; // Fin RootComponent
