@@ -142,10 +142,10 @@
                                     <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} {{itemComment.comment}}</p>
                                   </div>
                                   <div v-if="connectedModerator || connectedUserId==itemComment.userId">
-                                    <button @click="deletePComment(itemPost.postId,itemComment.commentId)">
+                                    <button @click="deleteComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-trash">  Delete</span>
                                     </button>
-                                    <button @click="modifyPost(itemPost.postId,itemComment.commentId)">
+                                    <button @click="modifyComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-pen">  Modify</span>
                                     </button>
                                   </div>
@@ -319,6 +319,8 @@
           // Delete post
           // Suppression d'un post
           // param: postId
+          //  methode: DELETE
+          //  URL: http://localhost:3000/api/post/:id  
           //---------------------------------------------------------------------------------
 
                    
@@ -364,6 +366,9 @@
           // Modification d'un post
           // Params: postId
           //  Nouveau post
+          //
+          //  methode: PUT
+          //  URL: http://localhost:3000/api/post/:id  
           //-----------------------------------------------------------------------------------
 
                    
@@ -426,7 +431,7 @@
 
             //Url  du comment
             const commentUrl =
-              "http://localhost:3000/api/post/" + postId + "comment/" + commentId ;
+              "http://localhost:3000/api/post/" + postId + "/comment/" + commentId ;
 
             fetch(commentUrl, {
               method: "DELETE",
