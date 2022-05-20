@@ -575,7 +575,7 @@
               })
               .then((response) => {
                 this.comments = response; //les commentaires renvoyés de l'API
-              
+
               
               })
               .catch((error) => {
@@ -673,6 +673,7 @@
               })
               .then((response) => {
                 this.comments = response; 
+                window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
                 console.log("Response error: ", error);
@@ -734,10 +735,10 @@
               })
               .then((response) => {
                 //response OK
-                const retourServer = response;
-                console.log (retourServer.message);
+                
+                console.log (response.message);
                 this.createCommentForm="";  // on replie le formulaire
-                window.alert(retourServer.message); // affiche msg de retour du serveur
+                window.alert(response.message); // affiche msg de retour du serveur
                 
 
               
