@@ -242,6 +242,7 @@
 
             // champs du formulaire pour creéation ou modification posts et comments
             createPostForm:false, //sera true pour crer un post
+            modifyPostForm:false, //sera true pour modifier un post
             newPost:'',
 
             createCommentForm:false, //sera true pour crer un commentaire
@@ -319,9 +320,8 @@
           //-----------------------------------------------------------------------------------------
           // createPosts
           // Creation d'un post
-          // param: postId
-          //  methode: POST
-          //  URL: http://localhost:3000/api/post 
+          //
+          // Ouverture du formulaire de cration du post
           //---------------------------------------------------------------------------------
 
           createPost(){
@@ -386,6 +386,77 @@
           //cancel création post  
           cancelCreationPost(){
             this.createPostForm=false;  // on replie le formulaire
+          },
+
+
+          //-----------------------------------------------------------------------------------------
+          // modifyPost
+          // Modification d'un post
+          //
+          // Ouverture du formulaire de modif du post
+          //---------------------------------------------------------------------------------
+
+          modifyPost(){
+            console.log ("modify post");
+            this.modifyPostForm=true;   //affichage du formulaire de modif de post
+          },
+
+          //-----------------------------------------------------------------------------------------
+          // validateModifPost
+          // modification du post
+          // param: postId
+          //  methode: PUT
+          //  URL: http://localhost:3000/api/post/postId
+          //---------------------------------------------------------------------------------
+          validateModifyPost(){
+          console.log("modification  post : " + this.newPost)
+          
+         
+
+
+            // Lecture du local storage pour récupérer le token  du user
+            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+            const userToken = userInLocalStorage.token; // le token
+
+            const bearerToken = "Bearer " + userToken;
+            
+            const data = {post:this.newPost,"imageUrl":""};
+
+            //Url des commentaires du post
+            const postUrl =
+              "http://localhost:3000/api/post"
+            fetch(postUrl, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+              body:JSON.stringify(data),
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+                this.erroredComments = true;
+              })
+              .then((response) => {
+                //response OK
+                const retourServer = response;
+                console.log (retourServer.message);
+                this.createPostForm=false;  // on replie le formulaire
+                window.alert(retourServer.message); // affiche msg de retour du serveur
+                window.location.reload(); // et on recharge
+
+              
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                this.erroredComments = true;
+              });
+          }, //Fin validateModifyPost
+   
+          //cancel modify post  
+          cancelModifyPost(){
+            this.modifyPostForm=false;  // on replie le formulaire
           },
           //
           //-----------------------------------------------------------------------------------------
