@@ -369,9 +369,10 @@
               })
               .then((response) => {
                 //response OK
-                console.log (response.json);
+                const retourServer = response;
+                console.log (retourServer.message);
                 this.createPostForm=false;  // on replie le formulaire
-                window.alert(response.json); // on crie bravo
+                window.alert(retourServer.message); // affiche msg de retour du serveur
                 window.location.reload(); // et on recharge
 
               
