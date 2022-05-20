@@ -188,11 +188,11 @@
 
                       <template v-if= "createCommentForm===itemPost.postId">
                       <!-- Affichage du formulaire de creation du commentaire -->
-                        <span v-if="newComment">commentaire : {{ newComment }}</span>
-		                      <div>
+                        <span v-if="newComment"></span>
+		                      <div v-if="newComment"></div>>
 			                      <label for="newComment">Votre commentaire</label>
 			                      <input type="text" v-model="newComment" id="newComment">
-		                    </div>
+		                      </div>
 
 
                         <!-- Boutons pour valider ou annuler cette modif -->
@@ -231,7 +231,34 @@
                                     <button @click="modifyComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-pen">  Modify</span>
                                     </button>
+
+
                                   </template>
+
+                                  <!-- Formulaire pour modifier le commentaire -->
+                                  <template v-if= "modifyCommentForm===itemCommentt.commentId">
+                                    <!-- Affichage du formulaire de modif du comment -->
+                                    <span v-if="newComment">le commentaire modifié : {{ newComment }}</span>
+		                                <div>
+			                                <label for="newComment">Votre nouveau commentaire</label>
+			                                <input type="text" v-model="newComment" id="newComment">
+		                                </div>
+
+
+                                    <!-- Boutons pour valider ou annuler cette modif -->
+                                    <div>
+			      
+			                                <input @click="validateModifyPost(itemPost.postId)" type="submit" value="Valider" id="order" />
+		                                </div>
+                                    <div>
+			      
+			                                <input @click="cancelModifyPost()" type="submit" value="Annuler" id="order" />
+		                                </div>
+
+                                  </template>
+
+
+                                  <!-- Fin du formulaire pour modifier le commentaire -->
                                   </div>
                                 </div>
                               </div>
