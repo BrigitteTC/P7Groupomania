@@ -146,7 +146,7 @@
                   </div>
 
                   <!-- Formulaire pour modifier le post -->
-                  <template v-if= "modifyPostForm">
+                  <template v-if= "modifyPostForm===itemPost.postId">
                     <!-- Affichage du formulaire de modif du post -->
                     <span v-if="newPost">le post modifié : {{ newPost }}</span>
 		                  <div>
@@ -158,7 +158,7 @@
                       <!-- Boutons pour valider ou annuler cette modif -->
                       <div>
 			      
-			                  <input @click="validateModifyPost()" type="submit" value="Valider" id="order" />
+			                  <input @click="validateModifyPost(itemPost.postId)" type="submit" value="Valider" id="order" />
 		                  </div>
                       <div>
 			      
@@ -184,7 +184,7 @@
 
 
                         <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">  
-  
+                            <!-- Affichage des commentaires seulement pour le post selectionné -->
                             <template v-if="itemPost.postId==itemComment.postId">
                               <div class="commentList"> 
                                 <div class="commentItem">
@@ -267,7 +267,7 @@
 
             // champs du formulaire pour creéation ou modification posts et comments
             createPostForm:false, //sera true pour crer un post
-            modifyPostForm:false, //sera true pour modifier un post
+            modifyPostForm:"", //sera egal au num du post à modifier pour modifier un post
             newPost:'',
 
             createCommentForm:false, //sera true pour crer un commentaire
@@ -362,7 +362,7 @@
           //  URL: http://localhost:3000/api/post/ 
           //---------------------------------------------------------------------------------
           validateCreationPost(){
-          console.log("creation new post : " + this.newPost)
+          console.log("creation new post : " + this.newPost);
           
          
 
@@ -421,9 +421,9 @@
           // Ouverture du formulaire de modif du post
           //---------------------------------------------------------------------------------
 
-          modifyPost(){
+          modifyPost(postId){
             console.log ("modify post");
-            this.modifyPostForm=true;   //affichage du formulaire de modif de post
+            this.modifyPostForm=postId;   //affichage du formulaire de modif de post
           },
 
           //-----------------------------------------------------------------------------------------
@@ -433,8 +433,8 @@
           //  methode: PUT
           //  URL: http://localhost:3000/api/post/postId
           //---------------------------------------------------------------------------------
-          validateModifyPost(){
-          console.log("modification  post : " + this.newPost)
+          validateModifyPost(postId){
+          console.log("modification  post : " + this.newPost);
           
          
 
@@ -449,7 +449,7 @@
 
             //Url des commentaires du post
             const postUrl =
-              "http://localhost:3000/api/post"
+              "http://localhost:3000/api/post" + postId;
             fetch(postUrl, {
               method: "PUT",
               headers: {
@@ -518,7 +518,7 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                this.comments = response; //this permet d'acceder aux données de l'application
+                this.comments = response; //les commentaires renvoyés de l'API
               
               
               })
@@ -564,7 +564,7 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                this.comments = response; 
+                
                 window.location.reload();  // rafraichit la page
               })
               .catch((error) => {
@@ -575,51 +575,7 @@
 
           //---------------------------------------------------------------------------
 
-          //-----------------------------------------------------------------------------------------
-          // modify post
-          // Modification d'un post
-          // Params: postId
-          //  Nouveau post
-          //
-          //  methode: PUT
-          //  URL: http://localhost:3000/api/post/:id  
-          //-----------------------------------------------------------------------------------
 
-                   
-          modifyPost(postId) {
-            console.log("modify post n : "+ postId);
-
-
-            // Lecture du local storage pour récupérer le token  du user
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
-
-            const bearerToken = "Bearer " + userToken;
-
-            //Url  du post
-            const postUrl =
-              "http://localhost:3000/api/post/" + postId ;
-
-            fetch(postUrl, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-                this.erroredComments = true;
-              })
-              .then((response) => {
-                this.comments = response; 
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                this.erroredComments = true;
-              });
-          }, //Fin modifyPost
 
           //---------------------------------------------------------------------------
           //-----------------------------------------------------------------------------------------
