@@ -119,12 +119,18 @@ p {
 
 .commentButton {
   display: flex;
-  flex-direction: rows; /* vertical*/
+  flex-direction: rows; /* cote cote*/
   justify-content: space-around;
   background: grey;
   border: 1px solid black;
   margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+}
+
+.commentButtonsHeader {
+  display: flex;
+  flex-direction: rows; /* cote cote*/
+  justify-content: space-around;
 }
 
 /***************/

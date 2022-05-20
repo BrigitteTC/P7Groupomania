@@ -175,14 +175,43 @@
                     <div class="postText">
                       <p> post n° {{itemPost.postId}} : {{itemPost.post}}</p>
                     </div>
+                    <div class = commentButtonsHeader>
                       <button @click="displayComments(itemPost.postId,$event)">
-
-                        Afficher les commentaires
-                      
-                       
+                        Afficher les commentaires                                           
                       </button>
 
+                      <button @click="createComment(itemPost.postId)">
+                        Ajouter un commentaire                                           
+                      </button>
 
+                      <!-- Formulaire pour Ajouter un commentaire -->
+
+                      <template v-if= "createCommentForm===itemPost.postId">
+                      <!-- Affichage du formulaire de creation du commentaire -->
+                        <span v-if="newComment">commentaire : {{ newComment }}</span>
+		                      <div>
+			                      <label for="newComment">Votre commentaire</label>
+			                      <input type="text" v-model="newComment" id="newComment">
+		                    </div>
+
+
+                        <!-- Boutons pour valider ou annuler cette modif -->
+                        <div>
+			      
+			                    <input @click="validateCreationComment(itemPost.postId)" type="submit" value="Valider" id="order" />
+		                    </div>
+                        <div>
+			      
+			                    <input @click="cancelCreationComment()" type="submit" value="Annuler" id="order" />
+		                    </div>
+
+                      </template>
+
+
+                      <!-- Fin formulaire ajout d'un commentaire -->
+
+                    </div>
+                      <!-- Partie affichage des commentaires du post -->
                         <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">  
                             <!-- Affichage des commentaires seulement pour le post selectionné -->
                             <template v-if="itemPost.postId==itemComment.postId">
@@ -657,11 +686,11 @@
             const bearerToken = "Bearer " + userToken;
             
 
-            const data = {comment:this.newPComment};
+            const data = {comment:this.newComment};
 
             //Url des commentaires du post
             const postUrl =
-              "http://localhost:3000/api/post" + postId
+              "http://localhost:3000/api/post/" + postId + "/comment";
             fetch(postUrl, {
               method: "POST",
               headers: {
