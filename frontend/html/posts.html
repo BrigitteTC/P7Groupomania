@@ -449,7 +449,7 @@
 
             //Url des commentaires du post
             const postUrl =
-              "http://localhost:3000/api/post" + postId;
+              "http://localhost:3000/api/post/" + postId;
             fetch(postUrl, {
               method: "PUT",
               headers: {
@@ -465,10 +465,9 @@
               })
               .then((response) => {
                 //response OK
-                const retourServer = response;
-                console.log (retourServer.message);
-                this.createPostForm=false;  // on replie le formulaire
-                window.alert(retourServer.message); // affiche msg de retour du serveur
+
+                this.modifyPostForm="";  // on replie le formulaire
+                
                 window.location.reload(); // et on recharge
 
               
@@ -481,7 +480,7 @@
    
           //cancel modify post  
           cancelModifyPost(){
-            this.modifyPostForm=false;  // on replie le formulaire
+            this.modifyPostForm="";  // on replie le formulaire
           },
           //
           //-----------------------------------------------------------------------------------------
@@ -564,7 +563,7 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                
+                window.alert(response.message); // affiche msg de retour du serveur
                 window.location.reload();  // rafraichit la page
               })
               .catch((error) => {
