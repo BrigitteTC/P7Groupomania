@@ -228,7 +228,7 @@
                                     <button @click="deleteComment(itemPost.postId,itemComment.commentId)">
                                       <span class="fas fa-trash">  Delete</span>
                                     </button>
-                                    <button @click="modifyComment(itemPost.postId,itemComment.commentId)">
+                                    <button @click="modifyComment(itemComment.commentId)">
                                       <span class="fas fa-pen">  Modify</span>
                                     </button>
 
@@ -248,7 +248,7 @@
                                     <!-- Boutons pour valider ou annuler cette modif -->
                                     <div>
 			      
-			                                <input @click="validateModifyComment(itemComment.commentId)" type="submit" value="Valider" id="order" />
+			                                <input @click="validateModifyComment(itemPost.postId,itemComment.commentId)" type="submit" value="Valider" id="order" />
 		                                </div>
                                     <div>
 			      
@@ -753,8 +753,22 @@
             this.createCommentForm="";  // on replie le formulaire
           },
 
+
           //-----------------------------------------------------------------------------------------
           // modifyComment
+          // affichage du formulaire de modif du commentaire pour le post
+          //
+          // param: commentId
+          //-------------------------------------------------
+
+          modifyComment(commentId){
+            console.log ("modify  comment");
+            this.modifyCommentForm=commentId;   
+          },
+
+
+          //-----------------------------------------------------------------------------------------
+          // validateModifyComment
           // Modification d'un commentaire d'un post
           // param: postId, commentId, newComment
           //    methode: PUT
@@ -766,7 +780,7 @@
           //---------------------------------------------------------------------------------
 
                    
-          modifyComment(postId,commentId) {
+          validateModifyComment(postId,commentId) {
             console.log("modify commentaire n° "+ commentId + " du post n : "+ postId);
 
 
@@ -775,6 +789,8 @@
             const userToken = userInLocalStorage.token; // le token
 
             const bearerToken = "Bearer " + userToken;
+
+            const data = {comment:this.newComment};
 
             //Url  du comment
             const commentUrl =
@@ -786,7 +802,7 @@
                 "Content-Type": "application/json",
                 Authorization: bearerToken,
               },
-              
+              body:JSON.stringify(data),
             })
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
@@ -794,15 +810,19 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                this.comments = response; 
+                this.modifyCommentForm="";  // on replie le formulaire
+                window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
                 console.log("Response error: ", error);
                 this.erroredComments = true;
               });
-          }, //Fin modifyComment
+          }, //Fin ValidateModifyComment
 
-
+          //cancel modify comment  
+          cancelModifyComment(){
+            this.modifyCommentForm="";  // on replie le formulaire
+          },
 
 
         }, // Fin des methodes
