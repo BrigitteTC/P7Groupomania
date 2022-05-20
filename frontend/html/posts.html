@@ -236,7 +236,7 @@
                                   </template>
 
                                   <!-- Formulaire pour modifier le commentaire -->
-                                  <template v-if= "modifyCommentForm===itemCommentt.commentId">
+                                  <template v-if= "modifyCommentForm===itemComment.commentId">
                                     <!-- Affichage du formulaire de modif du comment -->
                                     <span v-if="newComment">le commentaire modifié : {{ newComment }}</span>
 		                                <div>
@@ -248,11 +248,11 @@
                                     <!-- Boutons pour valider ou annuler cette modif -->
                                     <div>
 			      
-			                                <input @click="validateModifyPost(itemPost.postId)" type="submit" value="Valider" id="order" />
+			                                <input @click="validateModifyComment(itemComment.commentId)" type="submit" value="Valider" id="order" />
 		                                </div>
                                     <div>
 			      
-			                                <input @click="cancelModifyPost()" type="submit" value="Annuler" id="order" />
+			                                <input @click="cancelModifyComment()" type="submit" value="Annuler" id="order" />
 		                                </div>
 
                                   </template>
@@ -327,6 +327,7 @@
             newPost:'',
 
             createCommentForm:"", //sera egal au num du post sue lequel on veut creer un commentaire
+            modifyCommentForm : "",   //sera egal au num du commentaire à modifier
             newComment:"",
 
 
@@ -802,18 +803,7 @@
           }, //Fin modifyComment
 
 
-          //-----------------------------------------------------------
-          toggleSelection(postComments, event) {
-  					let ref = 'button'+postComments.postId
-  					if(this.selection.includes(postComments)) {
-  						this.selection.splice(this.selection.indexOf(postComments), 1)
-  						this.$refs[ref].textContent = 'Afficher les commentaires'
-  					} else {
-  						this.selection.push(postComments)
-  						this.$refs[ref].textContent = 'Replier les commentaires'
-  						
-  					}
-  				}
+
 
         }, // Fin des methodes
       }; // Fin RootComponent
