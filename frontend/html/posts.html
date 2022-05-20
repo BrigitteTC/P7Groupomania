@@ -145,6 +145,31 @@
                     </template>
                   </div>
 
+                  <!-- Formulaire pour modifier le post -->
+                  <template v-if= "modifyPostForm">
+                    <!-- Affichage du formulaire de modif du post -->
+                    <span v-if="newPost">le post modifié : {{ newPost }}</span>
+		                  <div>
+			                  <label for="newPost">Votre nouveau post</label>
+			                    <input type="text" v-model="newPost" id="newPost">
+		                  </div>
+
+
+                      <!-- Boutons pour valider ou annuler cette modif -->
+                      <div>
+			      
+			                  <input @click="validateModifyPost()" type="submit" value="Valider" id="order" />
+		                  </div>
+                      <div>
+			      
+			                  <input @click="cancelModifyPost()" type="submit" value="Annuler" id="order" />
+		                  </div>
+
+                  </template>
+
+
+                  <!-- Fin du formulaire pour modifier le post -->
+
                   </div>
                   <div class="postInfos">
                     <div class="postText">
