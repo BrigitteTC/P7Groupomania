@@ -350,7 +350,7 @@ exports.modifyPost = (req, res, next) => {
         // OK
         console.log("DEBUG: modifyPost OK");
 
-        res.status(200).json("modif OK");
+        res.status(200).json({ message: "Post modifié" });
       }
     });
     //}
@@ -806,7 +806,7 @@ exports.deleteComment = (req, res, next) => {
         });
         console.log("deleteComment erreur req sql" + err);
       } else {
-        // OK  comment cree
+        // OK  comment supprimé
         console.log("commentaire supprimé");
 
         res.status(200).json({ message: "comment supprimé" });
