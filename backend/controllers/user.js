@@ -236,7 +236,7 @@ verbe: PUT
 
 Algo:
   userIdem signup
-  On mets à jour les 3 paramètres email, passwd haxh et pseudo
+  On mets à jour les 3 paramètres email, passwd hash et pseudo
   Hash du passwd 
 
 ----------------------------------------------------------------*/
