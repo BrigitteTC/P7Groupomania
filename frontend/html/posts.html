@@ -57,11 +57,18 @@
               alt="Logo de l'entreprise"
             />
           </a>
+
+          <!-- Boutons nav pour gérer la deconnexion et la maj profil -->
           <nav>
             <ul>
-              <a href="./index.html"><li>accueil</li></a>
+              
+              <li><button class="HeaderButton" @click="logout()">Logout</button></li>
+              <li><button class="HeaderButton" @click="profil()">Mon profil</button></li>
+                           
             </ul>
           </nav>
+
+          <!-- Fin bouton nav -->
         </div>
       </div>
     <!-- <main>** -->
@@ -329,6 +336,13 @@
             createCommentForm:"", //sera egal au num du post sue lequel on veut creer un commentaire
             modifyCommentForm : "",   //sera egal au num du commentaire à modifier
             newComment:"",
+
+
+            // Utilisateurs
+            profilForm:false, // sera true pour modifier le profil de l'utilisateur
+            newEmail:"",      // nouvel email
+            newPasswd:"",     //      newPasswd = nouveau passwd
+            newPseudo:"",     //      newPseudo = nouveau pseudo
 
 
           };
@@ -824,6 +838,91 @@
           cancelModifyComment(){
             this.modifyCommentForm="";  // on replie le formulaire
           },
+
+
+
+          //-------------------------------------------------------------------------
+          //Gestion de la connexion
+          //---------------------------------------------------------------------------
+
+
+
+
+          //--------------------------------------------------------------------------
+          // Utilisateur:
+          //    Gestion du profil et suppression du compte
+          //---------------------------------------------------------------------------
+
+          //-----------------------------------------------------------------------------------------
+          // profil
+          // affichage du formulaire de modif du profile ou de la suppression du compte
+          //
+          // param: aucun
+          //-------------------------------------------------
+
+          profil(){
+            console.log ("profil utilisateur");
+            this.modifyProfilForm=true;       // ouverture formulaire profil
+          },
+
+
+          //-----------------------------------------------------------------------------------------
+          // validateModifyProfil
+          // Modification du profil d'un utilisateur
+          // param: userId
+          //    methode: PUT
+          //    URL: URL=http://localhost:3000/api/auth/userId
+          //    userId: user à modifier
+          //      newEmail = nouvel email
+          //      newPasswd = nouveau passwd
+          //      newPseudo = nouveau pseudo
+          //---------------------------------------------------------------------------------
+
+                   
+          validateModifyComment(userId) {
+            console.log("modify profil "+ userId);
+
+
+            // Lecture du local storage pour récupérer le token  du user
+            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+            const userToken = userInLocalStorage.token; // le token
+
+            const bearerToken = "Bearer " + userToken;
+
+            
+
+            //Url  du user
+            const userUrl =
+              "http://localhost:3000/api/auth/" + userId ;
+
+            fetch(userUrl, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+              body:JSON.stringify(data),
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+               
+              })
+              .then((response) => {
+                this.profilForm=false;  // on replie le formulaire
+                window.alert(response.message); // affiche msg de retour du serveur
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                
+              });
+          }, //Fin ValidateModifyProfil
+
+          //cancel modify profil 
+          cancelModifyProfil(){
+            this.modifyProfilForm="";  // on replie le formulaire
+          },
+
 
 
         }, // Fin des methodes
