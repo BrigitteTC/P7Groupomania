@@ -97,7 +97,7 @@
                       <!-- Boutons pour valider ou annuler cette creation -->
                       <div  class = flexRows>
 			      
-			                  <input @click="validateModifProfil()" type="submit" value="Valider" id="order" />
+			                  <input @click="validateModifyProfil()" type="submit" value="Valider" id="order" />
 		                  </div>
                       <div>
 			      
@@ -984,24 +984,29 @@
           // param: userId
           //    methode: PUT
           //    URL: URL=http://localhost:3000/api/auth/userId
-          //    userId: user à modifier
+          //    userId: user à modifier trouvé ds le local storage
           //      newEmail = nouvel email
           //      newPasswd = nouveau passwd
           //      newPseudo = nouveau pseudo
           //---------------------------------------------------------------------------------
 
                    
-          validateModifyProfil(userId) {
-            console.log("modify profil "+ userId);
+          validateModifyProfil() {
+           
 
 
             // Lecture du local storage pour récupérer le token  du user
+          if ("user" in localStorage){
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
             const userToken = userInLocalStorage.token; // le token
+            const userId = userInLocalStorage.userId; // le userId
 
             const bearerToken = "Bearer " + userToken;
 
-            data:{this.valueToModify,this.newValue};
+            console.log("modify profil "+ userId);
+
+            const data={"this.valueToModify":"this.newValue"};
+            
 
             //Url  du user
             const userUrl =
@@ -1027,7 +1032,7 @@
               .catch((error) => {
                 console.log("Response error: ", error);
                 
-              });
+              }) };
           }, //Fin ValidateModifyProfil
 
           //cancel modify profil 
