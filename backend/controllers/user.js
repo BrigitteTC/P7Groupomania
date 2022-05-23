@@ -235,8 +235,8 @@ Objet: modifier le profil d'un utilisateur.
 verbe: PUT
 
 Algo:
-  userIdem signup
-  On mets à jour les 3 paramètres email, passwd hash et pseudo
+  userId  idem signup
+  On mets à jour un des  3 paramètres email, passwd hash et pseudo
   Hash du passwd 
 
 ----------------------------------------------------------------*/
@@ -245,24 +245,67 @@ exports.modifyUser = (req, res, next) => {
   try {
     console.log("DEBUG: ft modifyUser");
 
-    bcrypt
-      .hash(req.body.password, 10)
-      .then((hash) => {
-        sql =
-          "UPDATE " +
-          usersTable +
-          " SET email ='" +
-          req.body.email +
-          "', passwd ='" +
-          hash +
-          "', pseudo = '" +
-          req.body.pseudo +
-          "' WHERE userId= '" +
-          req.params.userId +
-          "';";
+    // partie sql correspondant à chaque param
+    // req SQL en ft du param à modifier
+    let dataToModifyEmail = "";
+    let dataToModifyPseudo = "";
 
-        console.log("DEBUG ft modifyUser: sql=" + sql);
-        connection.query(sql, (err, data, fields) => {
+    if (req.body.email) {
+      dataToModifyEmail = " email = '" + req.body.email + "'";
+    }
+
+    if (req.body.pseudo) {
+      dataToModifyPseudo = " pseudo = '" + req.body.pseudo + "'";
+    }
+    // Cas avec passwd modifié à ajouter
+    if (req.body.passwd) {
+      //modif du passwd
+      bcrypt
+        .hash(req.body.password, 10)
+        .then((hash) => {
+          sql = "UPDATE " + usersTable + " SET " + dataToModifyEmail + ",";
+          dataToModifyPseudo +
+            "," +
+            "passwd ='" +
+            hash +
+            "' WHERE userId= '" +
+            req.params.userId +
+            "';";
+
+          console.log("DEBUG ft modifyUser: sql=" + sql);
+          connection.query(sql, (err, data, fields) => {
+            if (err) {
+              // Reponse avec code et message d'erreur
+              res.status(400).json({
+                message: "code: " + err.code + " message: " + err.sqlMessage,
+              });
+              console.log("modifyUser: erreur  " + err);
+            } else {
+              // OK utilisateur modifie
+              console.log(
+                "DEBUG: modifyUser: utilisateur modifie  " + req.body.pseudo
+              );
+
+              res
+                .status(201)
+                .json({ message: "Utilisateur modifie : " + req.body.pseudo });
+            }
+          });
+        })
+        .catch((err) => {
+          console.log("modifyUser: erreur:  " + err);
+          res.status(500).json({ message: "modify failed" });
+        });
+    }
+    //-------------------------------------------------------------------------
+    // Cas sans modif du passwd
+    else {
+      sql = "UPDATE " + usersTable + " SET " + dataToModifyEmail + ",";
+      dataToModifyPseudo + " WHERE userId= '" + req.params.userId + "';";
+
+      console.log("DEBUG ft modifyUser: sql=" + sql);
+      connection
+        .query(sql, (err, data, fields) => {
           if (err) {
             // Reponse avec code et message d'erreur
             res.status(400).json({
@@ -275,23 +318,25 @@ exports.modifyUser = (req, res, next) => {
               "DEBUG: modifyUser: utilisateur modifie  " + req.body.pseudo
             );
 
-            res
-              .status(201)
-              .json({ message: "Utilisateur modifie : " + req.body.pseudo });
+            res.status(201).json({
+              message: "Utilisateur modifie : " + req.body.pseudo,
+            });
           }
+        })
+        .catch((err) => {
+          console.log("modifyUser: erreur:  " + err);
+          res.status(500).json({ message: "modify failed" });
         });
-      })
-      .catch((err) => {
-        console.log("modifyUser: erreur:  " + err);
-        res.status(500).json({ message: "modify failed" });
-      });
+    }
+    // fin du try
+    //--------------------------------------------------------
   } catch (err) {
     console.log("modifyUser: erreur:  " + err);
     res.status(500).json({
       error: new Error("Erreur server " + err),
     });
   }
-};
+}; // fin modifyUser
 
 /*----------------------------------------------------------------------------
 ft deleteUser
