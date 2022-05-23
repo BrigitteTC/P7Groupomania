@@ -35,6 +35,8 @@ Bouton de nav du header
 .pucesItems {
   display: flex;
   flex-direction: column;
+  margin: none;
+  padding: none;
 }
 /************/
 /*PostsItems*/

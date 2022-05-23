@@ -62,16 +62,17 @@
 
           <!-- Boutons nav pour gérer la deconnexion et la maj profil -->
           <nav>
-            <ul  class="HeaderButton">
-              
-              <li><button  @click="logout()">Logout</button></li>
+            <ul  >
+              <div class = flexColumns>
+                <div class="HeaderButton">
+                  <li><button  @click="logout()">Logout</button></li>
 
               
-              <li><button @click="profil()">Mon profil</button></li>
+                  <li><button @click="profil()">Mon profil</button></li>
 
-
+                </div>
               <!--------------------------------------------------------------------------- -->
-
+              
                 <!-- Debut formulaire de modif profil -->
                 <template v-if= "modifyProfilForm">
                   <div  >
@@ -79,36 +80,37 @@
                       <ul class="pucesItems">
                         <!-- Affichage du menu de modif du profil-->
                         <!-- Menu avec 4 choix -->
-                        <li>Modification email</li>
-                        <li> Modification passwd</li>
-                        <li> Modification pseudo</li>
-                        <li> Suppression du compte</li>
+                        <li v-if= "!askValue" @click="modifyProfil(email)">Modification email</li>
+                        <li v-if= "!askValue" @click="modifyProfil(passwd)"> Modification passwd</li>
+                        <li v-if= "!askValue" @click="modifyProfil(pseudo)"> Modification pseudo</li>
+                        <li v-if= "!askValue" @click="deleteProfil()"> Suppression du compte</li>
                       </ul>
                     </div>
-                  <!-- Champ pour saisir la nouvelle valeur -->
-		              <div>
-			              <label for="newValue">Nouvelle valeur</label>
-			              <input type="text" v-model="newValue" id="newValue">
-		              </div>
+                    <!-- Champ pour saisir la nouvelle valeur -->
+		                <div  v-if= "askValue">
+			                <label for="newValue">Modification {{valueToModify}} Nouvelle valeur</label>
+			                <input type="text" v-model="newValue" id="newValue">
+		              
 
 
-                <!-- Boutons pour valider ou annuler cette creation -->
-                <div>
+                      <!-- Boutons pour valider ou annuler cette creation -->
+                      <div>
 			      
-			            <input @click="validateModifProfil()" type="submit" value="Valider" id="order" />
-		            </div>
-                <div>
+			                  <input @click="validateModifProfil()" type="submit" value="Valider" id="order" />
+		                  </div>
+                      <div>
 			      
-			            <input @click="cancelModifProfil()" type="submit" value="Annuler" id="order" />
-		            </div>
-                </div>
+			                  <input @click="cancelModifProfil()" type="submit" value="Annuler" id="order" />
+		                  </div>
+                    </div>
+                  </div>
                 </template>
               <!-- Fin formulaire de modif du profil-->
 
 
 
 
-
+            </div>
 
               <!---------------------------------------------------------------------- -->
                            
@@ -398,6 +400,16 @@
             newEmail:"",      // nouvel email
             newPasswd:"",     //      newPasswd = nouveau passwd
             newPseudo:"",     //      newPseudo = nouveau pseudo
+
+            valueToModify:"",    // Valeur de profil à modifier
+            newValue:"",        // Nouvelle valeur du champ modifié
+
+
+            askValue:false,   // sera mis à true pour ouvrir le champ de saisie pour modif profil
+            askEmail:false,  // sera mis à true pour modifier le champ
+            askPseudo: false, // sera mis à true pour modifier le champ
+            askpasswd:false,  // sera mis à true pour modifier le champ
+
 
 
           };
@@ -902,7 +914,7 @@
           },
 
 
-
+//--------------------------------------------------------------------------------------
           //-------------------------------------------------------------------------
           //Gestion de la connexion
           //---------------------------------------------------------------------------
@@ -927,6 +939,17 @@
             this.modifyProfilForm=true;       // ouverture formulaire profil
           },
 
+          modifyProfil(paramToModify){
+            try{
+              this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
+                                        // du param à modifier
+              
+              this.valueToModify = paramToModify;
+            }
+          catch(err){
+          
+          console.log("Erreur modifyProfil " + err)
+          }},
 
           //-----------------------------------------------------------------------------------------
           // validateModifyProfil
@@ -951,7 +974,7 @@
 
             const bearerToken = "Bearer " + userToken;
 
-            
+            data:{this.valueToModify,this.newValue};
 
             //Url  du user
             const userUrl =
@@ -982,7 +1005,7 @@
 
           //cancel modify profil 
           cancelModifyProfil(){
-            this.modifyProfilForm="";  // on replie le formulaire
+            this.modifyProfilForm=false;  // on replie le formulaire
           },
 
 
