@@ -303,10 +303,11 @@
     </footer>
     <script src="https://unpkg.com/vue@next"></script>
 
+
+    <script>
     //----------------------------------------------------------------------------
     // vuejs3 
     //----------------------------------------------------------------------------
-    <script>
           
       const RootComponent = {
         //les data
@@ -389,6 +390,7 @@
             .then((response) => response.json()) //reponse du fetch
             .catch((error) => {
               console.log("Fetch error: ", error);
+              windows.alert(error);
               this.errored = true;
             })
             .then((data) => {
