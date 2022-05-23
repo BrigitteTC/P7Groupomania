@@ -943,12 +943,14 @@
           //    Clear du local storage
           //    Retour à la page accueil
           //-------------------------------------------------------------------------------
-          logout(){
+          logout(){try{
             console.log ("logout");
             localStorage.clear();         // petit coup de karsher ds le local storage
             window.location.href="./index.html"; // on retourne à la page d'accueil
 
-
+          }catch(err){
+            console.log ("error ft logout : " + err);
+          }
           }
 
 
