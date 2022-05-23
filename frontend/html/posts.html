@@ -45,7 +45,7 @@
                 src="../images/icons/phone.svg"
                 alt="logo de téléphone"
                 class="informations__phone"
-              />012345678
+              />{{tel}}
             </li>
           </ul>
         </div>
@@ -298,7 +298,7 @@
             />
           </div>
           <div>
-            <!--<p>{{adresse}} <br />{{ville}}</p>-->
+            <p>{{adresse}} <br />{{ville}}</p>
           </div>
         </div>
       </div>
@@ -316,6 +316,10 @@
         //les data
         data() {
           return {
+            // infos de l'entreprise
+            adresse: "rue de l'horizon",
+            ville: "19300 labas sur Correze",
+            tel: "01 23 45 67 89",
             //nom et infos de l'utilisateur connecté
             connectedName: "",
             connectedUserId:"",
