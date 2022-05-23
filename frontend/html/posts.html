@@ -16,9 +16,8 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-   
 
-        <!--Fontawsome-->
+    <!--Fontawsome-->
     <script
       src="https://kit.fontawesome.com/6a1e5290f1.js"
       crossorigin="anonymous"
@@ -36,350 +35,386 @@
   <body>
     <!-- Le header avec icone + navigation -->
     <div id="app">
-    <header>
-      <div class="limitedWidthBlockContainer informations">
-        <div class="limitedWidthBlock">
-          <ul>
-            <li>
-              <img
-                src="../images/icons/phone.svg"
-                alt="logo de téléphone"
-                class="informations__phone"
-              />{{tel}}
-            </li>
-          </ul>
+      <header>
+        <div class="limitedWidthBlockContainer informations">
+          <div class="limitedWidthBlock">
+            <ul>
+              <li>
+                <img
+                  src="../images/icons/phone.svg"
+                  alt="logo de téléphone"
+                  class="informations__phone"
+                />{{tel}}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="limitedWidthBlockContainer menu">
-        <div class="limitedWidthBlock">
-          <a href="./index.html">
-            <img
-              class="logo"
-              src="../images/logo.png"
-              alt="Logo de l'entreprise"
-            />
-          </a>
+        <div class="limitedWidthBlockContainer menu">
+          <div class="limitedWidthBlock">
+            <a href="./index.html">
+              <img
+                class="logo"
+                src="../images/logo.png"
+                alt="Logo de l'entreprise"
+              />
+            </a>
 
-          <!-- Boutons nav pour gérer la deconnexion et la maj profil -->
-          <nav>
-            <ul  >
-              <div class = flexColumns>
-                <div class="HeaderButton">
-                  <li><button  @click="logout()">Logout</button></li>
+            <!-- Boutons nav pour gérer la deconnexion et la maj profil -->
+            <nav>
+              <div>
+                <div class="flexColumns">
+                  <div class="HeaderButton">
+                    <div><button @click="logout()">Logout</button></div>
 
-              
-                  <li><button @click="profil()">Mon profil</button></li>
+                    <div><button @click="profil()">Mon profil</button></div>
+                  </div>
+                  <!--*********************-->
 
+                  <!-- Debut formulaire de modif profil -->
+                  <template v-if="modifyProfilForm">
+                    <div>
+                      <div class="profilMenu">
+                        <ul class="pucesItems">
+                          <!-- Affichage du menu de modif du profil-->
+                          <!-- Menu avec 4 choix -->
+                          <!-- sera caché quand on aura fait le choix -->
+                          <li v-if="!askValue" @click="modifyEmailProfil()">
+                            Modification email
+                          </li>
+                          <li v-if="!askValue" @click="modifyPasswdProfil()">
+                            Modification passwd
+                          </li>
+                          <li v-if="!askValue" @click="modifyPseudoProfil()">
+                            Modification pseudo
+                          </li>
+                          <li v-if="!askValue" @click="deleteProfil()">
+                            Suppression du compte
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- Champ pour saisir la nouvelle valeur -->
+                    <div v-if="askValue">
+                      <label for="newValue"
+                        >Modification {{valueToModify}} Nouvelle valeur</label
+                      >
+                      <input type="text" v-model="newValue" id="newValue" />
+
+                      <div v-if="displayOkCancel" class="flexRows">
+                        <!-- Boutons pour valider ou annuler cette creation -->
+                        <div>
+                          <input
+                            @click="validateModifyProfil()"
+                            type="submit"
+                            value="Valider"
+                          />
+                        </div>
+
+                        <div>
+                          <input
+                            @click="cancelModifyProfil()"
+                            type="submit"
+                            value="Annuler"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Boutons pour valider ou non la suppressin du compte -->
+                    <div v-if="deleteValue" class="flexColons">
+                      <h3>Delete compte de {{connectedName}}</h3>
+                      <div class="flexRows">
+                        <div>
+                          <input
+                            @click="validateDeleteProfil()"
+                            type="submit"
+                            value="Valider suppression du compte"
+                          />
+                        </div>
+
+                        <div>
+                          <input
+                            @click="cancelModifyProfil()"
+                            type="submit"
+                            value="Annuler suppression du compte"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <!-- Fin formulaire de modif du profil-->
                 </div>
-              <!--------------------------------------------------------------------------- -->
-              
-                <!-- Debut formulaire de modif profil -->
-                <template v-if= "modifyProfilForm">
-                  <div  >
-                    <div  class="profilMenu">
-                      <ul class="pucesItems">
-                        <!-- Affichage du menu de modif du profil-->
-                        <!-- Menu avec 4 choix -->
-                        <!-- sera caché quand on aura fait le choix -->
-                        <li v-if= "!askValue" @click="modifyEmailProfil()">Modification email</li>
-                        <li v-if= "!askValue" @click="modifyPasswdProfil()"> Modification passwd</li>
-                        <li v-if= "!askValue" @click="modifyPseudoProfil()"> Modification pseudo</li>
-                        <li v-if= "!askValue" @click="deleteProfil()"> Suppression du compte</li>
-                      </ul>
-                    </div>
-                  </div>  
-                  <!-- Champ pour saisir la nouvelle valeur -->
-		              <div  v-if= "askValue">
-			              <label for="newValue">Modification {{valueToModify}} Nouvelle valeur</label>
-			              <input type="text" v-model="newValue" id="newValue">
-		              
 
-                    <div  v-if= "displayOkCancel"  class = "flexRows">
-                    <!-- Boutons pour valider ou annuler cette creation -->
-                      <div  >
-			      
-			                  <input @click="validateModifyProfil()" type="submit" value="Valider"   />
-		                  </div>
+                <!---------------------------------------------------------------------- -->
+              </div>
+            </nav>
 
-                      <div>
-			      
-			                  <input @click="cancelModifyProfil()" type="submit" value="Annuler"   />
-		                  </div>
-                    </div>
-                  </div>
-                  <!-- Boutons pour valider ou non la suppressin du compte -->
-                  <div v-if= "deleteValue" class = "flexColons" >
-                    <h3>Delete compte de {{connectedName}}</h3> 
-                    <div class=" flexRows">
-                      <div>
-			                 
-			                  <input @click="validateDeleteProfil()" type="submit" value="Valider suppression du compte"   />
-		                  </div>
+            <!-- Fin bouton nav -->
+          </div>
+        </div>
+      </header>
+      <!-- <main> -->
+      <main>
+        <h1>les posts des salariés de Groupomania</h1>
 
-                      <div>
-			      
-			                  <input @click="cancelModifyProfil()" type="submit" value="Annuler suppression du compte"   />
-		                  </div>
-                    </div>
-                  </div>
-                  
-                </template>
-              <!-- Fin formulaire de modif du profil-->
+        <div class="postHeader">
+          <h3>Bonjour {{connectedName}} {{connectedUserId}}</h3>
+          <template v-if="connectedModerator">
+            <h3>Vous êtes moderateur</h3>
+          </template>
+          <div>
+            <!-- Bouton pour créer un post -->
 
-
-
-
+            <button class="createPostButton" @click="createPost()">
+              Créer un post
+            </button>
+          </div>
+          <!-- Debut formulaire de creation du post -->
+          <template v-if="createPostForm">
+            <!-- Affichage du formulaire de creation du post -->
+            <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+            <div>
+              <label for="newPost">Votre nouveau post</label>
+              <input type="text" v-model="newPost" id="newPost" />
             </div>
 
-              <!---------------------------------------------------------------------- -->
-                           
-            </ul>
-          </nav>
-
-          <!-- Fin bouton nav -->
+            <!-- Boutons pour valider ou annuler cette creation -->
+            <div>
+              <input
+                @click="validateCreationPost()"
+                type="submit"
+                value="Valider"
+              />
+            </div>
+            <div>
+              <input
+                @click="cancelCreationPost()"
+                type="submit"
+                value="Annuler"
+              />
+            </div>
+          </template>
+          <!-- Fin formulaire de creation du post -->
         </div>
-      </div>
-    <!-- <main> -->
-    <main >
-      <h1>les posts des salariés de Groupomania</h1>
-
-      <div class="postHeader">
-        <h3> Bonjour {{connectedName}}   {{connectedUserId}}</h3>
-        <template v-if="connectedModerator">
-          <h3> Vous êtes moderateur</h3>
-        </template>
         <div>
-        <!-- Bouton pour créer un post -->
-        
-                
-             
-          <button class="createPostButton" @click="createPost()">    
-                        
-            Créer un post
-                       
-          </button>
-        
-        </div>
-        <!-- Debut formulaire de creation du post -->
-        <template v-if= "createPostForm">
-          <!-- Affichage du formulaire de creation du post -->
-          <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-		      <div>
-			      <label for="newPost">Votre nouveau post</label>
-			      <input type="text" v-model="newPost" id="newPost">
-		      </div>
+          <template v-if="errored">
+            <p>Serveur indisponible</p>
+          </template>
 
+          <template v-else>
+            <h4 v-if="loading">Loading... dernières nouvelles</h4>
+            <h4 v-else>Dernières nouvelles</h4>
+            <div class="postsList">
+              <div
+                v-for="itemPost in posts.posts"
+                :key="itemPost.postId"
+                class="post"
+              >
+                <article class="postArticle">
+                  <div class="postItem">
+                    <div class="postHeader">
+                      <div class="postDate"><p>Date: {{itemPost.date}}</p></div>
+                      <div class="postOwner">
+                        <p>par: {{itemPost.pseudo}}</p>
+                      </div>
 
-          <!-- Boutons pour valider ou annuler cette creation -->
-          <div>
-			      
-			      <input @click="validateCreationPost()" type="submit" value="Valider"   />
-		      </div>
-          <div>
-			      
-			      <input @click="cancelCreationPost()" type="submit" value="Annuler"   />
-		      </div>
-
-        </template>
-        <!-- Fin formulaire de creation du post -->
-      </div>
-      <div>
-        <template v-if="errored">
-          <p>Serveur indisponible</p>
-        </template>
-
-        <template v-else>
-          <h4 v-if="loading">Loading... dernières nouvelles</h4>
-          <h4 v-else=>Dernières nouvelles</h4>
-          <div class="postsList">
-            <div v-for="itemPost in posts.posts" :key="itemPost.postId" class="post">
-
-              <article class="postArticle">       
-       
-                <div class="postItem">
-                  <div class="postHeader">
-                    
-                    <div class="postDate"> <p>Date: {{itemPost.date}}</p>
-                            </div>
-                    <div class="postOwner">
-                      <p>par: {{itemPost.pseudo}}</p>
-                    </div>
-                    
-
-                  
-                  <!-- La petite poubelle pour detruire le post -->
-                  <!-- et le petit crayon pour le modifier -->
-                  <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
-                  <div>
-                    
-                    <template v-if="connectedModerator || connectedUserId==itemPost.userId">
-                      <button @click="deletePost(itemPost.postId)">
-                        <span class="fas fa-trash">  Delete</span>
-                      </button>
-                      <button @click="modifyPost(itemPost.postId)">
-                        <span class="fas fa-pen">  Modify</span>
-                      </button>
-                    </template>
-                  </div>
-
-                  <!-- Formulaire pour modifier le post -->
-                  <template v-if= "modifyPostForm===itemPost.postId">
-                    <!-- Affichage du formulaire de modif du post -->
-                    
-		                  <div>
-			                  <label for="newPost">Votre nouveau post</label>
-			                    <input type="text" v-model="newPost" id="newPost">
-		                  </div>
-
-
-                      <!-- Boutons pour valider ou annuler cette modif -->
+                      <!-- La petite poubelle pour detruire le post -->
+                      <!-- et le petit crayon pour le modifier -->
+                      <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
                       <div>
-			      
-			                  <input @click="validateModifyPost(itemPost.postId)" type="submit" value="Valider"   />
-		                  </div>
-                      <div>
-			      
-			                  <input @click="cancelModifyPost()" type="submit" value="Annuler"   />
-		                  </div>
+                        <template
+                          v-if="connectedModerator || connectedUserId==itemPost.userId"
+                        >
+                          <button @click="deletePost(itemPost.postId)">
+                            <span class="fas fa-trash"> Delete</span>
+                          </button>
+                          <button @click="modifyPost(itemPost.postId)">
+                            <span class="fas fa-pen"> Modify</span>
+                          </button>
+                        </template>
+                      </div>
 
-                  </template>
+                      <!-- Formulaire pour modifier le post -->
+                      <template v-if="modifyPostForm===itemPost.postId">
+                        <!-- Affichage du formulaire de modif du post -->
 
-
-                  <!-- Fin du formulaire pour modifier le post -->
-
-                  </div>
-                  <div class="postInfos">
-                    <div class="postText">
-                      <p> post n° {{itemPost.postId}} : {{itemPost.post}}</p>
-                    </div>
-                    <div class = commentButtonsHeader>
-                      <button @click="displayComments(itemPost.postId,$event)">
-                        Afficher les commentaires                                           
-                      </button>
-
-                      <button @click="createComment(itemPost.postId)">
-                        Ajouter un commentaire                                           
-                      </button>
-
-                      <!-- Formulaire pour Ajouter un commentaire -->
-
-                      <template v-if= "createCommentForm===itemPost.postId">
-                      <!-- Affichage du formulaire de creation du commentaire -->
-                        <span v-if="newComment"></span>
-		                      <div v-if="newComment"></div>>
-			                      <label for="newComment">Votre commentaire</label>
-			                      <input type="text" v-model="newComment" id="newComment">
-		                      </div>
-
+                        <div>
+                          <label for="newPost">Votre nouveau post</label>
+                          <input type="text" v-model="newPost" />
+                        </div>
 
                         <!-- Boutons pour valider ou annuler cette modif -->
                         <div>
-			      
-			                    <input @click="validateCreationComment(itemPost.postId)" type="submit" value="Valider"   />
-		                    </div>
+                          <input
+                            @click="validateModifyPost(itemPost.postId)"
+                            type="submit"
+                            value="Valider"
+                          />
+                        </div>
                         <div>
-			      
-			                    <input @click="cancelCreationComment()" type="submit" value="Annuler"   />
-		                    </div>
-
+                          <input
+                            @click="cancelModifyPost()"
+                            type="submit"
+                            value="Annuler"
+                          />
+                        </div>
                       </template>
 
-
-                      <!-- Fin formulaire ajout d'un commentaire -->
-
+                      <!-- Fin du formulaire pour modifier le post -->
                     </div>
+                    <div class="postInfos">
+                      <div class="postText">
+                        <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
+                      </div>
+                      <div class="commentButtonsHeader">
+                        <button
+                          @click="displayComments(itemPost.postId,$event)"
+                        >
+                          Afficher les commentaires
+                        </button>
+
+                        <button @click="createComment(itemPost.postId)">
+                          Ajouter un commentaire
+                        </button>
+
+                        <!-- Formulaire pour Ajouter un commentaire -->
+
+                        <template v-if="createCommentForm===itemPost.postId">
+                          <!-- Affichage du formulaire de creation du commentaire -->
+                          <span v-if="newComment"></span>
+                          <div v-if="newComment">
+                            <label for="newComment">Votre commentaire</label>
+                            <input
+                              type="text"
+                              v-model="newComment"
+                              id="newComment"
+                            />
+                          </div>
+
+                          <!-- Boutons pour valider ou annuler cette modif -->
+                          <div>
+                            <input
+                              @click="validateCreationComment(itemPost.postId)"
+                              type="submit"
+                              value="Valider"
+                            />
+                          </div>
+                          <div>
+                            <input
+                              @click="cancelCreationComment()"
+                              type="submit"
+                              value="Annuler"
+                            />
+                          </div>
+                        </template>
+
+                        <!-- Fin formulaire ajout d'un commentaire -->
+                      </div>
                       <!-- Partie affichage des commentaires du post -->
-                        <template v-for="itemComment in comments.comment" :key="itemComment.commentId" class="comment">  
-                            <!-- Affichage des commentaires seulement pour le post selectionné -->
-                            <template v-if="itemPost.postId==itemComment.postId">
-                              <div class="commentList"> 
-                                <div class="commentItem">
-                                  <div class="commentHeader">
-                                    <p> Date:  {{itemComment.date}} par {{itemComment.pseudo}} </p>
-                                    <div>
-                                      <p>{{itemComment.comment}}</p>
-                                    </div>
-                                  </div>
-                                  <div class="commentButtons">
-                                  <template v-if="connectedModerator || connectedUserId==itemComment.userId">
-                                    <button @click="deleteComment(itemPost.postId,itemComment.commentId)">
-                                      <span class="fas fa-trash">  Delete</span>
-                                    </button>
-                                    <button @click="modifyComment(itemComment.commentId)">
-                                      <span class="fas fa-pen">  Modify</span>
-                                    </button>
-
-
-                                  </template>
-
-                                  <!-- Formulaire pour modifier le commentaire -->
-                                  <template v-if= "modifyCommentForm===itemComment.commentId">
-                                    <!-- Affichage du formulaire de modif du comment -->
-                                    
-		                                <div>
-			                                <label for="newComment">Votre nouveau commentaire</label>
-			                                <input type="text" v-model="newComment" id="newComment">
-		                                </div>
-
-
-                                    <!-- Boutons pour valider ou annuler cette modif -->
-                                    <div>
-			      
-			                                <input @click="validateModifyComment(itemPost.postId,itemComment.commentId)" type="submit" value="Valider"   />
-		                                </div>
-                                    <div>
-			      
-			                                <input @click="cancelModifyComment()" type="submit" value="Annuler"   />
-		                                </div>
-
-                                  </template>
-
-
-                                  <!-- Fin du formulaire pour modifier le commentaire -->
-                                  </div>
+                      <template
+                        v-for="itemComment in comments.comment"
+                        :key="itemComment.commentId"
+                        class="comment"
+                      >
+                        <!-- Affichage des commentaires seulement pour le post selectionné -->
+                        <template v-if="itemPost.postId==itemComment.postId">
+                          <div class="commentList">
+                            <div class="commentItem">
+                              <div class="commentHeader">
+                                <p>
+                                  Date: {{itemComment.date}} par
+                                  {{itemComment.pseudo}}
+                                </p>
+                                <div>
+                                  <p>{{itemComment.comment}}</p>
                                 </div>
                               </div>
-                          
-                            </template>
-                        </template>
-                      
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </template>
-      </div>
-    </main>
+                              <div class="commentButtons">
+                                <template
+                                  v-if="connectedModerator || connectedUserId==itemComment.userId"
+                                >
+                                  <button
+                                    @click="deleteComment(itemPost.postId,itemComment.commentId)"
+                                  >
+                                    <span class="fas fa-trash"> Delete</span>
+                                  </button>
+                                  <button
+                                    @click="modifyComment(itemComment.commentId)"
+                                  >
+                                    <span class="fas fa-pen"> Modify</span>
+                                  </button>
+                                </template>
 
+                                <!-- Formulaire pour modifier le commentaire -->
+                                <template
+                                  v-if="modifyCommentForm===itemComment.commentId"
+                                >
+                                  <!-- Affichage du formulaire de modif du comment -->
+
+                                  <div>
+                                    <label for="newComment"
+                                      >Votre nouveau commentaire</label
+                                    >
+                                    <input type="text" v-model="newComment" />
+                                  </div>
+
+                                  <!-- Boutons pour valider ou annuler cette modif -->
+                                  <div>
+                                    <input
+                                      @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
+                                      type="submit"
+                                      value="Valider"
+                                    />
+                                  </div>
+                                  <div>
+                                    <input
+                                      @click="cancelModifyComment()"
+                                      type="submit"
+                                      value="Annuler"
+                                    />
+                                  </div>
+                                </template>
+
+                                <!-- Fin du formulaire pour modifier le commentaire -->
+                              </div>
+                            </div>
+                          </div>
+                        </template>
+                      </template>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </template>
+        </div>
+      </main>
 
       <!-- Footer -->
 
-    <footer>
-      <div class="limitedWidthBlockContainer footerMain">
-        <div class="limitedWidthBlock">
-          <div>
-            <img
-              class="logo"
-              src="../images/logo.png"
-              alt="Logo de l'entreprise"
-            />
-          </div>
-          <div>
-            <p>{{adresse}} <br />{{ville}}</p>
+      <footer>
+        <div class="limitedWidthBlockContainer footerMain">
+          <div class="limitedWidthBlock">
+            <div>
+              <img
+                class="logo"
+                src="../images/logo.png"
+                alt="Logo de l'entreprise"
+              />
+            </div>
+            <div>
+              <p>{{adresse}} <br />{{ville}}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
-  </id>
+      </footer>
+    </div>
     <script src="https://unpkg.com/vue@next"></script>
 
-
     <script>
-    //----------------------------------------------------------------------------
-    // vuejs3 
-    //----------------------------------------------------------------------------
-          
+      //----------------------------------------------------------------------------
+      // vuejs3
+      //----------------------------------------------------------------------------
+
       const RootComponent = {
         //les data
         data() {
@@ -390,8 +425,8 @@
             tel: "01 23 45 67 89",
             //nom et infos de l'utilisateur connecté
             connectedName: "",
-            connectedUserId:"",
-            connectedModerator:false,
+            connectedUserId: "",
+            connectedModerator: false,
 
             //tableau des posts et des commentaires
             posts: [],
@@ -405,72 +440,69 @@
             erroredComments: false,
 
             // champs du formulaire pour creéation ou modification posts et comments
-            createPostForm:false, //sera true pour crer un post
-            modifyPostForm:"", //sera egal au num du post à modifier pour modifier un post
-            newPost:'',
+            createPostForm: false, //sera true pour crer un post
+            modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
+            newPost: "",
 
-            createCommentForm:"", //sera egal au num du post sue lequel on veut creer un commentaire
-            modifyCommentForm : "",   //sera egal au num du commentaire à modifier
-            newComment:"",
-
+            createCommentForm: "", //sera egal au num du post sue lequel on veut creer un commentaire
+            modifyCommentForm: "", //sera egal au num du commentaire à modifier
+            newComment: "",
 
             // Utilisateurs
-            modifyProfilForm:false, // sera true pour modifier le profil de l'utilisateur
-            newEmail:"",      // nouvel email
-            newPasswd:"",     //      newPasswd = nouveau passwd
-            newPseudo:"",     //      newPseudo = nouveau pseudo
+            modifyProfilForm: false, // sera true pour modifier le profil de l'utilisateur
+            newEmail: "", // nouvel email
+            newPasswd: "", //      newPasswd = nouveau passwd
+            newPseudo: "", //      newPseudo = nouveau pseudo
 
-            valueToModify:"",    // Valeur de profil à modifier
-            newValue:"",        // Nouvelle valeur du champ modifié
+            valueToModify: "", // Valeur de profil à modifier
+            newValue: "", // Nouvelle valeur du champ modifié
 
-
-            askValue:false,   // sera mis à true pour ouvrir le champ de saisie pour modif profil
-            askEmail:false,  // sera mis à true pour modifier le champ
+            askValue: false, // sera mis à true pour ouvrir le champ de saisie pour modif profil
+            askEmail: false, // sera mis à true pour modifier le champ
             askPseudo: false, // sera mis à true pour modifier le champ
-            askpasswd:false,  // sera mis à true pour modifier le champ
+            askpasswd: false, // sera mis à true pour modifier le champ
 
-            deleteValue : false,  //sera mis a true pour supprimer un compte
-
-
-
+            deleteValue: false, //sera mis a true pour supprimer un compte
           };
         }, // fin des data
 
-    //----------------------------------------------------------------------------
-    //Initialisation de la page
-    //-----------------------------------------------------------------------------
-			beforeCreate() {
-        //loader    
-				this.loading = true;
-			},
+        //----------------------------------------------------------------------------
+        //Initialisation de la page
+        //-----------------------------------------------------------------------------
+        beforeCreate() {
+          //loader
+          this.loading = true;
+        },
 
-    //----------------------------------------------------------------------------
-    // Suite initialisation
-    // Affichage de la page au chargement
-    // et appel de l'API pour afficher les posts.
-    // this permet d'acceder aux données de l'application
-    //----------------------------------------------------------------------------
-      created() {
-
-
+        //----------------------------------------------------------------------------
+        // Suite initialisation
+        // Affichage de la page au chargement
+        // et appel de l'API pour afficher les posts.
+        // this permet d'acceder aux données de l'application
+        //----------------------------------------------------------------------------
+        created() {
           // Lecture du local storage pour récupérer les infos du user
           // Rien ne sera affiché si aucun user n'est connecté = local storage vide
-          if ("user" in localStorage){
+          if ("user" in localStorage) {
             const userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-          
-          
+
             const userToken = userInLocalStorage.token; // le token
 
             // Les infos de l'utilisateur connecté
-          
-            this.connectedName=userInLocalStorage.pseudo; // le nom affiché en entete de feuille
-            this.connectedUserId=userInLocalStorage.userId;
-            this.connectedModerator=userInLocalStorage.moderator;
-          
-            console.log("user connecte ;" + this.connectedName + this.connectedUserId + this.connectedModerator)
+
+            this.connectedName = userInLocalStorage.pseudo; // le nom affiché en entete de feuille
+            this.connectedUserId = userInLocalStorage.userId;
+            this.connectedModerator = userInLocalStorage.moderator;
+
+            console.log(
+              "user connecte ;" +
+                this.connectedName +
+                this.connectedUserId +
+                this.connectedModerator
+            );
 
             const bearerToken = "Bearer " + userToken;
-          
+
             const postUrl = "http://localhost:3000/api/post/"; //Url pour récupérer les posts
             fetch(postUrl, {
               method: "GET",
@@ -479,35 +511,34 @@
                 Authorization: bearerToken,
               },
             })
-            .then((response) => response.json()) //reponse du fetch
-            .catch((error) => {
-              console.log("Fetch error: ", error);
-              windows.alert(error);
-              this.errored = true;
-            })
-            .then((data) => {
-              this.posts = data; //Data renvoyées du serveur
-            })
-            .catch((error) => {
-              console.log("Response error: ", error);
-              this.errored = true;
-            });
-          }   // fin test if user in local storage
-      }, // Fin created
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+                windows.alert(error);
+                this.errored = true;
+              })
+              .then((data) => {
+                this.posts = data; //Data renvoyées du serveur
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                this.errored = true;
+              });
+          } // fin test if user in local storage
+        }, // Fin created
 
-    //------------------------------------------------------------------------------------
-    // Page complètement chargée
-    //------------------------------------------------------------------------------------
-      mounted() {
-        // Load terminé
-				this.loading = false
-			},
+        //------------------------------------------------------------------------------------
+        // Page complètement chargée
+        //------------------------------------------------------------------------------------
+        mounted() {
+          // Load terminé
+          this.loading = false;
+        },
 
-    //------------------------------------------------------------------------------------
-    // Les methodes
-    //------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------
+        // Les methodes
+        //------------------------------------------------------------------------------------
         methods: {
-
           //-----------------------------------------------------------------------------------------
           // createPosts
           // Creation d'un post
@@ -515,9 +546,9 @@
           // Ouverture du formulaire de creation du post
           //---------------------------------------------------------------------------------
 
-          createPost(){
-            console.log ("create post");
-            this.createPostForm=true;   //affichage du formulaire de creatino de post
+          createPost() {
+            console.log("create post");
+            this.createPostForm = true; //affichage du formulaire de creatino de post
           },
 
           //-----------------------------------------------------------------------------------------
@@ -525,13 +556,10 @@
           // Creation du post
           // param: post
           //  methode: POST
-          //  URL: http://localhost:3000/api/post/ 
+          //  URL: http://localhost:3000/api/post/
           //---------------------------------------------------------------------------------
-          validateCreationPost(){
-          console.log("creation new post : " + this.newPost);
-          
-         
-
+          validateCreationPost() {
+            console.log("creation new post : " + this.newPost);
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -540,18 +568,17 @@
             const bearerToken = "Bearer " + userToken;
             //{"post":" post de toutou 6 mai","imageUrl":""}st/";
 
-            const data = {post:this.newPost,"imageUrl":""};
+            const data = { post: this.newPost, imageUrl: "" };
 
             //Url des commentaires du post
-            const postUrl =
-              "http://localhost:3000/api/post"
+            const postUrl = "http://localhost:3000/api/post";
             fetch(postUrl, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: bearerToken,
               },
-              body:JSON.stringify(data),
+              body: JSON.stringify(data),
             })
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
@@ -561,24 +588,21 @@
               .then((response) => {
                 //response OK
                 const retourServer = response;
-                console.log (retourServer.message);
-                this.createPostForm=false;  // on replie le formulaire
+                console.log(retourServer.message);
+                this.createPostForm = false; // on replie le formulaire
                 window.alert(retourServer.message); // affiche msg de retour du serveur
                 window.location.reload(); // et on recharge
-
-              
               })
               .catch((error) => {
                 console.log("Response error: ", error);
                 this.erroredComments = true;
               });
           }, //Fin validateCreationPost
-   
-          //cancel création post  
-          cancelCreationPost(){
-            this.createPostForm=false;  // on replie le formulaire
-          },
 
+          //cancel création post
+          cancelCreationPost() {
+            this.createPostForm = false; // on replie le formulaire
+          },
 
           //-----------------------------------------------------------------------------------------
           // modifyPost
@@ -587,9 +611,9 @@
           // Ouverture du formulaire de modif du post
           //---------------------------------------------------------------------------------
 
-          modifyPost(postId){
-            console.log ("modify post");
-            this.modifyPostForm=postId;   //affichage du formulaire de modif de post
+          modifyPost(postId) {
+            console.log("modify post");
+            this.modifyPostForm = postId; //affichage du formulaire de modif de post
           },
 
           //-----------------------------------------------------------------------------------------
@@ -599,30 +623,26 @@
           //  methode: PUT
           //  URL: http://localhost:3000/api/post/postId
           //---------------------------------------------------------------------------------
-          validateModifyPost(postId){
-          console.log("modification  post : " + this.newPost);
-          
-         
-
+          validateModifyPost(postId) {
+            console.log("modification  post : " + this.newPost);
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
             const userToken = userInLocalStorage.token; // le token
 
             const bearerToken = "Bearer " + userToken;
-            
-            const data = {post:this.newPost,"imageUrl":""};
+
+            const data = { post: this.newPost, imageUrl: "" };
 
             //Url des commentaires du post
-            const postUrl =
-              "http://localhost:3000/api/post/" + postId;
+            const postUrl = "http://localhost:3000/api/post/" + postId;
             fetch(postUrl, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: bearerToken,
               },
-              body:JSON.stringify(data),
+              body: JSON.stringify(data),
             })
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
@@ -632,21 +652,19 @@
               .then((response) => {
                 //response OK
 
-                this.modifyPostForm="";  // on replie le formulaire
-                
-                window.location.reload(); // et on recharge
+                this.modifyPostForm = ""; // on replie le formulaire
 
-              
+                window.location.reload(); // et on recharge
               })
               .catch((error) => {
                 console.log("Response error: ", error);
                 this.erroredComments = true;
               });
           }, //Fin validateModifyPost
-   
-          //cancel modify post  
-          cancelModifyPost(){
-            this.modifyPostForm="";  // on replie le formulaire
+
+          //cancel modify post
+          cancelModifyPost() {
+            this.modifyPostForm = ""; // on replie le formulaire
           },
           //
           //-----------------------------------------------------------------------------------------
@@ -654,11 +672,10 @@
           // Affichage des commentaires du post
           // param: postId
           //  methode: GET
-          //  URL: http://localhost:3000/api/post/postId/comment  
+          //  URL: http://localhost:3000/api/post/postId/comment
           //---------------------------------------------------------------------------------
-          displayComments(postId,event) {
+          displayComments(postId, event) {
             console.log(postId);
-
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -684,8 +701,6 @@
               })
               .then((response) => {
                 this.comments = response; //les commentaires renvoyés de l'API
-
-              
               })
               .catch((error) => {
                 console.log("Response error: ", error);
@@ -698,13 +713,11 @@
           // Suppression d'un post
           // param: postId
           //  methode: DELETE
-          //  URL: http://localhost:3000/api/post/postId  
+          //  URL: http://localhost:3000/api/post/postId
           //---------------------------------------------------------------------------------
 
-                   
           deletePost(postId) {
-            console.log("delete post n : "+ postId);
-
+            console.log("delete post n : " + postId);
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -713,8 +726,7 @@
             const bearerToken = "Bearer " + userToken;
 
             //Url  du post
-            const postUrl =
-              "http://localhost:3000/api/post/" + postId ;
+            const postUrl = "http://localhost:3000/api/post/" + postId;
 
             fetch(postUrl, {
               method: "DELETE",
@@ -730,7 +742,7 @@
               })
               .then((response) => {
                 window.alert(response.message); // affiche msg de retour du serveur
-                window.location.reload();  // rafraichit la page
+                window.location.reload(); // rafraichit la page
               })
               .catch((error) => {
                 console.log("Response error: ", error);
@@ -739,8 +751,6 @@
           }, //Fin deletePost
 
           //---------------------------------------------------------------------------
-
-
 
           //---------------------------------------------------------------------------
           //-----------------------------------------------------------------------------------------
@@ -753,10 +763,10 @@
           //    commentId: commentaire à modifier
           //---------------------------------------------------------------------------------
 
-                   
-          deleteComment(postId,commentId) {
-            console.log("delete commentaire n° "+ commentId + " du post n : "+ postId);
-
+          deleteComment(postId, commentId) {
+            console.log(
+              "delete commentaire n° " + commentId + " du post n : " + postId
+            );
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -766,7 +776,10 @@
 
             //Url  du comment
             const commentUrl =
-              "http://localhost:3000/api/post/" + postId + "/comment/" + commentId ;
+              "http://localhost:3000/api/post/" +
+              postId +
+              "/comment/" +
+              commentId;
 
             fetch(commentUrl, {
               method: "DELETE",
@@ -781,7 +794,7 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                this.comments = response; 
+                this.comments = response;
                 window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
@@ -789,7 +802,6 @@
                 this.erroredComments = true;
               });
           }, //Fin deleteComment
-
 
           //-----------------------------------------------------------------------------------------
           // createComment
@@ -799,9 +811,9 @@
           // Ouverture du formulaire de creation du commentaire
           //---------------------------------------------------------------------------------
 
-          createComment(postId){
-            console.log ("create comment");
-            this.createCommentForm=postId;   //affichage du formulaire de creation du commentaire pour le post
+          createComment(postId) {
+            console.log("create comment");
+            this.createCommentForm = postId; //affichage du formulaire de creation du commentaire pour le post
           },
 
           //-----------------------------------------------------------------------------------------
@@ -809,22 +821,18 @@
           // Creation du commentaire
           // param: post
           //  methode: POST
-          //  URL: http://localhost:3000/api/post/postId 
+          //  URL: http://localhost:3000/api/post/postId
           //---------------------------------------------------------------------------------
-          validateCreationComment(postId){
-          console.log("creation new comment pour post  : " + postId);
-          
-         
-
+          validateCreationComment(postId) {
+            console.log("creation new comment pour post  : " + postId);
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
             const userToken = userInLocalStorage.token; // le token
 
             const bearerToken = "Bearer " + userToken;
-            
 
-            const data = {comment:this.newComment};
+            const data = { comment: this.newComment };
 
             //Url des commentaires du post
             const postUrl =
@@ -835,7 +843,7 @@
                 "Content-Type": "application/json",
                 Authorization: bearerToken,
               },
-              body:JSON.stringify(data),
+              body: JSON.stringify(data),
             })
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
@@ -844,25 +852,21 @@
               })
               .then((response) => {
                 //response OK
-                
-                console.log (response.message);
-                this.createCommentForm="";  // on replie le formulaire
-                window.alert(response.message); // affiche msg de retour du serveur
-                
 
-              
+                console.log(response.message);
+                this.createCommentForm = ""; // on replie le formulaire
+                window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
                 console.log("Response error: ", error);
                 this.erroredComments = true;
               });
           }, //Fin validateCreationComment
-   
-          //cancel création comment  
-          cancelCreationComment(){
-            this.createCommentForm="";  // on replie le formulaire
-          },
 
+          //cancel création comment
+          cancelCreationComment() {
+            this.createCommentForm = ""; // on replie le formulaire
+          },
 
           //-----------------------------------------------------------------------------------------
           // modifyComment
@@ -871,11 +875,10 @@
           // param: commentId
           //-------------------------------------------------
 
-          modifyComment(commentId){
-            console.log ("modify  comment");
-            this.modifyCommentForm=commentId;   
+          modifyComment(commentId) {
+            console.log("modify  comment");
+            this.modifyCommentForm = commentId;
           },
-
 
           //-----------------------------------------------------------------------------------------
           // validateModifyComment
@@ -889,10 +892,10 @@
           //    newComment: Nouveau commentaire
           //---------------------------------------------------------------------------------
 
-                   
-          validateModifyComment(postId,commentId) {
-            console.log("modify commentaire n° "+ commentId + " du post n : "+ postId);
-
+          validateModifyComment(postId, commentId) {
+            console.log(
+              "modify commentaire n° " + commentId + " du post n : " + postId
+            );
 
             // Lecture du local storage pour récupérer le token  du user
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -900,11 +903,14 @@
 
             const bearerToken = "Bearer " + userToken;
 
-            const data = {comment:this.newComment};
+            const data = { comment: this.newComment };
 
             //Url  du comment
             const commentUrl =
-              "http://localhost:3000/api/post/" + postId + "/comment/" + commentId ;
+              "http://localhost:3000/api/post/" +
+              postId +
+              "/comment/" +
+              commentId;
 
             fetch(commentUrl, {
               method: "PUT",
@@ -912,7 +918,7 @@
                 "Content-Type": "application/json",
                 Authorization: bearerToken,
               },
-              body:JSON.stringify(data),
+              body: JSON.stringify(data),
             })
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
@@ -920,7 +926,7 @@
                 this.erroredComments = true;
               })
               .then((response) => {
-                this.modifyCommentForm="";  // on replie le formulaire
+                this.modifyCommentForm = ""; // on replie le formulaire
                 window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
@@ -929,19 +935,15 @@
               });
           }, //Fin ValidateModifyComment
 
-          //cancel modify comment  
-          cancelModifyComment(){
-            this.modifyCommentForm="";  // on replie le formulaire
+          //cancel modify comment
+          cancelModifyComment() {
+            this.modifyCommentForm = ""; // on replie le formulaire
           },
 
-
-//--------------------------------------------------------------------------------------
+          //--------------------------------------------------------------------------------------
           //-------------------------------------------------------------------------
           //Gestion de la connexion
           //---------------------------------------------------------------------------
-
-
-
 
           //--------------------------------------------------------------------------
           // Utilisateur:
@@ -955,51 +957,46 @@
           // param: aucun
           //-------------------------------------------------
 
-          profil(){
-            console.log ("profil utilisateur");
-            this.modifyProfilForm=true;       // ouverture formulaire profil
+          profil() {
+            console.log("profil utilisateur");
+            this.modifyProfilForm = true; // ouverture formulaire profil
           },
 
-          modifyEmailProfil(){
-            try{
-              this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
-                                        // du param à modifier
-              
+          modifyEmailProfil() {
+            try {
+              this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
+              // du param à modifier
+
               this.valueToModify = "email";
               this.displayOkCancel = true;
+            } catch (err) {
+              console.log("Erreur modifyProfil " + err);
             }
-          catch(err){          
-          
-          console.log("Erreur modifyProfil " + err)
-          }},
+          },
 
+          modifyPasswdProfil() {
+            try {
+              this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
+              // du param à modifier
 
-          modifyPasswdProfil(){
-            try{
-              this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
-                                        // du param à modifier
-              
               this.valueToModify = "password";
               this.displayOkCancel = true;
+            } catch (err) {
+              console.log("Erreur modifyProfil " + err);
             }
-          catch(err){          
-          
-          console.log("Erreur modifyProfil " + err)
-          }},
+          },
 
+          modifyPseudoProfil() {
+            try {
+              this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
+              // du param à modifier
 
-          modifyPseudoProfil(){
-            try{
-              this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
-                                        // du param à modifier
-              
               this.valueToModify = "pseudo";
               this.displayOkCancel = true;
+            } catch (err) {
+              console.log("Erreur modifyProfil " + err);
             }
-          catch(err){          
-          
-          console.log("Erreur modifyProfil " + err)
-          }},
+          },
 
           //-----------------------------------------------------------------------------------------
           // validateModifyProfil
@@ -1013,65 +1010,55 @@
           //      newPseudo = nouveau pseudo
           //---------------------------------------------------------------------------------
 
-                   
           validateModifyProfil() {
-           
-
-
             // Lecture du local storage pour récupérer le token  du user
-          if ("user" in localStorage){
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
-            const userId = userInLocalStorage.userId; // le userId
+            if ("user" in localStorage) {
+              let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+              const userToken = userInLocalStorage.token; // le token
+              const userId = userInLocalStorage.userId; // le userId
 
-            const bearerToken = "Bearer " + userToken;
+              const bearerToken = "Bearer " + userToken;
 
-            console.log("modify profil "+ userId);
-            const valueToModify=this.valueToModify;
-            const newValue=this.newValue;
+              console.log("modify profil " + userId);
+              const valueToModify = this.valueToModify;
+              const newValue = this.newValue;
 
-            const data={valueToModify:newValue};
-            
+              const data = { valueToModify: newValue };
 
-            //Url  du user
-            const userUrl =
-              "http://localhost:3000/api/auth/" + userId ;
+              //Url  du user
+              const userUrl = "http://localhost:3000/api/auth/" + userId;
 
-            fetch(userUrl, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              body:JSON.stringify(data),
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-               
+              fetch(userUrl, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: bearerToken,
+                },
+                body: JSON.stringify(data),
               })
-              .then((response) => {
-                this.profilForm=false;  // on replie le formulaire
-                window.alert(response.message); // affiche msg de retour du serveur
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                
-              }) };
+                .then((response) => response.json()) //reponse du fetch
+                .catch((error) => {
+                  console.log("Fetch error: ", error);
+                })
+                .then((response) => {
+                  this.profilForm = false; // on replie le formulaire
+                  window.alert(response.message); // affiche msg de retour du serveur
+                })
+                .catch((error) => {
+                  console.log("Response error: ", error);
+                });
+            }
           }, //Fin ValidateModifyProfil
-
 
           //------------------------------------------------------------------------
 
-          //cancel modify profil 
-          cancelModifyProfil(){
-            this.modifyProfilForm=false;  // on replie le formulaire et on reinit les variables.
+          //cancel modify profil
+          cancelModifyProfil() {
+            this.modifyProfilForm = false; // on replie le formulaire et on reinit les variables.
             this.valueToModify = "";
             this.askValue = false;
             this.displayOkCancel = false;
           },
-
-
 
           //---------------------------------------------------------------------------
           //logout()
@@ -1080,16 +1067,15 @@
           //    Clear du local storage
           //    Retour à la page accueil
           //-------------------------------------------------------------------------------
-          logout(){try{
-            console.log ("logout");
-            localStorage.clear();         // petit coup de karsher ds le local storage
-            window.location.href="./index.html"; // on retourne à la page d'accueil
-
-          }catch(err){
-            console.log ("error ft logout : " + err);
-          }
+          logout() {
+            try {
+              console.log("logout");
+              localStorage.clear(); // petit coup de karsher ds le local storage
+              window.location.href = "./index.html"; // on retourne à la page d'accueil
+            } catch (err) {
+              console.log("error ft logout : " + err);
+            }
           },
-
 
           //---------------------------------------------------------------------------
           //deleteProfil()
@@ -1100,79 +1086,70 @@
           //
           // recherche tu token dan sle local Storage
           //  Appel ft DELETE
-          //    
+          //
           //-------------------------------------------------------------------------------
-            deleteProfil()         {
-            try{
-              this.modifyProfilForm=false;  // on replie le formulaire
-              this.askValue = false;   // pas de champ de seisie a ouvrir 
-              
-              
+          deleteProfil() {
+            try {
+              this.modifyProfilForm = false; // on replie le formulaire
+              this.askValue = false; // pas de champ de seisie a ouvrir
+
               this.displayOkCancel = false;
-              this.deleteValue=true;
-              window.alert ("ATTENTION: vous vous appretez à supprimer votre compte avec les posts et commentaires crées")
-            
-            
+              this.deleteValue = true;
+              window.alert(
+                "ATTENTION: vous vous appretez à supprimer votre compte avec les posts et commentaires crées"
+              );
+            } catch (err) {
+              console.log("Erreur deleteProfil " + err);
             }
-          catch(err){          
-          
-          console.log("Erreur deleteProfil " + err)
-          }},
+          },
 
           //------------------------------------------------------
 
-          validateDeleteProfil(){try{
-            console.log ("delete profil");
-            
-                        // Lecture du local storage pour récupérer le token  du user
-          if ("user" in localStorage){
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
-            const userId = userInLocalStorage.userId; // le userId
+          validateDeleteProfil() {
+            try {
+              console.log("delete profil");
 
-            const bearerToken = "Bearer " + userToken;
+              // Lecture du local storage pour récupérer le token  du user
+              if ("user" in localStorage) {
+                let userInLocalStorage = JSON.parse(
+                  localStorage.getItem("user")
+                ); //objet "user" du local storage
+                const userToken = userInLocalStorage.token; // le token
+                const userId = userInLocalStorage.userId; // le userId
 
-            console.log("delete profil "+ userId);
+                const bearerToken = "Bearer " + userToken;
 
-            
+                console.log("delete profil " + userId);
 
-            //Url  du user
-            const userUrl =
-              "http://localhost:3000/api/auth/" + userId ;
+                //Url  du user
+                const userUrl = "http://localhost:3000/api/auth/" + userId;
 
-            fetch(userUrl, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-               
-              })
-              .then((response) => {
-                this.profilForm=false;  // on replie le formulaire
-                window.alert(response.message); // affiche msg de retour du serveur
-                //retour à l'acueil  ici
-                 window.location.href="./index.html"; // on retourne à la page d'accueil
-                 localStorage.clear();         // petit coup de karsher ds le local storage
-
-
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                
-              }) };
-            
-          }catch(err){
-            console.log ("error ft deleteProfil : " + err);
-          }
-          }
-
-
+                fetch(userUrl, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                  })
+                  .then((response) => {
+                    this.profilForm = false; // on replie le formulaire
+                    window.alert(response.message); // affiche msg de retour du serveur
+                    //retour à l'acueil  ici
+                    window.location.href = "./index.html"; // on retourne à la page d'accueil
+                    localStorage.clear(); // petit coup de karsher ds le local storage
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                  });
+              }
+            } catch (err) {
+              console.log("error ft deleteProfil : " + err);
+            }
+          },
         }, // Fin des methodes
       }; // Fin RootComponent
 
