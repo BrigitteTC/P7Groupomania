@@ -93,15 +93,29 @@
 			                <input type="text" v-model="newValue" id="newValue">
 		              
 
-
-                      <!-- Boutons pour valider ou annuler cette creation -->
-                      <div  class = flexRows>
+                      <div  v-if= "displayOkCancel"  class = "flexRows">
+                        <!-- Boutons pour valider ou annuler cette creation -->
+                        <div v-if= "askValue" >
 			      
-			                  <input @click="validateModifyProfil()" type="submit" value="Valider" id="order" />
+			                    <input @click="validateModifyProfil()" type="submit" value="Valider" id="order" />
+		                    </div>
+
+                        <div>
+			      
+			                    <input @click="cancelModifyProfil()" type="submit" value="Annuler" id="order" />
+		                    </div>
+                      </div>
+                    </div>
+
+                    <div v-if= "deleteValue" class = "flexRows" >
+                      <div>
+			                  <h3>Delete compte de {{connectedName}}</h3> 
+			                  <input @click="validateDeleteProfil()" type="submit" value="Valider suppression du compte" id="order" />
 		                  </div>
+
                       <div>
 			      
-			                  <input @click="cancelModifyProfil()" type="submit" value="Annuler" id="order" />
+			                  <input @click="cancelModifyProfil()" type="submit" value="Annuler suppression du compte" id="order" />
 		                  </div>
                     </div>
                   </div>
@@ -410,6 +424,8 @@
             askEmail:false,  // sera mis à true pour modifier le champ
             askPseudo: false, // sera mis à true pour modifier le champ
             askpasswd:false,  // sera mis à true pour modifier le champ
+
+            deleteValue : false,  //sera mis a true pour supprimer un compte
 
 
 
@@ -946,6 +962,7 @@
                                         // du param à modifier
               
               this.valueToModify = "email";
+              this.displayOkCancel = true;
             }
           catch(err){          
           
@@ -959,6 +976,7 @@
                                         // du param à modifier
               
               this.valueToModify = "password";
+              this.displayOkCancel = true;
             }
           catch(err){          
           
@@ -972,6 +990,7 @@
                                         // du param à modifier
               
               this.valueToModify = "pseudo";
+              this.displayOkCancel = true;
             }
           catch(err){          
           
@@ -1045,6 +1064,7 @@
             this.modifyProfilForm=false;  // on replie le formulaire et on reinit les variables.
             this.valueToModify = "";
             this.askValue = false;
+            this.displayOkCancel = false;
           },
 
 
@@ -1071,13 +1091,35 @@
           //deleteProfil()
           //
           // Suppression du compte du user en cours:
+
+          // Affichage d'un choix de bouton OK/Cancel
           //
           // recherche tu token dan sle local Storage
           //  Appel ft DELETE
           //    
           //-------------------------------------------------------------------------------
-          deleteProfil(){try{
+            deleteProfil()         {
+            try{
+              this.askValue = "false";   // Ouverture du formulaire pour rentrer la nouvelle valeur
+                                        // du param à modifier
+              
+              
+              this.displayOkCancel = false;
+              this.deleteValue=true;
+              window.alert ("ATTENTION: vous vous appretez à supprimer votre compte avec les posts et commentaires crées")
+            
+            
+            }
+          catch(err){          
+          
+          console.log("Erreur deleteProfil " + err)
+          }},
+
+          //------------------------------------------------------
+
+          validateDeleteProfil(){try{
             console.log ("delete profil");
+            
                         // Lecture du local storage pour récupérer le token  du user
           if ("user" in localStorage){
             let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
@@ -1110,6 +1152,11 @@
               .then((response) => {
                 this.profilForm=false;  // on replie le formulaire
                 window.alert(response.message); // affiche msg de retour du serveur
+                //retour à l'acueil  ici
+                 window.location.href="./index.html"; // on retourne à la page d'accueil
+                 localStorage.clear();         // petit coup de karsher ds le local storage
+
+
               })
               .catch((error) => {
                 console.log("Response error: ", error);
