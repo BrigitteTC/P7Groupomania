@@ -34,6 +34,8 @@
   </head>
 
   <body>
+    <!-- Le header avec icone + navigation -->
+    <div id="app">
     <header>
       <div class="limitedWidthBlockContainer informations">
         <div class="limitedWidthBlock">
@@ -71,8 +73,8 @@
           <!-- Fin bouton nav -->
         </div>
       </div>
-    <!-- <main>** -->
-    <main id="app">
+    <!-- <main> -->
+    <main >
       <h1>les posts des salariés de Groupomania</h1>
 
       <div class="postHeader">
@@ -301,6 +303,7 @@
         </div>
       </div>
     </footer>
+  </id>
     <script src="https://unpkg.com/vue@next"></script>
 
 
@@ -924,6 +927,23 @@
           cancelModifyProfil(){
             this.modifyProfilForm="";  // on replie le formulaire
           },
+
+
+
+          //---------------------------------------------------------------------------
+          //logout()
+          //
+          // deconnexion:
+          //    Clear du local storage
+          //    REtour à la page accueil
+          //-------------------------------------------------------------------------------
+          logout(){
+            console.log ("logout")
+            localStorage.clear;
+            location.href("../index.html")
+
+
+          }
 
 
 
