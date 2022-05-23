@@ -244,27 +244,40 @@ Algo:
 exports.modifyUser = (req, res, next) => {
   try {
     console.log("DEBUG: ft modifyUser");
+    console.log(req.body.email + req.body.pseudo + req.body.password);
 
     // partie sql correspondant à chaque param
     // req SQL en ft du param à modifier
     let dataToModifyEmail = "";
     let dataToModifyPseudo = "";
-
-    if (req.body.email) {
+    console.log("DEBUG: dataToModifyPseudo");
+    if (req.body.email !== undefined) {
+      console.log("DEBUG: 2");
       dataToModifyEmail = " email = '" + req.body.email + "'";
+      console.log("DEBUG   dataToModifyEmail" + dataToModifyEmail);
+      console.log("DEBUG: 2");
     }
 
-    if (req.body.pseudo) {
+    if (req.body.pseudo !== undefined) {
+      console.log("DEBUG: 3");
       dataToModifyPseudo = " pseudo = '" + req.body.pseudo + "'";
+      console.log("DEBUG   dataToModifyPseudo" + dataToModifyPseudo);
+      console.log("DEBUG: 3");
     }
     // Cas avec passwd modifié à ajouter
-    if (req.body.passwd) {
+    if (req.body.password !== undefined) {
+      console.log("DEBUG: 4 cas avec passwd" + req.body.password);
       //modif du passwd
       bcrypt
         .hash(req.body.password, 10)
         .then((hash) => {
-          sql = "UPDATE " + usersTable + " SET " + dataToModifyEmail + ",";
-          dataToModifyPseudo +
+          sql =
+            "UPDATE " +
+            usersTable +
+            " SET " +
+            dataToModifyEmail +
+            "," +
+            dataToModifyPseudo +
             "," +
             "passwd ='" +
             hash +
@@ -300,8 +313,17 @@ exports.modifyUser = (req, res, next) => {
     //-------------------------------------------------------------------------
     // Cas sans modif du passwd
     else {
-      sql = "UPDATE " + usersTable + " SET " + dataToModifyEmail + ",";
-      dataToModifyPseudo + " WHERE userId= '" + req.params.userId + "';";
+      console.log("DEBUG: 5 cas sans passwd");
+      sql =
+        "UPDATE " +
+        usersTable +
+        " SET " +
+        dataToModifyEmail +
+        "," +
+        dataToModifyPseudo +
+        " WHERE userId= '" +
+        req.params.userId +
+        "';";
 
       console.log("DEBUG ft modifyUser: sql=" + sql);
       connection
@@ -327,7 +349,7 @@ exports.modifyUser = (req, res, next) => {
           console.log("modifyUser: erreur:  " + err);
           res.status(500).json({ message: "modify failed" });
         });
-    }
+    } // fin Cas sans modif du passwd
     // fin du try
     //--------------------------------------------------------
   } catch (err) {
