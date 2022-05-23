@@ -958,7 +958,7 @@
               this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
                                         // du param à modifier
               
-              this.valueToModify = "passwd";
+              this.valueToModify = "password";
             }
           catch(err){          
           
@@ -1004,8 +1004,10 @@
             const bearerToken = "Bearer " + userToken;
 
             console.log("modify profil "+ userId);
+            const valueToModify=this.valueToModify;
+            const newValue=this.newValue;
 
-            const data={"this.valueToModify":"this.newValue"};
+            const data={valueToModify:newValue};
             
 
             //Url  du user

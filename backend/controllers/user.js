@@ -305,6 +305,7 @@ exports.modifyUser = (req, res, next) => {
     //-------------------------------------------------------------------------
     // Cas sans modif du passwd
     else {
+      console.log("DEBUG dataToModify = " + dataToModify);
       console.log("DEBUG: 5 cas sans passwd");
       sql =
         "UPDATE " +
