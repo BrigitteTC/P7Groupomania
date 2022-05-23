@@ -17,6 +17,19 @@ p {
 }
 
 /***************************
+Class pour afficher les items a coté ou dessus/dessous
+*****************************/
+.flexColumns {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexRows {
+  display: flex;
+  flex-direction: rows;
+}
+
+/***************************
 Bouton de nav du header
 *****************************/
 .HeaderButton {

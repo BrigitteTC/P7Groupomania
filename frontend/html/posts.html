@@ -80,9 +80,10 @@
                       <ul class="pucesItems">
                         <!-- Affichage du menu de modif du profil-->
                         <!-- Menu avec 4 choix -->
-                        <li v-if= "!askValue" @click="modifyProfil(email)">Modification email</li>
-                        <li v-if= "!askValue" @click="modifyProfil(passwd)"> Modification passwd</li>
-                        <li v-if= "!askValue" @click="modifyProfil(pseudo)"> Modification pseudo</li>
+                        <!-- sera caché quand on aura fait le choix -->
+                        <li v-if= "!askValue" @click="modifyEmailProfil()">Modification email</li>
+                        <li v-if= "!askValue" @click="modifyPasswdProfil()"> Modification passwd</li>
+                        <li v-if= "!askValue" @click="modifyPseudoProfil()"> Modification pseudo</li>
                         <li v-if= "!askValue" @click="deleteProfil()"> Suppression du compte</li>
                       </ul>
                     </div>
@@ -94,13 +95,13 @@
 
 
                       <!-- Boutons pour valider ou annuler cette creation -->
-                      <div>
+                      <div  class = flexRows>
 			      
 			                  <input @click="validateModifProfil()" type="submit" value="Valider" id="order" />
 		                  </div>
                       <div>
 			      
-			                  <input @click="cancelModifProfil()" type="submit" value="Annuler" id="order" />
+			                  <input @click="cancelModifyProfil()" type="submit" value="Annuler" id="order" />
 		                  </div>
                     </div>
                   </div>
@@ -939,14 +940,40 @@
             this.modifyProfilForm=true;       // ouverture formulaire profil
           },
 
-          modifyProfil(paramToModify){
+          modifyEmailProfil(){
             try{
               this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
                                         // du param à modifier
               
-              this.valueToModify = paramToModify;
+              this.valueToModify = "email";
             }
-          catch(err){
+          catch(err){          
+          
+          console.log("Erreur modifyProfil " + err)
+          }},
+
+
+          modifyPasswdProfil(){
+            try{
+              this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
+                                        // du param à modifier
+              
+              this.valueToModify = "passwd";
+            }
+          catch(err){          
+          
+          console.log("Erreur modifyProfil " + err)
+          }},
+
+
+          modifyPseudoProfil(){
+            try{
+              this.askValue = "true";   // Ouverture du formulaire pour rentrer la nouvelle valeur
+                                        // du param à modifier
+              
+              this.valueToModify = "pseudo";
+            }
+          catch(err){          
           
           console.log("Erreur modifyProfil " + err)
           }},
@@ -964,7 +991,7 @@
           //---------------------------------------------------------------------------------
 
                    
-          validateModifyComment(userId) {
+          validateModifyProfil(userId) {
             console.log("modify profil "+ userId);
 
 
@@ -1005,7 +1032,9 @@
 
           //cancel modify profil 
           cancelModifyProfil(){
-            this.modifyProfilForm=false;  // on replie le formulaire
+            this.modifyProfilForm=false;  // on replie le formulaire et on reinit les variables.
+            this.valueToModify = "";
+            this.askValue = false;
           },
 
 
