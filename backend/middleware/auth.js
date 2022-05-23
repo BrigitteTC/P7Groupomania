@@ -34,7 +34,6 @@ module.exports = (req, res, next) => {
     );
     console.log("DEBUG : fonction auth: token : " + token);
     const secretKey = process.env.SECRET_KEY;
-    console.log("DEBUG : fonction auth: secretKey : " + secretKey);
 
     // on décode le token avec verify et clé secrete
     const decodedToken = jwt.verify(token, secretKey);
