@@ -87,29 +87,32 @@
                         <li v-if= "!askValue" @click="deleteProfil()"> Suppression du compte</li>
                       </ul>
                     </div>
-                    <!-- Champ pour saisir la nouvelle valeur -->
-		                <div  v-if= "askValue">
-			                <label for="newValue">Modification {{valueToModify}} Nouvelle valeur</label>
-			                <input type="text" v-model="newValue" id="newValue">
+                  </div>  
+                  <!-- Champ pour saisir la nouvelle valeur -->
+		              <div  v-if= "askValue">
+			              <label for="newValue">Modification {{valueToModify}} Nouvelle valeur</label>
+			              <input type="text" v-model="newValue" id="newValue">
 		              
 
-                      <div  v-if= "displayOkCancel"  class = "flexRows">
-                        <!-- Boutons pour valider ou annuler cette creation -->
-                        <div v-if= "askValue" >
+                    <div  v-if= "displayOkCancel"  class = "flexRows">
+                    <!-- Boutons pour valider ou annuler cette creation -->
+                      <div  >
 			      
-			                    <input @click="validateModifyProfil()" type="submit" value="Valider" id="order" />
-		                    </div>
+			                  <input @click="validateModifyProfil()" type="submit" value="Valider" id="order" />
+		                  </div>
 
-                        <div>
-			      
-			                    <input @click="cancelModifyProfil()" type="submit" value="Annuler" id="order" />
-		                    </div>
-                      </div>
-                    </div>
-
-                    <div v-if= "deleteValue" class = "flexRows" >
                       <div>
-			                  <h3>Delete compte de {{connectedName}}</h3> 
+			      
+			                  <input @click="cancelModifyProfil()" type="submit" value="Annuler" id="order" />
+		                  </div>
+                    </div>
+                  </div>
+                  <!-- Boutons pour valider ou non la suppressin du compte -->
+                  <div v-if= "deleteValue" class = "flexColons" >
+                    <h3>Delete compte de {{connectedName}}</h3> 
+                    <div class=" flexRows">
+                      <div>
+			                 
 			                  <input @click="validateDeleteProfil()" type="submit" value="Valider suppression du compte" id="order" />
 		                  </div>
 
@@ -119,6 +122,7 @@
 		                  </div>
                     </div>
                   </div>
+                  
                 </template>
               <!-- Fin formulaire de modif du profil-->
 
@@ -1100,8 +1104,8 @@
           //-------------------------------------------------------------------------------
             deleteProfil()         {
             try{
-              this.askValue = "false";   // Ouverture du formulaire pour rentrer la nouvelle valeur
-                                        // du param à modifier
+              this.modifyProfilForm=false;  // on replie le formulaire
+              this.askValue = false;   // pas de champ de seisie a ouvrir 
               
               
               this.displayOkCancel = false;
