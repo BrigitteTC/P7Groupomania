@@ -248,25 +248,25 @@ exports.modifyUser = (req, res, next) => {
 
     // partie sql correspondant à chaque param
     // req SQL en ft du param à modifier
-    let dataToModifyEmail = "";
-    let dataToModifyPseudo = "";
-    console.log("DEBUG: dataToModifyPseudo");
+    let dataToModify = "";
+
+    console.log("DEBUG: dataToModify");
     if (req.body.email !== undefined) {
       console.log("DEBUG: 2");
-      dataToModifyEmail = " email = '" + req.body.email + "'";
-      console.log("DEBUG   dataToModifyEmail" + dataToModifyEmail);
+      dataToModify = " email = '" + req.body.email + "'";
+      console.log("DEBUG   dataToModify" + dataToModify);
       console.log("DEBUG: 2");
     }
 
     if (req.body.pseudo !== undefined) {
       console.log("DEBUG: 3");
-      dataToModifyPseudo = " pseudo = '" + req.body.pseudo + "'";
-      console.log("DEBUG   dataToModifyPseudo" + dataToModifyPseudo);
+      dataToModify = " pseudo = '" + req.body.pseudo + "'";
+      console.log("DEBUG   dataToModify " + dataToModify);
       console.log("DEBUG: 3");
     }
     // Cas avec passwd modifié à ajouter
     if (req.body.password !== undefined) {
-      console.log("DEBUG: 4 cas avec passwd" + req.body.password);
+      console.log("DEBUG: 4 cas avec passwd " + req.body.password);
       //modif du passwd
       bcrypt
         .hash(req.body.password, 10)
@@ -275,10 +275,6 @@ exports.modifyUser = (req, res, next) => {
             "UPDATE " +
             usersTable +
             " SET " +
-            dataToModifyEmail +
-            "," +
-            dataToModifyPseudo +
-            "," +
             "passwd ='" +
             hash +
             "' WHERE userId= '" +
@@ -295,13 +291,9 @@ exports.modifyUser = (req, res, next) => {
               console.log("modifyUser: erreur  " + err);
             } else {
               // OK utilisateur modifie
-              console.log(
-                "DEBUG: modifyUser: utilisateur modifie  " + req.body.pseudo
-              );
+              console.log("DEBUG: modifyUser: utilisateur modifie  ");
 
-              res
-                .status(201)
-                .json({ message: "Utilisateur modifie : " + req.body.pseudo });
+              res.status(201).json({ message: "Utilisateur modifie : " });
             }
           });
         })
@@ -318,9 +310,7 @@ exports.modifyUser = (req, res, next) => {
         "UPDATE " +
         usersTable +
         " SET " +
-        dataToModifyEmail +
-        "," +
-        dataToModifyPseudo +
+        dataToModify +
         " WHERE userId= '" +
         req.params.userId +
         "';";
@@ -341,7 +331,7 @@ exports.modifyUser = (req, res, next) => {
             );
 
             res.status(201).json({
-              message: "Utilisateur modifie : " + req.body.pseudo,
+              message: "Utilisateur modifie : ",
             });
           }
         })
