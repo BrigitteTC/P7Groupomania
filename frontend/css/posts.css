@@ -16,6 +16,26 @@ p {
   color: black;
 }
 
+/***************************
+Bouton de nav du header
+*****************************/
+.HeaderButton {
+  display: flex;
+  flex-direction: rows;
+}
+
+/***************************
+ Menu de profil
+**************************/
+.profilMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.pucesItems {
+  display: flex;
+  flex-direction: column;
+}
 /************/
 /*PostsItems*/
 /************/

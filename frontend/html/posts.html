@@ -62,10 +62,55 @@
 
           <!-- Boutons nav pour gérer la deconnexion et la maj profil -->
           <nav>
-            <ul>
+            <ul  class="HeaderButton">
               
-              <li><button class="HeaderButton" @click="logout()">Logout</button></li>
-              <li><button class="HeaderButton" @click="profil()">Mon profil</button></li>
+              <li><button  @click="logout()">Logout</button></li>
+
+              
+              <li><button @click="profil()">Mon profil</button></li>
+
+
+              <!--------------------------------------------------------------------------- -->
+
+                <!-- Debut formulaire de modif profil -->
+                <template v-if= "modifyProfilForm">
+                  <div  >
+                    <div  class="profilMenu">
+                      <ul class="pucesItems">
+                        <!-- Affichage du menu de modif du profil-->
+                        <!-- Menu avec 4 choix -->
+                        <li>Modification email</li>
+                        <li> Modification passwd</li>
+                        <li> Modification pseudo</li>
+                        <li> Suppression du compte</li>
+                      </ul>
+                    </div>
+                  <!-- Champ pour saisir la nouvelle valeur -->
+		              <div>
+			              <label for="newValue">Nouvelle valeur</label>
+			              <input type="text" v-model="newValue" id="newValue">
+		              </div>
+
+
+                <!-- Boutons pour valider ou annuler cette creation -->
+                <div>
+			      
+			            <input @click="validateModifProfil()" type="submit" value="Valider" id="order" />
+		            </div>
+                <div>
+			      
+			            <input @click="cancelModifProfil()" type="submit" value="Annuler" id="order" />
+		            </div>
+                </div>
+                </template>
+              <!-- Fin formulaire de modif du profil-->
+
+
+
+
+
+
+              <!---------------------------------------------------------------------- -->
                            
             </ul>
           </nav>
@@ -94,6 +139,7 @@
           </button>
         
         </div>
+        <!-- Debut formulaire de creation du post -->
         <template v-if= "createPostForm">
           <!-- Affichage du formulaire de creation du post -->
           <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
@@ -114,6 +160,7 @@
 		      </div>
 
         </template>
+        <!-- Fin formulaire de creation du post -->
       </div>
       <div>
         <template v-if="errored">
@@ -347,7 +394,7 @@
 
 
             // Utilisateurs
-            profilForm:false, // sera true pour modifier le profil de l'utilisateur
+            modifyProfilForm:false, // sera true pour modifier le profil de l'utilisateur
             newEmail:"",      // nouvel email
             newPasswd:"",     //      newPasswd = nouveau passwd
             newPseudo:"",     //      newPseudo = nouveau pseudo

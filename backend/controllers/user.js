@@ -244,6 +244,7 @@ Algo:
 exports.modifyUser = (req, res, next) => {
   try {
     console.log("DEBUG: ft modifyUser");
+
     bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
