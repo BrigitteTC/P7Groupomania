@@ -1037,6 +1037,9 @@
               }) };
           }, //Fin ValidateModifyProfil
 
+
+          //------------------------------------------------------------------------
+
           //cancel modify profil 
           cancelModifyProfil(){
             this.modifyProfilForm=false;  // on replie le formulaire et on reinit les variables.
@@ -1068,10 +1071,50 @@
           //deleteProfil()
           //
           // Suppression du compte du user en cours:
+          //
+          // recherche tu token dan sle local Storage
+          //  Appel ft DELETE
           //    
           //-------------------------------------------------------------------------------
           deleteProfil(){try{
             console.log ("delete profil");
+                        // Lecture du local storage pour récupérer le token  du user
+          if ("user" in localStorage){
+            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
+            const userToken = userInLocalStorage.token; // le token
+            const userId = userInLocalStorage.userId; // le userId
+
+            const bearerToken = "Bearer " + userToken;
+
+            console.log("delete profil "+ userId);
+
+            
+
+            //Url  du user
+            const userUrl =
+              "http://localhost:3000/api/auth/" + userId ;
+
+            fetch(userUrl, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+              
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+               
+              })
+              .then((response) => {
+                this.profilForm=false;  // on replie le formulaire
+                window.alert(response.message); // affiche msg de retour du serveur
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+                
+              }) };
             
           }catch(err){
             console.log ("error ft deleteProfil : " + err);
