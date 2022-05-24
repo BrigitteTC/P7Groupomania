@@ -18,7 +18,7 @@ h2 {
 .cart__item {
   display: flex;
   justify-content: space-around;
-  border-top: 1px solid white;
+  border-top: 1px solid var(--secondary-text-color);
   padding-top: 35px;
   margin-bottom: 30px;
 }

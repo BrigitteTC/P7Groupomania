@@ -2,11 +2,24 @@
 /*GENERAL*/
 /*********/
 
+/*Colors*/
+:root {
+  --main-color: #ffd7d7; /*rose*/
+  --secondary-color: #fd2d01; /*rouge*/
+  --text-color: #3d4c68;
+  --secondary-text-color: #fd2d01;
+  --footer-text-color: #a6b0b3;
+  --footer-main-color: #3d424f;
+  --footer-secondary-color: #2d2f3e;
+  /*background-color: var(--main-color);*/
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   margin: 0;
   color: var(--secondary-text-color);
   min-width: 300px;
+  background-color: var(--main-color);
 }
 h1 {
   font-size: 48px;
@@ -32,18 +45,6 @@ h2 {
   width: 100%;
   max-width: 1400px;
   padding: 0 25px;
-}
-
-/*Colors*/
-:root {
-  --main-color: #ffd7d7; /*rose*/
-  --secondary-color: #fd2d01; /*rouge*/
-  --text-color: #3d4c68;
-  --secondary-text-color: #fd2d01;
-  --footer-text-color: #a6b0b3;
-  --footer-main-color: #3d424f;
-  --footer-secondary-color: #2d2f3e;
-  /*background-color: var(--main-color);*/
 }
 
 /********/
