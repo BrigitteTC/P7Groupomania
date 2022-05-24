@@ -47,30 +47,36 @@
             </a>
             <nav>
               <ul>
-                <li><a href="./signup.html">signup</a></li>
-                <li><a href="./login.html">login</a></li>
+                <button v-on:click="signup()">signup</button>
+                <button v-on:click="login()">login</button>
               </ul>
             </nav>
           </div>
         </div>
 
         <section class="items limitedWidthBlockContainer" id="items">
-          <div class="cart__order">
+          <div v-if="loginForm" class="cart__order">
             <form method="get" class="cart__order__form">
               <div class="cart__order__form__question">
                 <label for="email">Email: </label>
-                <input type="email" name="email" id="email" required />
-                <p id="emailErrorMsg">Valeur obligatoire requise</p>
+                <input type="email" v-model="email" id="email" required />
+
+                <p v-if="!email">Valeur obligatoire requise</p>
               </div>
 
               <div class="cart__order__form__question">
                 <label for="passwd">Passwd: </label>
-                <input type="passwd" name="passwd" id="passwd" required />
-                <p id="passwdErrorMsg">Valeur obligatoire requise</p>
+                <input type="passwd" v-model="passwd" id="passwd" required />
+                <p v-if="!passwd">Valeur obligatoire requise</p>
               </div>
 
               <div class="cart__order__form__submit">
-                <input type="submit" value="Valider" id="order" />
+                <input
+                  @click="validateLogin()"
+                  type="submit"
+                  value="Valider"
+                  id="order"
+                />
               </div>
             </form>
           </div>
@@ -124,6 +130,7 @@
         data() {
           return {
             // infos de l'entreprise
+            message: "Bonjour à tous",
             adresse: "rue de l'horizon",
             ville: "19300 labas sur Correze",
             tel: "01 23 45 67 89",
@@ -184,7 +191,7 @@
             console.log("login ");
 
             // les data du body du fetch
-            const data = (data = { email: this.email, password: this.passwd });
+            const data = { email: this.email, password: this.passwd };
 
             //Url  du user
             const userUrl = "http://localhost:3000/api/auth/";
