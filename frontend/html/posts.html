@@ -280,7 +280,7 @@
 
                         <template v-if="createCommentForm===itemPost.postId">
                           <!-- Affichage du formulaire de creation du commentaire -->
-                          <span v-if="newComment"></span>
+
                           <div v-if="newComment">
                             <label for="newComment">Votre commentaire</label>
                             <input
@@ -349,28 +349,32 @@
                                   v-if="modifyCommentForm===itemComment.commentId"
                                 >
                                   <!-- Affichage du formulaire de modif du comment -->
+                                  <div class="flexColumns">
+                                    <!-- champ pour ecrire le nouveau commentaire -->
+                                    <div>
+                                      <label for="newComment"
+                                        >Votre nouveau commentaire</label
+                                      >
+                                      <input type="text" v-model="newComment" />
+                                    </div>
 
-                                  <div>
-                                    <label for="newComment"
-                                      >Votre nouveau commentaire</label
-                                    >
-                                    <input type="text" v-model="newComment" />
-                                  </div>
-
-                                  <!-- Boutons pour valider ou annuler cette modif -->
-                                  <div>
-                                    <input
-                                      @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
-                                      type="submit"
-                                      value="Valider"
-                                    />
-                                  </div>
-                                  <div>
-                                    <input
-                                      @click="cancelModifyComment()"
-                                      type="submit"
-                                      value="Annuler"
-                                    />
+                                    <!-- Boutons pour valider ou annuler cette modif -->
+                                    <div class="flexRows">
+                                      <div>
+                                        <input
+                                          @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
+                                          type="submit"
+                                          value="Valider"
+                                        />
+                                      </div>
+                                      <div>
+                                        <input
+                                          @click="cancelModifyComment()"
+                                          type="submit"
+                                          value="Annuler"
+                                        />
+                                      </div>
+                                    </div>
                                   </div>
                                 </template>
 
