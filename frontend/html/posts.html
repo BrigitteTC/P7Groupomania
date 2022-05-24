@@ -120,7 +120,7 @@
                       </div>
                     </div>
                   </template>
-                  <!-- Boutons pour valider ou non la suppressin du compte -->
+                  <!-- Boutons pour valider ou non la suppression du compte -->
                   <div v-if="deleteValue" class="flexColons">
                     <h3>Delete compte de {{connectedName}}</h3>
                     <div class="flexRows">
@@ -281,30 +281,32 @@
 
                         <template v-if="createCommentForm===itemPost.postId">
                           <!-- Affichage du formulaire de creation du commentaire -->
-
-                          <div>
-                            <label for="newComment">Votre commentaire</label>
-                            <input
-                              type="text"
-                              v-model="newComment"
-                              id="newComment"
-                            />
-                          </div>
-
-                          <!-- Boutons pour valider ou annuler cette modif -->
-                          <div>
-                            <input
-                              @click="validateCreationComment(itemPost.postId)"
-                              type="submit"
-                              value="Valider"
-                            />
-                          </div>
-                          <div>
-                            <input
-                              @click="cancelCreationComment()"
-                              type="submit"
-                              value="Annuler"
-                            />
+                          <div class="flexColumns">
+                            <div>
+                              <label for="newComment">Votre commentaire</label>
+                              <input
+                                type="text"
+                                v-model="newComment"
+                                id="newComment"
+                              />
+                            </div>
+                            <div>
+                              <!-- Boutons pour valider ou annuler cette modif -->
+                              <div>
+                                <input
+                                  @click="validateCreationComment(itemPost.postId)"
+                                  type="submit"
+                                  value="Valider"
+                                />
+                              </div>
+                              <div>
+                                <input
+                                  @click="cancelCreationComment()"
+                                  type="submit"
+                                  value="Annuler"
+                                />
+                              </div>
+                            </div>
                           </div>
                         </template>
 
@@ -819,6 +821,7 @@
           createComment(postId) {
             console.log("create comment");
             this.createCommentForm = postId; //affichage du formulaire de creation du commentaire pour le post
+            this.newComment = "";
           },
 
           //-----------------------------------------------------------------------------------------
@@ -860,6 +863,7 @@
 
                 console.log(response.message);
                 this.createCommentForm = ""; // on replie le formulaire
+                this.newComment = "";
                 window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
@@ -871,6 +875,7 @@
           //cancel création comment
           cancelCreationComment() {
             this.createCommentForm = ""; // on replie le formulaire
+            this.newComment = "";
           },
 
           //-----------------------------------------------------------------------------------------
@@ -883,6 +888,7 @@
           modifyComment(commentId) {
             console.log("modify  comment");
             this.modifyCommentForm = commentId;
+            this.newComment = "";
           },
 
           //-----------------------------------------------------------------------------------------
@@ -932,6 +938,7 @@
               })
               .then((response) => {
                 this.modifyCommentForm = ""; // on replie le formulaire
+                this.newComment = "";
                 window.alert(response.message); // affiche msg de retour du serveur
               })
               .catch((error) => {
@@ -943,6 +950,7 @@
           //cancel modify comment
           cancelModifyComment() {
             this.modifyCommentForm = ""; // on replie le formulaire
+            this.newComment = "";
           },
 
           //--------------------------------------------------------------------------------------
