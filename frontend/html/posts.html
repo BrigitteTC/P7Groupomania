@@ -1058,8 +1058,11 @@
                   console.log("Fetch error: ", error);
                 })
                 .then((response) => {
-                  this.profilForm = false; // on replie le formulaire
                   window.alert(response.message); // affiche msg de retour du serveur
+                  this.modifyProfilForm = false; // on replie le formulaire
+                  this.valueToModify = "";
+                  this.askValue = false;
+                  this.displayOkCancel = false;
                 })
                 .catch((error) => {
                   console.log("Response error: ", error);
