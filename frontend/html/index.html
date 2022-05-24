@@ -156,6 +156,9 @@
             email: "",
             passwd: "",
             pseudo: "",
+            userId: "", //userId renvoyé par le login
+            moderator: false, //moderator renvoyé par le login
+            token: "", //token renvoyé par le login
           };
         }, // fin des data
 
@@ -300,16 +303,20 @@
                 console.log("Fetch error: ", error);
               })
               .then((response) => {
-                const retourServer = response.json();
-                alerteMsg("Connexion OK  - Bonjour " + retourServer.pseudo);
+                this.userId = response.userId;
+                this.token = response.token;
+                this.moderator = response.moderator;
+                this.pseudo = response.pseudo;
+
+                alerteMsg("Connexion OK  - Bonjour " + this.pseudo);
 
                 // Maj local storage avec le nouveau user connecté
 
                 let userConnected = new localStorageUser("", 0, "", 0, false);
-                userConnected.userId = retourServer.userId;
-                userConnected.moderator = retourServer.moderator;
-                userConnected.token = retourServer.token;
-                userConnected.pseudo = retourServer.pseudo;
+                userConnected.userId = this.userId;
+                userConnected.moderator = this.moderator;
+                userConnected.token = this.token;
+                userConnected.pseudo = this.pseudo;
                 userConnected.userInLocalStorageOK = true;
 
                 // Maj de la clé user dans le local storage
