@@ -32,7 +32,7 @@ const usersTable = require("../mysqlp7").usersTable;
 
  Algo: 
    hash du mot de passe
-   Quert=y mysal: INSERT INTO user pour créer le user
+   mysql: INSERT INTO users pour créer le user
 ------------------------------------------------------------*/
 exports.signup = (req, res, next) => {
   try {

@@ -166,6 +166,79 @@
         //------------------------------------------------------------------------------------
         methods: {
           //-----------------------------------------------------------------------------------------
+          // signup
+          // affichage du formulaire de  signup
+          //
+          // param: aucun
+          //-------------------------------------------------
+
+          signup() {
+            console.log("signup");
+            this.signupForm = true; // ouverture formulaire
+            this.email = "";
+            this.passwd = "";
+            this.pseudo = "";
+          },
+          //-----------------------------------------------------------------------------------------
+          // validateSignup
+          // Signup d'un utilisateur quand il a cliqué sur validate
+          // param:
+          //    methode: POST
+          //    URL: URL=http://localhost:3000/api/auth/login
+          //    data: email, passwd, pseudo
+          //---------------------------------------------------------------------------------
+
+          validateSignup() {
+            console.log("validate signup ");
+
+            // les data du body du fetch
+            const data = {
+              email: this.email,
+              password: this.passwd,
+              pseudo: this.pseudo,
+            };
+
+            //Url  du user
+            const userUrl = "http://localhost:3000/api/auth/login";
+
+            //header
+            const bearerToken = "bearer null";
+
+            fetch(userUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+              })
+              .then((response) => {
+                window.alert(response.message); // affiche msg de retour du serveur
+                this.SignupForm = false; // on replie le formulaire et on reinit les variables.
+                this.email = "";
+                this.passwd = "";
+                this.pseudo = "";
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+              });
+          }, //Fin Validate signup
+
+          //------------------------------------------------------------------------------
+          //Cancel signup
+          // si l'utilisateur a cliqué sur le bouton cancel.
+          //---------------------------------------------------------------------------------
+          cancelSignup() {
+            this.signupForm = false; // on replie le formulaire et on reinit les variables.
+            this.email = "";
+            this.passwd = "";
+            this.pseudo = "";
+          },
+          //-----------------------------------------------------------------------------------------
           // login
           // affichage du formulaire de  login
           //
@@ -183,8 +256,8 @@
           // login d'un utilisateur quand il a cliqué sur validate
           // param:
           //    methode: POST
-          //    URL: URL=http://localhost:3000/api/auth/
-          //    date: email, passwd
+          //    URL: URL=http://localhost:3000/api/auth/login
+          //    data: email, passwd
           //---------------------------------------------------------------------------------
 
           validateLogin() {
