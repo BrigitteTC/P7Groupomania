@@ -70,7 +70,7 @@
                 <p v-if="!passwd">Valeur obligatoire requise</p>
               </div>
 
-              <div class="cart__order__form__question">
+              <div v-if="signupForm" class="cart__order__form__question">
                 <label for="pseudo">Pseudo: </label>
                 <input type="text" v-model="pseudo" id="pseudo" required />
                 <p v-if="!pseudo">Valeur obligatoire requise</p>
