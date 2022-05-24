@@ -305,7 +305,7 @@ exports.modifyUser = (req, res, next) => {
     }
     //-------------------------------------------------------------------------
     // Cas modif pseudo ou email: req sql simple
-    else {
+    else if (dataToModify !== "") {
       console.log("DEBUG dataToModify = " + dataToModify);
 
       sql =
@@ -334,7 +334,11 @@ exports.modifyUser = (req, res, next) => {
           });
         }
       });
-    } // fin Cas sans modif du passwd
+    } // fin Cas modif pseudo ou email
+    else {
+      // cas où tous les params passés sont undefined = on ne modifie rien
+      res.status(500).json({ message: "modify failed" });
+    }
     // fin du try
     //--------------------------------------------------------
   } catch (err) {
