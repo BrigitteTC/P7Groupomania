@@ -294,7 +294,7 @@ exports.modifyUser = (req, res, next) => {
               // OK utilisateur modifie
               console.log("DEBUG: modifyUser: utilisateur modifie  ");
 
-              res.status(201).json({ message: "Utilisateur modifie : " });
+              res.status(201).json({ message: "Utilisateur modifie  " });
             }
           });
         })
@@ -330,7 +330,7 @@ exports.modifyUser = (req, res, next) => {
           console.log("DEBUG: modifyUser: utilisateur modifie  ");
 
           res.status(201).json({
-            message: "Utilisateur modifie : ",
+            message: "Utilisateur modifie  ",
           });
         }
       });
