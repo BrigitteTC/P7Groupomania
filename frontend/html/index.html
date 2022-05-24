@@ -98,117 +98,25 @@
             adresse: "rue de l'horizon",
             ville: "19300 labas sur Correze",
             tel: "01 23 45 67 89",
-            //nom et infos de l'utilisateur connecté
-            connectedName: "",
-            connectedUserId: "",
-            connectedModerator: false,
-
-            //tableau des posts et des commentaires
-            posts: [],
-            comments: [],
-
-            // etats chargement et erreurs
-            loading: false,
-            errored: false,
-
-            loadingComments: false,
-            erroredComments: false,
-
-            // champs du formulaire pour creéation ou modification posts et comments
-            createPostForm: false, //sera true pour crer un post
-            modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
-            newPost: "",
-
-            createCommentForm: "", //sera egal au num du post sue lequel on veut creer un commentaire
-            modifyCommentForm: "", //sera egal au num du commentaire à modifier
-            newComment: "",
-
-            // Utilisateurs
-            modifyProfilForm: false, // sera true pour modifier le profil de l'utilisateur
-            newEmail: "", // nouvel email
-            newPasswd: "", //      newPasswd = nouveau passwd
-            newPseudo: "", //      newPseudo = nouveau pseudo
-
-            valueToModify: "", // Valeur de profil à modifier
-            newValue: "", // Nouvelle valeur du champ modifié
-
-            askValue: false, // sera mis à true pour ouvrir le champ de saisie pour modif profil
-            askEmail: false, // sera mis à true pour modifier le champ
-            askPseudo: false, // sera mis à true pour modifier le champ
-            askpasswd: false, // sera mis à true pour modifier le champ
-
-            deleteValue: false, //sera mis a true pour supprimer un compte
           };
         }, // fin des data
 
         //----------------------------------------------------------------------------
         //Initialisation de la page
         //-----------------------------------------------------------------------------
-        beforeCreate() {
-          //loader
-          this.loading = true;
-        },
+        beforeCreate() {},
 
         //----------------------------------------------------------------------------
         // Suite initialisation
         // Affichage de la page au chargement
-        // et appel de l'API pour afficher les posts.
-        // this permet d'acceder aux données de l'application
+
         //----------------------------------------------------------------------------
-        created() {
-          // Lecture du local storage pour récupérer les infos du user
-          // Rien ne sera affiché si aucun user n'est connecté = local storage vide
-          if ("user" in localStorage) {
-            const userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-
-            const userToken = userInLocalStorage.token; // le token
-
-            // Les infos de l'utilisateur connecté
-
-            this.connectedName = userInLocalStorage.pseudo; // le nom affiché en entete de feuille
-            this.connectedUserId = userInLocalStorage.userId;
-            this.connectedModerator = userInLocalStorage.moderator;
-
-            console.log(
-              "user connecte ;" +
-                this.connectedName +
-                this.connectedUserId +
-                this.connectedModerator
-            );
-
-            const bearerToken = "Bearer " + userToken;
-
-            const postUrl = "http://localhost:3000/api/post/"; //Url pour récupérer les posts
-            fetch(postUrl, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-                windows.alert(error);
-                this.errored = true;
-              })
-              .then((data) => {
-                this.posts = data; //Data renvoyées du serveur
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                this.errored = true;
-              });
-          } // fin test if user in local storage
-        }, // Fin created
+        created() {}, // Fin created
 
         //------------------------------------------------------------------------------------
         // Page complètement chargée
         //------------------------------------------------------------------------------------
-        mounted() {
-          // Load terminé
-          this.loading = false;
-        },
+        mounted() {},
 
         //------------------------------------------------------------------------------------
         // Les methodes
