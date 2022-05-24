@@ -119,28 +119,29 @@
                         </div>
                       </div>
                     </div>
-                    <!-- Boutons pour valider ou non la suppressin du compte -->
-                    <div v-if="deleteValue" class="flexColons">
-                      <h3>Delete compte de {{connectedName}}</h3>
-                      <div class="flexRows">
-                        <div>
-                          <input
-                            @click="validateDeleteProfil()"
-                            type="submit"
-                            value="Valider suppression du compte"
-                          />
-                        </div>
+                  </template>
+                  <!-- Boutons pour valider ou non la suppressin du compte -->
+                  <div v-if="deleteValue" class="flexColons">
+                    <h3>Delete compte de {{connectedName}}</h3>
+                    <div class="flexRows">
+                      <div>
+                        <input
+                          @click="validateDeleteProfil()"
+                          type="submit"
+                          value="Valider suppression du compte"
+                        />
+                      </div>
 
-                        <div>
-                          <input
-                            @click="cancelModifyProfil()"
-                            type="submit"
-                            value="Annuler suppression du compte"
-                          />
-                        </div>
+                      <div>
+                        <input
+                          @click="cancelDeleteProfil()"
+                          type="submit"
+                          value="Annuler suppression du compte"
+                        />
                       </div>
                     </div>
-                  </template>
+                  </div>
+
                   <!-- Fin formulaire de modif du profil-->
                 </div>
 
@@ -1169,6 +1170,11 @@
             } catch (err) {
               console.log("error ft deleteProfil : " + err);
             }
+          },
+
+          //cancel Delete profil
+          cancelDeleteProfil() {
+            this.deleteValue = false;
           },
         }, // Fin des methodes
       }; // Fin RootComponent
