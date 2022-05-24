@@ -14,12 +14,14 @@
       rel="stylesheet"
     />
     <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/login.css" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
 
   <body>
     <div id="app">
+      <!-- Header -->
       <header>
         <div class="limitedWidthBlockContainer informations">
           <div class="limitedWidthBlock">
@@ -51,8 +53,33 @@
             </nav>
           </div>
         </div>
+
+        <section class="items" id="items">
+          <div class="cart__order">
+            <form method="get" class="cart__order__form">
+              <div class="cart__order__form__question">
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email" required />
+                <p id="emailErrorMsg">Valeur obligatoire requise</p>
+              </div>
+
+              <div class="cart__order__form__question">
+                <label for="passwd">Passwd: </label>
+                <input type="passwd" name="passwd" id="passwd" required />
+                <p id="passwdErrorMsg">Valeur obligatoire requise</p>
+              </div>
+
+              <div class="cart__order__form__submit">
+                <input type="submit" value="Valider" id="order" />
+              </div>
+            </form>
+          </div>
+        </section>
         <img class="banniere" src="../images/banniere.png" alt="Baniere" />
       </header>
+      <!-- Fin du header -->
+
+      <!-- Main -->
 
       <main class="limitedWidthBlockContainer">
         <div class="limitedWidthBlock">
@@ -64,6 +91,8 @@
           </div>
         </div>
       </main>
+
+      <!-- Footer -->
 
       <footer>
         <div class="limitedWidthBlockContainer footerMain">
