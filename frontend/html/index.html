@@ -71,7 +71,7 @@
               </div>
 
               <div class="cart__order__form__question">
-                <label for="pseudo">Passwd: </label>
+                <label for="pseudo">Pseudo: </label>
                 <input type="text" v-model="pseudo" id="pseudo" required />
                 <p v-if="!pseudo">Valeur obligatoire requise</p>
               </div>
@@ -214,7 +214,7 @@
             };
 
             //Url  du user
-            const userUrl = "http://localhost:3000/api/auth/login";
+            const userUrl = "http://localhost:3000/api/auth/signup";
 
             //header
             const bearerToken = "bearer null";
