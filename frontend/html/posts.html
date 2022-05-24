@@ -1024,11 +1024,24 @@
               const bearerToken = "Bearer " + userToken;
 
               console.log("modify profil " + userId);
+
               const valueToModify = this.valueToModify;
-              const newValue = this.newValue;
+              let data = "";
 
-              const data = { valueToModify: newValue };
-
+              // Maj du body en ft de la donnée à modifier
+              switch (valueToModify) {
+                case "email":
+                  data = { email: this.newValue };
+                  break;
+                case "pseudo":
+                  data = { pseudo: this.newValue };
+                  break;
+                case "password":
+                  data = { password: this.newValue };
+                  break;
+                default:
+                  console.log("pb");
+              }
               //Url  du user
               const userUrl = "http://localhost:3000/api/auth/" + userId;
 
