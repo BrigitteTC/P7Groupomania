@@ -300,11 +300,35 @@
                 console.log("Fetch error: ", error);
               })
               .then((response) => {
-                window.alert(response.message); // affiche msg de retour du serveur
-                this.loginForm = false; // on replie le formulaire et on reinit les variables.
+                const retourServer = response.json();
+                alerteMsg("Connexion OK  - Bonjour " + retourServer.pseudo);
+
+                // Maj local storage avec le nouveau user connecté
+
+                let userConnected = new localStorageUser("", 0, "", 0, false);
+                userConnected.userId = retourServer.userId;
+                userConnected.moderator = retourServer.moderator;
+                userConnected.token = retourServer.token;
+                userConnected.pseudo = retourServer.pseudo;
+                userConnected.userInLocalStorageOK = true;
+
+                // Maj de la clé user dans le local storage
+                localStorage.setItem("user", JSON.stringify(userConnected));
+
+                // Verif lecture du local storage
+                let ProductSelected = JSON.parse(localStorage.getItem("user")); //elt selectionné
+                console.log(
+                  "lecture du local storage  token  : " + ProductSelected.token
+                );
+
+                // on replie le formulaire et on reinit les variables.
+                this.loginForm = false;
                 this.email = "";
                 this.passwd = "";
                 this.pseudo = "";
+
+                // On va sur la page posts
+                window.location.href = "./posts.html"; // on retourne à la page d'accueil
               })
               .catch((error) => {
                 console.log("Response error: ", error);
