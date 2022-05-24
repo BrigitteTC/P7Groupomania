@@ -98,6 +98,13 @@
             adresse: "rue de l'horizon",
             ville: "19300 labas sur Correze",
             tel: "01 23 45 67 89",
+
+            // infos de login et signup
+            loginForm: false, // Formulaire de login
+            signupForm: false, //formulaire de signup
+            email: "",
+            passwd: "",
+            pseudo: "",
           };
         }, // fin des data
 
@@ -121,7 +128,76 @@
         //------------------------------------------------------------------------------------
         // Les methodes
         //------------------------------------------------------------------------------------
-        methods: {}, // Fin des methodes
+        methods: {
+          //-----------------------------------------------------------------------------------------
+          // login
+          // affichage du formulaire de  login
+          //
+          // param: aucun
+          //-------------------------------------------------
+
+          login() {
+            console.log("login");
+            this.loginForm = true; // ouverture formulaire
+            this.email = "";
+            this.passwd = "";
+          },
+          //-----------------------------------------------------------------------------------------
+          // validateLogin
+          // login d'un utilisateur quand il a cliqué sur validate
+          // param:
+          //    methode: POST
+          //    URL: URL=http://localhost:3000/api/auth/
+          //    date: email, passwd
+          //---------------------------------------------------------------------------------
+
+          validateLogin() {
+            console.log("login ");
+
+            // les data du body du fetch
+            const data = (data = { email: this.email, password: this.passwd });
+
+            //Url  du user
+            const userUrl = "http://localhost:3000/api/auth/";
+
+            //header
+            const bearerToken = "bearer null";
+
+            fetch(userUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: bearerToken,
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json()) //reponse du fetch
+              .catch((error) => {
+                console.log("Fetch error: ", error);
+              })
+              .then((response) => {
+                window.alert(response.message); // affiche msg de retour du serveur
+                this.loginForm = false; // on replie le formulaire et on reinit les variables.
+                this.email = "";
+                this.passwd = "";
+                this.pseudo = "";
+              })
+              .catch((error) => {
+                console.log("Response error: ", error);
+              });
+          }, //Fin Validate login
+
+          //------------------------------------------------------------------------------
+          //Cancel login
+          // si l'utilisateur a cliqué sur le bouton cancel.
+          //---------------------------------------------------------------------------------
+          cancelLogin() {
+            this.loginForm = false; // on replie le formulaire et on reinit les variables.
+            this.email = "";
+            this.passwd = "";
+            this.pseudo = "";
+          },
+        }, // Fin des methodes
       }; // Fin RootComponent
 
       const app = Vue.createApp(RootComponent).mount("#app");
