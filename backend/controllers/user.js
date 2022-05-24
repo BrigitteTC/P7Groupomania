@@ -235,7 +235,11 @@ Objet: modifier le profil d'un utilisateur.
 verbe: PUT
 
 Algo:
-  userId  idem signup
+  test valeur à modifier.
+  On ne peux modifier qu'un seul param à la fois
+  Test email
+    puis pseudo
+      puis passwd
   On mets à jour un des  3 paramètres email, passwd hash et pseudo
   Hash du passwd 
 
@@ -244,29 +248,26 @@ Algo:
 exports.modifyUser = (req, res, next) => {
   try {
     console.log("DEBUG: ft modifyUser");
-    console.log(req.body.email + req.body.pseudo + req.body.password);
+    console.log(
+      req.body.email + " " + req.body.pseudo + " " + req.body.password
+    );
 
     // partie sql correspondant à chaque param
     // req SQL en ft du param à modifier
     let dataToModify = "";
 
-    console.log("DEBUG: dataToModify");
+    //test email
     if (req.body.email !== undefined) {
-      console.log("DEBUG: 2");
       dataToModify = " email = '" + req.body.email + "'";
-      console.log("DEBUG   dataToModify" + dataToModify);
-      console.log("DEBUG: 2");
+    }
+    //test pseudo
+    else if (req.body.pseudo !== undefined) {
+      dataToModify = " pseudo = '" + req.body.pseudo + "'";
     }
 
-    if (req.body.pseudo !== undefined) {
-      console.log("DEBUG: 3");
-      dataToModify = " pseudo = '" + req.body.pseudo + "'";
-      console.log("DEBUG   dataToModify " + dataToModify);
-      console.log("DEBUG: 3");
-    }
-    // Cas avec passwd modifié à ajouter
+    // Cas avec passwd modifié on doit le hasher
     if (req.body.password !== undefined) {
-      console.log("DEBUG: 4 cas avec passwd " + req.body.password);
+      console.log("DEBUG: cas avec passwd " + req.body.password);
       //modif du passwd
       bcrypt
         .hash(req.body.password, 10)
@@ -303,10 +304,10 @@ exports.modifyUser = (req, res, next) => {
         });
     }
     //-------------------------------------------------------------------------
-    // Cas sans modif du passwd
+    // Cas modif pseudo ou email: req sql simple
     else {
       console.log("DEBUG dataToModify = " + dataToModify);
-      console.log("DEBUG: 5 cas sans passwd");
+
       sql =
         "UPDATE " +
         usersTable +
@@ -317,29 +318,22 @@ exports.modifyUser = (req, res, next) => {
         "';";
 
       console.log("DEBUG ft modifyUser: sql=" + sql);
-      connection
-        .query(sql, (err, data, fields) => {
-          if (err) {
-            // Reponse avec code et message d'erreur
-            res.status(400).json({
-              message: "code: " + err.code + " message: " + err.sqlMessage,
-            });
-            console.log("modifyUser: erreur  " + err);
-          } else {
-            // OK utilisateur modifie
-            console.log(
-              "DEBUG: modifyUser: utilisateur modifie  " + req.body.pseudo
-            );
+      connection.query(sql, (err, data, fields) => {
+        if (err) {
+          // Reponse avec code et message d'erreur
+          res.status(400).json({
+            message: "code: " + err.code + " message: " + err.sqlMessage,
+          });
+          console.log("modifyUser: erreur  " + err);
+        } else {
+          // OK utilisateur modifie
+          console.log("DEBUG: modifyUser: utilisateur modifie  ");
 
-            res.status(201).json({
-              message: "Utilisateur modifie : ",
-            });
-          }
-        })
-        .catch((err) => {
-          console.log("modifyUser: erreur:  " + err);
-          res.status(500).json({ message: "modify failed" });
-        });
+          res.status(201).json({
+            message: "Utilisateur modifie : ",
+          });
+        }
+      });
     } // fin Cas sans modif du passwd
     // fin du try
     //--------------------------------------------------------
