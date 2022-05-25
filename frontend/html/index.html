@@ -379,29 +379,33 @@
                   this.moderator = response.moderator;
                   this.pseudo = response.pseudo;
                   console.log(this.userId + this.pseudo);
+                  //test userId valide crée
+                  if (this.userId) {
+                    // Maj local storage avec le nouveau user connecté
 
-                  // Maj local storage avec le nouveau user connecté
+                    let userConnected = new localStorageUser(
+                      "",
+                      0,
+                      "",
+                      0,
+                      false
+                    );
+                    userConnected.userId = this.userId;
+                    userConnected.moderator = this.moderator;
+                    userConnected.token = this.token;
+                    userConnected.pseudo = this.pseudo;
+                    userConnected.userInLocalStorageOK = true;
 
-                  let userConnected = new localStorageUser("", 0, "", 0, false);
-                  userConnected.userId = this.userId;
-                  userConnected.moderator = this.moderator;
-                  userConnected.token = this.token;
-                  userConnected.pseudo = this.pseudo;
-                  userConnected.userInLocalStorageOK = true;
+                    // Maj de la clé user dans le local storage
+                    localStorage.setItem("user", JSON.stringify(userConnected));
 
-                  // Maj de la clé user dans le local storage
-                  localStorage.setItem("user", JSON.stringify(userConnected));
+                    window.alert("Connexion OK  - Bonjour " + this.pseudo);
 
-                  window.alert("Connexion OK  - Bonjour " + this.pseudo);
-
-                  // on replie le formulaire et on reinit les variables.
-                  this.loginForm = false;
-                  this.email = "";
-                  this.passwd = "";
-                  this.pseudo = "";
-
-                  // On va sur la page posts
-                  window.location.href = "./posts.html"; // on retourne à la page d'accueil
+                    // On va sur la page posts
+                    window.location.href = "./posts.html"; // on retourne à la page d'accueil
+                  } else {
+                    window.alert("login failed");
+                  }
                 })
                 .catch((error) => {
                   console.log("Response error: ", error);
