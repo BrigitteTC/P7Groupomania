@@ -435,6 +435,7 @@
             ville: "19300 labas sur Correze",
             tel: "01 23 45 67 89",
             //nom et infos de l'utilisateur connecté
+            isUserConnected: false, //seratrue quand le user sera connecté par login
             connectedName: "",
             connectedUserId: "",
             connectedModerator: false,
@@ -496,6 +497,7 @@
           // Lecture du local storage pour récupérer les infos du user
           // Rien ne sera affiché si aucun user n'est connecté = local storage vide
           if ("user" in localStorage) {
+            this.userConnected = true; // c'est bon on a un user connecté.
             const userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
 
             const userToken = userInLocalStorage.token; // le token
@@ -1106,6 +1108,7 @@
           logout() {
             try {
               console.log("logout");
+              this.isUserConnected = false; // plus de user connecté
               localStorage.clear(); // petit coup de karsher ds le local storage
               window.location.href = "./index.html"; // on retourne à la page d'accueil
             } catch (err) {
@@ -1127,10 +1130,11 @@
           deleteProfil() {
             try {
               this.modifyProfilForm = false; // on replie le formulaire
-              this.askValue = false; // pas de champ de seisie a ouvrir
+              this.askValue = false; // pas de champ de saisie a ouvrir
 
               this.displayOkCancel = false;
               this.deleteValue = true;
+              this.isUserConnected = false; // plus de user connecté
               window.alert(
                 "ATTENTION: vous vous appretez à supprimer votre compte avec les posts et commentaires crées"
               );
