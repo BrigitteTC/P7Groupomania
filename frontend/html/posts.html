@@ -63,6 +63,7 @@
             <nav>
               <div>
                 <div class="flexColumns">
+                  <!-- Boutons de navigation -->
                   <div class="HeaderButton">
                     <!-- Cas du user connecté on affiche les boutons profil et logout -->
                     <template v-if="isUserConnected">
@@ -75,7 +76,7 @@
                       <button v-on:click="logout()">Accueil</button>
                     </template>
                   </div>
-                  <!--    -->
+                  <!--Fin boutons de navigation    -->
 
                   <!-- Debut formulaire de modif profil -->
                   <template v-if="modifyProfilForm">
@@ -108,7 +109,7 @@
                       <input type="text" v-model="newValue" id="newValue" />
 
                       <div v-if="displayOkCancel" class="flexRows">
-                        <!-- Boutons pour valider ou annuler cette creation -->
+                        <!-- Boutons pour valider ou annuler la modif -->
                         <div>
                           <input
                             @click="validateModifyProfil()"
@@ -125,40 +126,44 @@
                           />
                         </div>
                       </div>
+                      <!-- Fin des boutons valid/cancel -->
                     </div>
+
+                    <!-- partie suppression du compte -->
+                    <div v-if="deleteValue" class="flexColons">
+                      <h3>Delete compte de {{connectedName}}</h3>
+                      <div class="flexRows">
+                        <div>
+                          <input
+                            @click="validateDeleteProfil()"
+                            type="submit"
+                            value="Valider suppression du compte"
+                          />
+                        </div>
+
+                        <div>
+                          <input
+                            @click="cancelDeleteProfil()"
+                            type="submit"
+                            value="Annuler suppression du compte"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Fin  suppression du compte -->
                   </template>
-                  <!-- Boutons pour valider ou non la suppression du compte -->
-                  <div v-if="deleteValue" class="flexColons">
-                    <h3>Delete compte de {{connectedName}}</h3>
-                    <div class="flexRows">
-                      <div>
-                        <input
-                          @click="validateDeleteProfil()"
-                          type="submit"
-                          value="Valider suppression du compte"
-                        />
-                      </div>
-
-                      <div>
-                        <input
-                          @click="cancelDeleteProfil()"
-                          type="submit"
-                          value="Annuler suppression du compte"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Fin formulaire de modif du profil-->
+                  <!-- Fin formulaire de modif du profil (modif ou suppression)-->
                 </div>
 
                 <!-- -->
               </div>
             </nav>
 
-            <!-- Fin bouton nav -->
+            <!-- Fin  nav avec boutons accueil ou profil/logout-->
           </div>
+          <!-- Fin du bloc avec les boutons de navigation -->
         </div>
+        <!-- Fin du bloc entête -->
       </header>
       <!-- <main> -->
       <main>
