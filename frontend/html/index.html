@@ -61,19 +61,25 @@
                 <label for="email">Email: </label>
                 <input type="email" v-model="email" id="email" required />
 
-                <p v-if="!email">Valeur obligatoire requise</p>
+                <p v-if="!email && signupForm">
+                  Valeur obligatoire requise de type abc@xx.xx
+                </p>
               </div>
 
               <div class="cart__order__form__question">
                 <label for="passwd">Passwd: </label>
                 <input type="passwd" v-model="passwd" id="passwd" required />
-                <p v-if="!passwd">Valeur obligatoire requise</p>
+                <p v-if="!passwd && signupForm">
+                  Valeur obligatoire requise tous caracteres sauf apostrophe
+                </p>
               </div>
 
               <div v-if="signupForm" class="cart__order__form__question">
                 <label for="pseudo">Pseudo: </label>
                 <input type="text" v-model="pseudo" id="pseudo" required />
-                <p v-if="!pseudo">Valeur obligatoire requise</p>
+                <p v-if="!pseudo && signupForm">
+                  Valeur obligatoire requise : lettres et chiffres
+                </p>
               </div>
 
               <div v-if="loginForm" class="cart__order__form__submit">
@@ -214,11 +220,12 @@
               console.log("validate signup ");
               event.preventDefault(); //evite le rechargt de la page
               // regex pour le mail
-              const patern = RegExp(
+              const emailPatern = RegExp(
                 "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
               );
 
               const pseudoPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
+              const passwdPatern = /!'/; //pas d'apostrophe
               const userCreatedOK = "Utilisateur créé"; //msg renvoyé du back si user crée
 
               // test si champs non vides pour valider le formulaire
@@ -228,52 +235,59 @@
                 this.pseudo !== ""
               ) {
                 //test validité du mail
-                if (patern.test(this.email)) {
+                if (emailPatern.test(this.email)) {
                   if (pseudoPatern.test(this.pseudo)) {
-                    // les data du body du fetch
-                    const data = {
-                      email: this.email,
-                      password: this.passwd,
-                      pseudo: this.pseudo,
-                    };
+                    if (passwdPatern.test(this.passwd)) {
+                      // les data du body du fetch
+                      const data = {
+                        email: this.email,
+                        password: this.passwd,
+                        pseudo: this.pseudo,
+                      };
 
-                    //Url  du user
-                    const userUrl = "http://localhost:3000/api/auth/signup";
+                      //Url  du user
+                      const userUrl = "http://localhost:3000/api/auth/signup";
 
-                    //header
-                    const bearerToken = "bearer null";
+                      //header
+                      const bearerToken = "bearer null";
 
-                    fetch(userUrl, {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: bearerToken,
-                      },
-                      body: JSON.stringify(data),
-                    })
-                      .then((response) => response.json()) //reponse du fetch
-                      .catch((error) => {
-                        console.log("Fetch error: ", error);
+                      fetch(userUrl, {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: bearerToken,
+                        },
+                        body: JSON.stringify(data),
                       })
-                      .then((response) => {
-                        if (response.message.includes(userCreatedOK)) {
-                          window.alert(
-                            response.message +
-                              "  - Vous pouvez vous connecter avec vos identifiants"
-                          );
-                        } else {
-                          window.alert(response.message);
-                        }
-                        // On recharge la page et on reinit les variables.
-                        window.location.href = "./index.html"; // on recharge la page d'accueil
-                        this.SignupForm = false; // on replie le formulaire et on reinit les variables.
-                        this.email = "";
-                        this.passwd = "";
-                        this.pseudo = "";
-                      })
-                      .catch((error) => {
-                        console.log("Response error: ", error);
-                      });
+                        .then((response) => response.json()) //reponse du fetch
+                        .catch((error) => {
+                          console.log("Fetch error: ", error);
+                        })
+                        .then((response) => {
+                          if (response.message.includes(userCreatedOK)) {
+                            window.alert(
+                              response.message +
+                                "  - Vous pouvez vous connecter avec vos identifiants"
+                            );
+                          } else {
+                            window.alert(response.message);
+                          }
+                          // On recharge la page et on reinit les variables.
+                          window.location.href = "./index.html"; // on recharge la page d'accueil
+                          this.SignupForm = false; // on replie le formulaire et on reinit les variables.
+                          this.email = "";
+                          this.passwd = "";
+                          this.pseudo = "";
+                        })
+                        .catch((error) => {
+                          console.log("Response error: ", error);
+                        });
+                    } //fin test passwd
+                    else {
+                      window.alert(
+                        "pseudo invalide ne doit pas contenir d'apostrophes"
+                      );
+                    }
                   } //fin test pseudo
                   else {
                     window.alert(
@@ -352,64 +366,72 @@
                 }
               }
 
-              // les data du body du fetch
-              const data = { email: this.email, password: this.passwd };
+              // test champs non vides
+              if (this.email && this.passwd) {
+                // les data du body du fetch
+                const data = { email: this.email, password: this.passwd };
 
-              //Url  du user
-              const userUrl = "http://localhost:3000/api/auth/login";
+                //Url  du user
+                const userUrl = "http://localhost:3000/api/auth/login";
 
-              //header
-              const bearerToken = "bearer null";
+                //header
+                const bearerToken = "bearer null";
 
-              fetch(userUrl, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: bearerToken,
-                },
-                body: JSON.stringify(data),
-              })
-                .then((response) => response.json()) //reponse du fetch
-                .catch((error) => {
-                  console.log("Fetch error: ", error);
+                fetch(userUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
                 })
-                .then((response) => {
-                  this.userId = response.userId;
-                  this.token = response.token;
-                  this.moderator = response.moderator;
-                  this.pseudo = response.pseudo;
-                  console.log(this.userId + this.pseudo);
-                  //test userId valide crée
-                  if (this.userId) {
-                    // Maj local storage avec le nouveau user connecté
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                  })
+                  .then((response) => {
+                    this.userId = response.userId;
+                    this.token = response.token;
+                    this.moderator = response.moderator;
+                    this.pseudo = response.pseudo;
+                    console.log(this.userId + this.pseudo);
+                    //test userId valide crée
+                    if (this.userId) {
+                      // Maj local storage avec le nouveau user connecté
 
-                    let userConnected = new localStorageUser(
-                      "",
-                      0,
-                      "",
-                      0,
-                      false
-                    );
-                    userConnected.userId = this.userId;
-                    userConnected.moderator = this.moderator;
-                    userConnected.token = this.token;
-                    userConnected.pseudo = this.pseudo;
-                    userConnected.userInLocalStorageOK = true;
+                      let userConnected = new localStorageUser(
+                        "",
+                        0,
+                        "",
+                        0,
+                        false
+                      );
+                      userConnected.userId = this.userId;
+                      userConnected.moderator = this.moderator;
+                      userConnected.token = this.token;
+                      userConnected.pseudo = this.pseudo;
+                      userConnected.userInLocalStorageOK = true;
 
-                    // Maj de la clé user dans le local storage
-                    localStorage.setItem("user", JSON.stringify(userConnected));
+                      // Maj de la clé user dans le local storage
+                      localStorage.setItem(
+                        "user",
+                        JSON.stringify(userConnected)
+                      );
 
-                    window.alert("Connexion OK  - Bonjour " + this.pseudo);
+                      window.alert("Connexion OK  - Bonjour " + this.pseudo);
 
-                    // On va sur la page posts
-                    window.location.href = "./posts.html"; // on retourne à la page d'accueil
-                  } else {
-                    window.alert("login failed");
-                  }
-                })
-                .catch((error) => {
-                  console.log("Response error: ", error);
-                });
+                      // On va sur la page posts
+                      window.location.href = "./posts.html"; // on retourne à la page d'accueil
+                    } else {
+                      window.alert("login failed");
+                    }
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                  });
+              } else {
+                window.alert("Renseignez les champs avant de valider");
+              }
             } catch (err) {
               console.log("erreur ft login " + err);
             }
