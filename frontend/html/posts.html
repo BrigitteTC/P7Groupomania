@@ -67,13 +67,19 @@
                   <div class="HeaderButton">
                     <!-- Cas du user connecté on affiche les boutons profil et logout -->
                     <template v-if="isUserConnected">
-                      <button v-on:click="logout()">Logout</button>
+                      <ul>
+                        <li><button v-on:click="logout()">Logout</button></li>
 
-                      <button v-on:click="profil()">Mon profil</button>
+                        <li>
+                          <button v-on:click="profil()">Mon profil</button>
+                        </li>
+                      </ul>
                     </template>
                     <template v-else>
                       <!-- Cas du user non connecté on affiche le bouton accueil qui fait le logout-->
-                      <button v-on:click="logout()">Accueil</button>
+                      <ul>
+                        <li><button v-on:click="logout()">Accueil</button></li>
+                      </ul>
                     </template>
                   </div>
                   <!--Fin boutons de navigation    -->
