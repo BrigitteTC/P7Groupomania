@@ -217,6 +217,7 @@
               const patern = RegExp(
                 "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
               );
+              const userCreatedOK = "Utilisateur créé"; //msg renvoyé du back si user crée
 
               // test si champs non vides pour valider le formulaire
               if (
@@ -252,8 +253,14 @@
                       console.log("Fetch error: ", error);
                     })
                     .then((response) => {
-                      window.alert(response.message); // affiche msg de retour du serveur
-
+                      if (response.message.includes(userCreatedOK)) {
+                        window.alert(
+                          response.message +
+                            "  - Vous pouvez vous connecter avec vos identifiants"
+                        );
+                      } else {
+                        window.alert(response.message);
+                      }
                       // On recharge la page et on reinit les variables.
                       window.location.href = "./index.html"; // on recharge la page d'accueil
                       this.SignupForm = false; // on replie le formulaire et on reinit les variables.
