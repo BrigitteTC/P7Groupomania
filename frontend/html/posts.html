@@ -64,9 +64,14 @@
               <div>
                 <div class="flexColumns">
                   <div class="HeaderButton">
-                    <button v-on:click="logout()">Logout</button>
+                    <template v-if="isUserConnected">
+                      <button v-on:click="logout()">Logout</button>
 
-                    <button v-on:click="profil()">Mon profil</button>
+                      <button v-on:click="profil()">Mon profil</button>
+                    </template>
+                    <template v-else>
+                      <button v-on:click="accueil()">Accueil</button>
+                    </template>
                   </div>
                   <!--    -->
 
