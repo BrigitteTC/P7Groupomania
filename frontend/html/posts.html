@@ -177,7 +177,7 @@
           <h2>pour vous connecter</h2>
         </template>
         <template v-else>
-          <!-- Affichage des posts pour les users connectés -->
+          <!-- Affichage entete pour les users connectés -->
           <div class="postHeader">
             <h3>Bonjour {{connectedName}} {{connectedUserId}}</h3>
             <template v-if="connectedModerator">
@@ -217,13 +217,15 @@
             </template>
             <!-- Fin formulaire de creation du post -->
           </div>
-          <!-- Fin affichage des posts -->
-
+          <!-- Fin affichage entête des connectés -->
+          <!-- ********************************************************************** -->
+          <!-- Partie affichage des posts -->
           <div>
+            <!-- cas serveur indisponible -->
             <template v-if="errored">
               <p>Serveur indisponible</p>
             </template>
-
+            <!-- Affichage des posts -->
             <template v-else>
               <h4 v-if="loading">Loading... dernières nouvelles</h4>
               <h4 v-else>Dernières nouvelles</h4>
@@ -424,12 +426,17 @@
                       </div>
                     </div>
                   </article>
+                  <!-- Fin article avec le post, ses petits commentaires -->
                 </div>
               </div>
+              <!-- Fin liste des posts -->
             </template>
+            <!-- Fin affichage des posts avec entête puis liste-->
           </div>
         </template>
+        <!-- Fin test user connecté ou nom (isUserConnected) -->
       </main>
+      <!-- Fin du main -->
 
       <!-- Footer -->
 
@@ -466,7 +473,7 @@
             ville: "19300 labas sur Correze",
             tel: "01 23 45 67 89",
             //nom et infos de l'utilisateur connecté
-            isUserConnected: false, //seratrue quand le user sera connecté par login
+            isUserConnected: false, //sera true quand le user sera connecté par login
             connectedName: "",
             connectedUserId: "",
             connectedModerator: false,
@@ -528,7 +535,7 @@
           // Lecture du local storage pour récupérer les infos du user
           // Rien ne sera affiché si aucun user n'est connecté = local storage vide
           if ("user" in localStorage) {
-            this.userConnected = true; // c'est bon on a un user connecté.
+            this.isUserConnected = true; // c'est bon on a un user connecté.
             const userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
 
             const userToken = userInLocalStorage.token; // le token
