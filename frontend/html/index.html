@@ -212,41 +212,43 @@
           validateSignup() {
             console.log("validate signup ");
 
-            // les data du body du fetch
-            const data = {
-              email: this.email,
-              password: this.passwd,
-              pseudo: this.pseudo,
-            };
+            if (this.email !== "" && this.passwd !== "" && this.pseudo !== "") {
+              // les data du body du fetch
+              const data = {
+                email: this.email,
+                password: this.passwd,
+                pseudo: this.pseudo,
+              };
 
-            //Url  du user
-            const userUrl = "http://localhost:3000/api/auth/signup";
+              //Url  du user
+              const userUrl = "http://localhost:3000/api/auth/signup";
 
-            //header
-            const bearerToken = "bearer null";
+              //header
+              const bearerToken = "bearer null";
 
-            fetch(userUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
+              fetch(userUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: bearerToken,
+                },
+                body: JSON.stringify(data),
               })
-              .then((response) => {
-                window.alert(response.message); // affiche msg de retour du serveur
-                this.SignupForm = false; // on replie le formulaire et on reinit les variables.
-                this.email = "";
-                this.passwd = "";
-                this.pseudo = "";
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-              });
+                .then((response) => response.json()) //reponse du fetch
+                .catch((error) => {
+                  console.log("Fetch error: ", error);
+                })
+                .then((response) => {
+                  window.alert(response.message); // affiche msg de retour du serveur
+                  this.SignupForm = false; // on replie le formulaire et on reinit les variables.
+                  this.email = "";
+                  this.passwd = "";
+                  this.pseudo = "";
+                })
+                .catch((error) => {
+                  console.log("Response error: ", error);
+                });
+            }
           }, //Fin Validate signup
 
           //------------------------------------------------------------------------------
