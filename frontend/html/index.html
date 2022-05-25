@@ -217,6 +217,8 @@
               const patern = RegExp(
                 "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
               );
+
+              const pseudoPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
               const userCreatedOK = "Utilisateur créé"; //msg renvoyé du back si user crée
 
               // test si champs non vides pour valider le formulaire
@@ -227,50 +229,57 @@
               ) {
                 //test validité du mail
                 if (patern.test(this.email)) {
-                  // les data du body du fetch
-                  const data = {
-                    email: this.email,
-                    password: this.passwd,
-                    pseudo: this.pseudo,
-                  };
+                  if (pseudoPatern.test(this.pseudo)) {
+                    // les data du body du fetch
+                    const data = {
+                      email: this.email,
+                      password: this.passwd,
+                      pseudo: this.pseudo,
+                    };
 
-                  //Url  du user
-                  const userUrl = "http://localhost:3000/api/auth/signup";
+                    //Url  du user
+                    const userUrl = "http://localhost:3000/api/auth/signup";
 
-                  //header
-                  const bearerToken = "bearer null";
+                    //header
+                    const bearerToken = "bearer null";
 
-                  fetch(userUrl, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: bearerToken,
-                    },
-                    body: JSON.stringify(data),
-                  })
-                    .then((response) => response.json()) //reponse du fetch
-                    .catch((error) => {
-                      console.log("Fetch error: ", error);
+                    fetch(userUrl, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: bearerToken,
+                      },
+                      body: JSON.stringify(data),
                     })
-                    .then((response) => {
-                      if (response.message.includes(userCreatedOK)) {
-                        window.alert(
-                          response.message +
-                            "  - Vous pouvez vous connecter avec vos identifiants"
-                        );
-                      } else {
-                        window.alert(response.message);
-                      }
-                      // On recharge la page et on reinit les variables.
-                      window.location.href = "./index.html"; // on recharge la page d'accueil
-                      this.SignupForm = false; // on replie le formulaire et on reinit les variables.
-                      this.email = "";
-                      this.passwd = "";
-                      this.pseudo = "";
-                    })
-                    .catch((error) => {
-                      console.log("Response error: ", error);
-                    });
+                      .then((response) => response.json()) //reponse du fetch
+                      .catch((error) => {
+                        console.log("Fetch error: ", error);
+                      })
+                      .then((response) => {
+                        if (response.message.includes(userCreatedOK)) {
+                          window.alert(
+                            response.message +
+                              "  - Vous pouvez vous connecter avec vos identifiants"
+                          );
+                        } else {
+                          window.alert(response.message);
+                        }
+                        // On recharge la page et on reinit les variables.
+                        window.location.href = "./index.html"; // on recharge la page d'accueil
+                        this.SignupForm = false; // on replie le formulaire et on reinit les variables.
+                        this.email = "";
+                        this.passwd = "";
+                        this.pseudo = "";
+                      })
+                      .catch((error) => {
+                        console.log("Response error: ", error);
+                      });
+                  } //fin test pseudo
+                  else {
+                    window.alert(
+                      "pseudo invalide ne doit contenir que des lettres et des chiffres"
+                    );
+                  }
                 } else {
                   window.alert(
                     "email invalide doit être de la forme abc@xx.xx"
