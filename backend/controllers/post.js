@@ -191,12 +191,17 @@ exports.createPost = (req, res, next) => {
     // Requete sql pour creer le post
     const userId = req.auth.userId; //userId déduit du token du header
 
+    //le post dont on va echapper les ' avec \'
+    let newPost = req.body.post;
+    const newPostCorrected = newPost.replace("'", "\\'");
+    console.log("newPostCorrected= " + newPostCorrected);
+
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
       "INSERT INTO " +
       postsTable +
       " (post, imageUrl, userId, PostDate) VALUES ('" +
-      req.body.post +
+      newPostCorrected +
       "','" +
       imageUrl +
       "','" +
