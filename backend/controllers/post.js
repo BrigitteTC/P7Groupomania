@@ -307,38 +307,18 @@ remarque:
 exports.modifyPost = (req, res, next) => {
   console.log("DEBUG ft  modifyPost");
   try {
-    //REcherche propriétaire du post
-    //const postUserId = getPostOwner(req.params.id);
-
-    //console.log("DEBUG ft modifyPost postUserId =  " + postUserId);
-
-    //const moderator = isModerator(req.auth.userId);
-    //console.log("DEBUG ft modifyPost moderator = " + moderator);
-
     console.log("DEBUG ft modifyPost req.auth.userId =  " + req.auth.userId);
 
-    // verifie user moderateur ou proprietaire du post
-    //req.auth.userId = user qui a lancé la requete identifié par son token
-    //let userAuth = false; //sera a true su user autorisé à passer la requete
-    //if (postUserId == req.auth.userId) {
-    //  userAuth = true;
-    //}
-
-    //if (moderator == true) {
-    //  userAuth = true;
-    //}
-    //console.log("DEBUG : ft modifyPost: userAuth = " + userAuth);
-
-    //userAuth = true; //DEBUG: force a true en attendant les then en cascade.
-    //if (postUserId == req.auth.userId || moderator == true) {
-    //if (userAuth == true) {
-    console.log("DEBUG : fonction modifyPost: moderateur ou proprio : OK");
+    //le post dont on va echapper les ' avec \'
+    let newPost = req.body.post;
+    const newPostCorrected = newPost.replace("'", "\\'");
+    console.log("newPostCorrected= " + newPostCorrected);
 
     sql =
       "UPDATE  " +
       postsTable +
       "  SET post='" +
-      req.body.post +
+      newPostCorrected +
       "' WHERE postId='" +
       req.params.postId +
       "';";
@@ -534,11 +514,17 @@ exports.createComment = (req, res, next) => {
     const userId = req.auth.userId; //userId déduit du token du header
     const postId = req.params.postId; //id du post dans l'adresse URL
     console.log("DEBUG   req.auth.userId  :  " + userId);
+
+    //le commentaire dont on va echapper les ' avec \'
+    let newComment = req.body.comment;
+    const newCommentCorrected = newComment.replace("'", "\\'");
+    console.log("newCommentCorrected= " + newCommentCorrected);
+
     sql =
       "INSERT INTO  " +
       commentsTable +
       "  (comment, postId, userId,commentDate) VALUES ('" +
-      req.body.comment +
+      newCommentCorrected +
       "','" +
       postId +
       "','" +
@@ -732,11 +718,16 @@ exports.modifyComment = (req, res, next) => {
   try {
     // Requete sql pour modifier le commentaire
 
+    //le commentaire dont on va echapper les ' avec \'
+    let newComment = req.body.comment;
+    const newCommentCorrected = newComment.replace("'", "\\'");
+    console.log("newCommentCorrected= " + newCommentCorrected);
+
     sql =
       "UPDATE  " +
       commentsTable +
       "  SET comment='" +
-      req.body.comment +
+      newCommentCorrected +
       "' WHERE commentId='" +
       req.params.commentId +
       "';";
