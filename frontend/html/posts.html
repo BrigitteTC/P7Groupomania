@@ -1109,16 +1109,30 @@
               const valueToModify = this.valueToModify;
               let data = "";
 
+              // paterns pour verifier les data
+              const emailPatern = RegExp(
+                "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
+              );
+
+              const pseudoPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
+              const passwdPatern = /!'/; //pas d'apostrophe
+
               // Maj du body en ft de la donnée à modifier
               switch (valueToModify) {
                 case "email":
-                  data = { email: this.newValue };
+                  if (emailPatern.test(this.email)) {
+                    data = { email: this.newValue };
+                  }
                   break;
                 case "pseudo":
-                  data = { pseudo: this.newValue };
+                  if (pseudoPatern.test(this.pseudo)) {
+                    data = { pseudo: this.newValue };
+                  }
                   break;
                 case "password":
-                  data = { password: this.newValue };
+                  if (passwdPatern.test(this.passwd)) {
+                    data = { password: this.newValue };
+                  }
                   break;
                 default:
                   console.log("pb");
@@ -1126,28 +1140,34 @@
               //Url  du user
               const userUrl = "http://localhost:3000/api/auth/" + userId;
 
-              fetch(userUrl, {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: bearerToken,
-                },
-                body: JSON.stringify(data),
-              })
-                .then((response) => response.json()) //reponse du fetch
-                .catch((error) => {
-                  console.log("Fetch error: ", error);
+              if (data === "") {
+                window.alert("valeur invalide");
+              } else {
+                //on envoie la requete
+
+                fetch(userUrl, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
                 })
-                .then((response) => {
-                  window.alert(response.message); // affiche msg de retour du serveur
-                  this.modifyProfilForm = false; // on replie le formulaire
-                  this.valueToModify = "";
-                  this.askValue = false;
-                  this.displayOkCancel = false;
-                })
-                .catch((error) => {
-                  console.log("Response error: ", error);
-                });
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                  })
+                  .then((response) => {
+                    window.alert(response.message); // affiche msg de retour du serveur
+                    this.modifyProfilForm = false; // on replie le formulaire
+                    this.valueToModify = "";
+                    this.askValue = false;
+                    this.displayOkCancel = false;
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                  });
+              }
             }
           }, //Fin ValidateModifyProfil
 
