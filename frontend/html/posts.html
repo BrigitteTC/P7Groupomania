@@ -320,6 +320,10 @@
                       >
                         <!-- Affichage des commentaires seulement pour le post selectionné -->
                         <template v-if="itemPost.postId==itemComment.postId">
+                          <p>
+                            {{ nbComments}} commentaires pour le post
+                            {{itemPost.postId}}
+                          </p>
                           <div class="commentList">
                             <div class="commentItem">
                               <div class="commentHeader">
@@ -438,6 +442,7 @@
             //tableau des posts et des commentaires
             posts: [],
             comments: [],
+            nbComments: 0, //nombrede commentaires.
 
             // etats chargement et erreurs
             loading: false,
@@ -708,6 +713,8 @@
               })
               .then((response) => {
                 this.comments = response; //les commentaires renvoyés de l'API
+                this.nbComments = this.comments.length;
+                console.log("nombre de commentaires: " + this.nbComments);
               })
               .catch((error) => {
                 console.log("Response error: ", error);
