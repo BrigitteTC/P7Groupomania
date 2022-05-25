@@ -64,13 +64,15 @@
               <div>
                 <div class="flexColumns">
                   <div class="HeaderButton">
+                    <!-- Cas du user connecté on affiche les boutons profil et logout -->
                     <template v-if="isUserConnected">
                       <button v-on:click="logout()">Logout</button>
 
                       <button v-on:click="profil()">Mon profil</button>
                     </template>
                     <template v-else>
-                      <button v-on:click="accueil()">Accueil</button>
+                      <!-- Cas du user non connecté on affiche le bouton accueil qui fait le logout-->
+                      <button v-on:click="logout()">Accueil</button>
                     </template>
                   </div>
                   <!--    -->
@@ -161,46 +163,55 @@
       <!-- <main> -->
       <main>
         <h1>les posts des salariés de Groupomania</h1>
+        <template v-if="isUserConnected">
+          <!-- Affichage des posts pour les users connectés -->
+          <div class="postHeader">
+            <h3>Bonjour {{connectedName}} {{connectedUserId}}</h3>
+            <template v-if="connectedModerator">
+              <h3>Vous êtes moderateur</h3>
+            </template>
+            <div>
+              <!-- Bouton pour créer un post -->
 
-        <div class="postHeader">
-          <h3>Bonjour {{connectedName}} {{connectedUserId}}</h3>
-          <template v-if="connectedModerator">
-            <h3>Vous êtes moderateur</h3>
-          </template>
-          <div>
-            <!-- Bouton pour créer un post -->
+              <button class="createPostButton" @click="createPost()">
+                Créer un post
+              </button>
+            </div>
+            <!-- Debut formulaire de creation du post -->
+            <template v-if="createPostForm">
+              <!-- Affichage du formulaire de creation du post -->
+              <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+              <div>
+                <label for="newPost">Votre nouveau post</label>
+                <input type="text" v-model="newPost" id="newPost" />
+              </div>
 
-            <button class="createPostButton" @click="createPost()">
-              Créer un post
-            </button>
+              <!-- Boutons pour valider ou annuler cette creation -->
+              <div>
+                <input
+                  @click="validateCreationPost()"
+                  type="submit"
+                  value="Valider"
+                />
+              </div>
+              <div>
+                <input
+                  @click="cancelCreationPost()"
+                  type="submit"
+                  value="Annuler"
+                />
+              </div>
+            </template>
+            <!-- Fin formulaire de creation du post -->
           </div>
-          <!-- Debut formulaire de creation du post -->
-          <template v-if="createPostForm">
-            <!-- Affichage du formulaire de creation du post -->
-            <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-            <div>
-              <label for="newPost">Votre nouveau post</label>
-              <input type="text" v-model="newPost" id="newPost" />
-            </div>
-
-            <!-- Boutons pour valider ou annuler cette creation -->
-            <div>
-              <input
-                @click="validateCreationPost()"
-                type="submit"
-                value="Valider"
-              />
-            </div>
-            <div>
-              <input
-                @click="cancelCreationPost()"
-                type="submit"
-                value="Annuler"
-              />
-            </div>
-          </template>
-          <!-- Fin formulaire de creation du post -->
-        </div>
+          <!-- Fin affichage des posts -->
+        </template>
+        <template v-else>
+          <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
+          <h2>Vous n'êtes pas connecté</h2>
+          <h2>Retournez sur la page accueil</h2>
+          <h2>pour vous connecter</h2>
+        </template>
         <div>
           <template v-if="errored">
             <p>Serveur indisponible</p>
