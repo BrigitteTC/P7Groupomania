@@ -252,8 +252,10 @@
                       console.log("Fetch error: ", error);
                     })
                     .then((response) => {
-                      console.log("retour du serveur : " + response.message);
                       window.alert(response.message); // affiche msg de retour du serveur
+
+                      // On recharge la page et on reinit les variables.
+                      window.location.href = "./index.html"; // on recharge la page d'accueil
                       this.SignupForm = false; // on replie le formulaire et on reinit les variables.
                       this.email = "";
                       this.passwd = "";
