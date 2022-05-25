@@ -763,7 +763,7 @@
               })
               .then((response) => {
                 this.comments = response; //les commentaires renvoyés de l'API
-                this.nbComments = this.comments.length;
+                this.nbComments = this.comments.comment.length;
                 console.log("nombre de commentaires: " + this.nbComments);
               })
               .catch((error) => {
