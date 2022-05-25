@@ -47,6 +47,19 @@ h2 {
   padding: 0 25px;
 }
 
+/***************************
+Class pour afficher les items a coté ou dessus/dessous
+*****************************/
+.flexColumns {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexRows {
+  display: flex;
+  flex-direction: rows;
+}
+
 /********/
 /*Header*/
 /********/
