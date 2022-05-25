@@ -166,7 +166,9 @@
         <!-- Fin du bloc entête -->
       </header>
       <!-- Fin du header -->
+
       <!-- ******************************************************************************** -->
+
       <!-- <main> -->
       <main>
         <h1>les posts des salariés de Groupomania</h1>
@@ -176,6 +178,7 @@
           <h2>Retournez sur la page accueil</h2>
           <h2>pour vous connecter</h2>
         </template>
+
         <template v-else>
           <!-- Affichage entete pour les users connectés -->
           <div class="postHeader">
@@ -190,6 +193,7 @@
                 Créer un post
               </button>
             </div>
+
             <!-- Debut formulaire de creation du post -->
             <template v-if="createPostForm">
               <!-- Affichage du formulaire de creation du post -->
@@ -218,13 +222,16 @@
             <!-- Fin formulaire de creation du post -->
           </div>
           <!-- Fin affichage entête des connectés -->
+
           <!-- ********************************************************************** -->
+
           <!-- Partie affichage des posts -->
           <div>
             <!-- cas serveur indisponible -->
             <template v-if="errored">
               <p>Serveur indisponible</p>
             </template>
+
             <!-- Affichage des posts -->
             <template v-else>
               <h4 v-if="loading">Loading... dernières nouvelles</h4>
@@ -341,6 +348,7 @@
 
                           <!-- Fin formulaire ajout d'un commentaire -->
                         </div>
+
                         <!-- Partie affichage des commentaires du post -->
                         <template
                           v-for="itemComment in comments.comment"
@@ -349,10 +357,6 @@
                         >
                           <!-- Affichage des commentaires seulement pour le post selectionné -->
                           <template v-if="itemPost.postId==itemComment.postId">
-                            <p>
-                              {{ nbComments}} commentaires pour le post
-                              {{itemPost.postId}}
-                            </p>
                             <div class="commentList">
                               <div class="commentItem">
                                 <div class="commentHeader">
@@ -419,11 +423,17 @@
 
                                   <!-- Fin du formulaire pour modifier le commentaire -->
                                 </div>
+                                <!-- Fin partie avec les boutons des commentaires -->
                               </div>
+                              <!-- Fin item post -->
                             </div>
+                            <!-- Fin liste avec les commentaires du post -->
                           </template>
+                          <!--Fin affichage des commentaires du post selectionné  -->
                         </template>
+                        <!-- fin de la boucle sur tous les commentaires -->
                       </div>
+                      <!-- Fin partie postinfo : partie utile sous l'entête -->
                     </div>
                   </article>
                   <!-- Fin article avec le post, ses petits commentaires -->
@@ -481,7 +491,7 @@
             //tableau des posts et des commentaires
             posts: [],
             comments: [],
-            nbComments: 0, //nombrede commentaires.
+            nbComments: 0, //nombre de commentaires.
 
             // etats chargement et erreurs
             loading: false,
