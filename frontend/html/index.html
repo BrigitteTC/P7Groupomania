@@ -212,6 +212,7 @@
           validateSignup() {
             try {
               console.log("validate signup ");
+              event.preventDefault(); //evite le rechargt de la page
               // regex pour le mail
               const patern = RegExp(
                 "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
@@ -251,6 +252,7 @@
                       console.log("Fetch error: ", error);
                     })
                     .then((response) => {
+                      console.log("retour du serveur : " + response.message);
                       window.alert(response.message); // affiche msg de retour du serveur
                       this.SignupForm = false; // on replie le formulaire et on reinit les variables.
                       this.email = "";
@@ -311,6 +313,7 @@
 
           validateLogin() {
             console.log("login ");
+            event.preventDefault(); //evite le rechargt de la page
 
             // les data du body du fetch
             const data = { email: this.email, password: this.passwd };
