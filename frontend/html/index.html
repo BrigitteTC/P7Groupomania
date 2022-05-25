@@ -53,7 +53,7 @@
             </nav>
           </div>
         </div>
-
+        <!-- Affichage des menus login ou signup -->
         <section class="items limitedWidthBlockContainer" id="items">
           <div v-if="loginForm| signupForm " class="cart__order">
             <form method="get" class="cart__order__form">
@@ -96,6 +96,7 @@
             </form>
           </div>
         </section>
+        <!-- Fin affichage des menus login et signup -->
         <img class="banniere" src="../images/banniere.png" alt="Baniere" />
       </header>
       <!-- Fin du header -->
@@ -186,13 +187,15 @@
           //-----------------------------------------------------------------------------------------
           // signup
           // affichage du formulaire de  signup
+          // et repli du formulaire de login
           //
-          // param: aucun
+          // et init variables
           //-------------------------------------------------
 
           signup() {
             console.log("signup");
-            this.signupForm = true; // ouverture formulaire
+            this.signupForm = true; // ouverture formulaire signup
+            this.loginForm = false; // on replie le formulaire login
             this.email = "";
             this.passwd = "";
             this.pseudo = "";
@@ -258,14 +261,16 @@
           },
           //-----------------------------------------------------------------------------------------
           // login
-          // affichage du formulaire de  login
+          // affichage du formulaire de  login  et repli du formulaire de signup
+          // et init des variables
           //
           // param: aucun
           //-------------------------------------------------
 
           login() {
             console.log("login");
-            this.loginForm = true; // ouverture formulaire
+            this.loginForm = true; // ouverture formulaire login
+            this.signupForm = false; // on replie le formulaire signup
             this.email = "";
             this.passwd = "";
           },
