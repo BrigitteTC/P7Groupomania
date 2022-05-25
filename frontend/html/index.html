@@ -321,68 +321,75 @@
           //---------------------------------------------------------------------------------
 
           validateLogin() {
-            console.log("login ");
-            event.preventDefault(); //evite le rechargt de la page
+            try {
+              console.log("login ");
+              event.preventDefault(); //evite le rechargt de la page
 
-            // les data du body du fetch
-            const data = { email: this.email, password: this.passwd };
+              // les data du body du fetch
+              const data = { email: this.email, password: this.passwd };
 
-            //Url  du user
-            const userUrl = "http://localhost:3000/api/auth/login";
+              //Url  du user
+              const userUrl = "http://localhost:3000/api/auth/login";
 
-            //header
-            const bearerToken = "bearer null";
+              //header
+              const bearerToken = "bearer null";
 
-            fetch(userUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
+              fetch(userUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: bearerToken,
+                },
+                body: JSON.stringify(data),
               })
-              .then((response) => {
-                this.userId = response.userId;
-                this.token = response.token;
-                this.moderator = response.moderator;
-                this.pseudo = response.pseudo;
+                .then((response) => response.json()) //reponse du fetch
+                .catch((error) => {
+                  console.log("Fetch error: ", error);
+                })
+                .then((response) => {
+                  this.userId = response.userId;
+                  this.token = response.token;
+                  this.moderator = response.moderator;
+                  this.pseudo = response.pseudo;
 
-                alerteMsg("Connexion OK  - Bonjour " + this.pseudo);
+                  alerteMsg("Connexion OK  - Bonjour " + this.pseudo);
 
-                // Maj local storage avec le nouveau user connecté
+                  // Maj local storage avec le nouveau user connecté
 
-                let userConnected = new localStorageUser("", 0, "", 0, false);
-                userConnected.userId = this.userId;
-                userConnected.moderator = this.moderator;
-                userConnected.token = this.token;
-                userConnected.pseudo = this.pseudo;
-                userConnected.userInLocalStorageOK = true;
+                  let userConnected = new localStorageUser("", 0, "", 0, false);
+                  userConnected.userId = this.userId;
+                  userConnected.moderator = this.moderator;
+                  userConnected.token = this.token;
+                  userConnected.pseudo = this.pseudo;
+                  userConnected.userInLocalStorageOK = true;
 
-                // Maj de la clé user dans le local storage
-                localStorage.setItem("user", JSON.stringify(userConnected));
+                  // Maj de la clé user dans le local storage
+                  localStorage.setItem("user", JSON.stringify(userConnected));
 
-                // Verif lecture du local storage
-                let ProductSelected = JSON.parse(localStorage.getItem("user")); //elt selectionné
-                console.log(
-                  "lecture du local storage  token  : " + ProductSelected.token
-                );
+                  // Verif lecture du local storage
+                  let ProductSelected = JSON.parse(
+                    localStorage.getItem("user")
+                  ); //elt selectionné
+                  console.log(
+                    "lecture du local storage  token  : " +
+                      ProductSelected.token
+                  );
 
-                // on replie le formulaire et on reinit les variables.
-                this.loginForm = false;
-                this.email = "";
-                this.passwd = "";
-                this.pseudo = "";
+                  // on replie le formulaire et on reinit les variables.
+                  this.loginForm = false;
+                  this.email = "";
+                  this.passwd = "";
+                  this.pseudo = "";
 
-                // On va sur la page posts
-                window.location.href = "./posts.html"; // on retourne à la page d'accueil
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-              });
+                  // On va sur la page posts
+                  window.location.href = "./posts.html"; // on retourne à la page d'accueil
+                })
+                .catch((error) => {
+                  console.log("Response error: ", error);
+                });
+            } catch (err) {
+              console.log("erreur ft login " + err);
+            }
           }, //Fin Validate login
 
           //------------------------------------------------------------------------------
