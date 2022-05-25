@@ -261,6 +261,10 @@
                       console.log("Response error: ", error);
                     });
                 } // Fin test du mail valide
+              } else {
+                window.alert(
+                  "les champs du formulaire ne voivent pas être vides"
+                );
               } //fin test variables vides
             } catch (err) {
               console.log("erreur ft signup : " + err);
