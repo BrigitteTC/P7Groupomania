@@ -41,12 +41,13 @@ INSERT dans mysql avec userId et date d'insertion
 exports.createPost = (req, res, next) => {
   console.log("DEBUG createPost");
   try {
-    const imageUrl = req.body.imageUrl;
+    let imageUrl = "";
     //Gestion de l'image
-    imageUrl = `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
-
+    if (req.file) {
+      imageUrl = `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
+    }
     // Requete sql pour creer le post
     const userId = req.auth.userId; //userId déduit du token du header
 
