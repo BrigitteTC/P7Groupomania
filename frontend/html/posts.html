@@ -722,6 +722,7 @@
               if ("user" in localStorage) {
                 console.log("modify post");
                 this.modifyPostForm = postId; //affichage du formulaire de modif de post
+                this.newPost = "";
               } // fin du test "user" in local Storage
             } catch (err) {
               //fin du try
@@ -731,55 +732,80 @@
 
           //-----------------------------------------------------------------------------------------
           // validateModifPost
-          // modification du post
+          // Validation de la modification du post
+          // suite click sur bouton validate
           // param: postId
           //  methode: PUT
           //  URL: http://localhost:3000/api/post/postId
           //---------------------------------------------------------------------------------
           validateModifyPost(postId) {
-            console.log("modification  post : " + this.newPost);
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log("modification  post : " + this.newPost);
 
-            // Lecture du local storage pour récupérer le token  du user
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
+                // Lecture du local storage pour récupérer le token  du user
+                let userInLocalStorage = JSON.parse(
+                  localStorage.getItem("user")
+                ); //objet "user" du local storage
+                const userToken = userInLocalStorage.token; // le token
 
-            const bearerToken = "Bearer " + userToken;
+                const bearerToken = "Bearer " + userToken;
 
-            const data = { post: this.newPost, imageUrl: "" };
+                const data = { post: this.newPost, imageUrl: "" };
 
-            //Url des commentaires du post
-            const postUrl = "http://localhost:3000/api/post/" + postId;
-            fetch(postUrl, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-                this.erroredComments = true;
-              })
-              .then((response) => {
-                //response OK
+                //Url des commentaires du post
+                const postUrl = "http://localhost:3000/api/post/" + postId;
+                fetch(postUrl, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                    this.erroredComments = true;
+                  })
+                  .then((response) => {
+                    //response OK
 
-                this.modifyPostForm = ""; // on replie le formulaire
+                    this.modifyPostForm = ""; // on replie le formulaire et init var
+                    this.newPost = "";
 
-                window.location.reload(); // et on recharge
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                this.erroredComments = true;
-              });
+                    window.location.reload(); // et on recharge
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                    this.erroredComments = true;
+                  });
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft validateModifyPost : " + err);
+            }
           }, //Fin validateModifyPost
 
+          //-----------------------------------------------------------------
           //cancel modify post
-          cancelModifyPost() {
-            this.modifyPostForm = ""; // on replie le formulaire
-          },
+          // cancel création post
           //
+          // repli du formulaire si le user a cliqué sur cancel
+          //--------------------------------------------------------------
+
+          cancelModifyPost() {
+            try {
+              this.modifyPostForm = ""; // on replie le formulaire et init var
+              this.newPost = "";
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft cancelModifyPost : " + err);
+            }
+          },
+
           //-----------------------------------------------------------------------------------------
           // displayComments
           // Affichage des commentaires du post
