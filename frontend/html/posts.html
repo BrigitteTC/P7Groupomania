@@ -1183,7 +1183,7 @@
               this.newComment = "";
             } catch (err) {
               //fin du try
-              console.log("erreur ft xxx : " + err);
+              console.log("erreur ft cancelModifyComment : " + err);
             }
           },
 
@@ -1199,15 +1199,27 @@
 
           //-----------------------------------------------------------------------------------------
           // profil
-          // affichage du formulaire de modif du profile ou de la suppression du compte
+          // affichage du formulaire de modif du profil ou de la suppression du compte
           //
           // param: aucun
           //-------------------------------------------------
 
           profil() {
-            console.log("profil utilisateur");
-            this.modifyProfilForm = true; // ouverture formulaire profil
+            try {
+              console.log("profil utilisateur");
+              this.modifyProfilForm = true; // ouverture formulaire profil
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft profil : " + err);
+            }
           },
+
+          //-----------------------------------------------------------------------------------------
+          // modifyEmailProfil
+          // affichage du formulaire de modif du mail
+          //
+          // param: aucun
+          //-----------------------------------------------------------------------------------------
 
           modifyEmailProfil() {
             try {
@@ -1217,10 +1229,16 @@
               this.valueToModify = "email";
               this.displayOkCancel = true;
             } catch (err) {
-              console.log("Erreur modifyProfil " + err);
+              console.log("Erreur modifyEmailProfil" + err);
             }
           },
 
+          //-----------------------------------------------------------------------------------------
+          // modifyPasswdProfil
+          // affichage du formulaire de modif du passwd
+          //
+          // param: aucun
+          //-----------------------------------------------------------------------------------------
           modifyPasswdProfil() {
             try {
               this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
@@ -1229,9 +1247,16 @@
               this.valueToModify = "password";
               this.displayOkCancel = true;
             } catch (err) {
-              console.log("Erreur modifyProfil " + err);
+              console.log("Erreur modifyPasswdProfil " + err);
             }
           },
+
+          //-----------------------------------------------------------------------------------------
+          // modifyPseudoProfil
+          // affichage du formulaire de modif du pseudo
+          //
+          // param: aucun
+          //-----------------------------------------------------------------------------------------
 
           modifyPseudoProfil() {
             try {
@@ -1241,7 +1266,7 @@
               this.valueToModify = "pseudo";
               this.displayOkCancel = true;
             } catch (err) {
-              console.log("Erreur modifyProfil " + err);
+              console.log("Erreur modifyPseudoProfil " + err);
             }
           },
 
@@ -1258,84 +1283,92 @@
           //---------------------------------------------------------------------------------
 
           validateModifyProfil() {
-            // Lecture du local storage pour récupérer le token  du user
-            if ("user" in localStorage) {
-              let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-              const userToken = userInLocalStorage.token; // le token
-              const userId = userInLocalStorage.userId; // le userId
+            try {
+              // Lecture du local storage pour récupérer le token  du user
+              if ("user" in localStorage) {
+                let userInLocalStorage = JSON.parse(
+                  localStorage.getItem("user")
+                ); //objet "user" du local storage
+                const userToken = userInLocalStorage.token; // le token
+                const userId = userInLocalStorage.userId; // le userId
 
-              const bearerToken = "Bearer " + userToken;
+                const bearerToken = "Bearer " + userToken;
 
-              console.log("modify profil " + userId);
+                console.log("modify profil " + userId);
 
-              const valueToModify = this.valueToModify;
-              let data = "";
+                const valueToModify = this.valueToModify;
+                let data = "";
 
-              // paterns pour verifier les data
-              const emailPatern = RegExp(
-                "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
-              );
+                // paterns pour verifier les data
+                const emailPatern = RegExp(
+                  "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
+                );
 
-              const pseudoPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
-              const passwdPatern = /!'/; //pas d'apostrophe
+                const pseudoPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
+                const passwdPatern = /!'/; //pas d'apostrophe
 
-              // Maj du body en ft de la donnée à modifier
-              switch (valueToModify) {
-                case "email":
-                  if (emailPatern.test(this.email)) {
-                    data = { email: this.newValue };
-                  }
-                  break;
-                case "pseudo":
-                  if (pseudoPatern.test(this.pseudo)) {
-                    data = { pseudo: this.newValue };
-                  }
-                  break;
-                case "password":
-                  if (passwdPatern.test(this.passwd)) {
-                    data = { password: this.newValue };
-                  }
-                  break;
-                default:
-                  console.log("pb");
-              }
-              //Url  du user
-              const userUrl = "http://localhost:3000/api/auth/" + userId;
+                // Maj du body en ft de la donnée à modifier
+                switch (valueToModify) {
+                  case "email":
+                    if (emailPatern.test(this.email)) {
+                      data = { email: this.newValue };
+                    }
+                    break;
+                  case "pseudo":
+                    if (pseudoPatern.test(this.pseudo)) {
+                      data = { pseudo: this.newValue };
+                    }
+                    break;
+                  case "password":
+                    if (passwdPatern.test(this.passwd)) {
+                      data = { password: this.newValue };
+                    }
+                    break;
+                  default:
+                    console.log("pb");
+                }
+                //Url  du user
+                const userUrl = "http://localhost:3000/api/auth/" + userId;
 
-              if (data === "") {
-                window.alert("valeur invalide");
-              } else {
-                //on envoie la requete
+                if (data === "") {
+                  window.alert("valeur invalide");
+                } else {
+                  //on envoie la requete
 
-                fetch(userUrl, {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: bearerToken,
-                  },
-                  body: JSON.stringify(data),
-                })
-                  .then((response) => response.json()) //reponse du fetch
-                  .catch((error) => {
-                    console.log("Fetch error: ", error);
+                  fetch(userUrl, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: bearerToken,
+                    },
+                    body: JSON.stringify(data),
                   })
-                  .then((response) => {
-                    window.alert(response.message); // affiche msg de retour du serveur
-                    this.modifyProfilForm = false; // on replie le formulaire
-                    this.valueToModify = "";
-                    this.askValue = false;
-                    this.displayOkCancel = false;
-                  })
-                  .catch((error) => {
-                    console.log("Response error: ", error);
-                  });
+                    .then((response) => response.json()) //reponse du fetch
+                    .catch((error) => {
+                      console.log("Fetch error: ", error);
+                    })
+                    .then((response) => {
+                      window.alert(response.message); // affiche msg de retour du serveur
+                      this.modifyProfilForm = false; // on replie le formulaire
+                      this.valueToModify = "";
+                      this.askValue = false;
+                      this.displayOkCancel = false;
+                    })
+                    .catch((error) => {
+                      console.log("Response error: ", error);
+                    });
+                }
               }
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft ValidateModifyProfil : " + err);
             }
           }, //Fin ValidateModifyProfil
 
           //------------------------------------------------------------------------
-
           //cancel modify profil
+          // cancel suite click sur bouton cancel
+          //--------------------------------------------------------------------------
           cancelModifyProfil() {
             this.modifyProfilForm = false; // on replie le formulaire et on reinit les variables.
             this.valueToModify = "";
