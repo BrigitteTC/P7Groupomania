@@ -27,6 +27,8 @@ PUT et DELETE:
   authPost: vérifie que celui qui passe la requete est authentifié.
   authCommentOwner: Vérifie que celui qui passe la requete est moderateur ou propriétaire
 
+  multer permet de gérer les images.
+
 
 
 */
@@ -38,6 +40,7 @@ const postCtrl = require("../controllers/post");
 const authPost = require("../middleware/authPost");
 const authPostOwner = require("../middleware/authPostOwner");
 const authCommentOwner = require("../middleware/authCommentOwner");
+const multer = require("../middleware/multer-config");
 
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
