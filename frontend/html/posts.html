@@ -992,9 +992,18 @@
           //---------------------------------------------------------------------------------
 
           createComment(postId) {
-            console.log("create comment");
-            this.createCommentForm = postId; //affichage du formulaire de creation du commentaire pour le post
-            this.newComment = "";
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log("create comment");
+                this.createCommentForm = postId; //affichage du formulaire de creation du commentaire pour le post
+                this.newComment = "";
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft createComment : " + err);
+            }
           },
 
           //-----------------------------------------------------------------------------------------
