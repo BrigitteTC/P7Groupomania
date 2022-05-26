@@ -636,50 +636,61 @@
 
           //-----------------------------------------------------------------------------------------
           // validateCreationPost
-          // Creation du post
+          // Creation du post avec click sur bouton valider
           // param: post
           //  methode: POST
           //  URL: http://localhost:3000/api/post/
           //---------------------------------------------------------------------------------
           validateCreationPost() {
-            console.log("creation new post : " + this.newPost);
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log("creation new post : " + this.newPost);
 
-            // Lecture du local storage pour récupérer le token  du user
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
+                // Lecture du local storage pour récupérer le token  du user
+                let userInLocalStorage = JSON.parse(
+                  localStorage.getItem("user")
+                ); //objet "user" du local storage
+                const userToken = userInLocalStorage.token; // le token
 
-            const bearerToken = "Bearer " + userToken;
-            //{"post":" post de toutou 6 mai","imageUrl":""}st/";
+                const bearerToken = "Bearer " + userToken;
+                //{"post":" post de toutou 6 mai","imageUrl":""}st/";
 
-            const data = { post: this.newPost, imageUrl: "" };
+                const data = { post: this.newPost, imageUrl: "" };
 
-            //Url des commentaires du post
-            const postUrl = "http://localhost:3000/api/post";
-            fetch(postUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-                this.erroredComments = true;
-              })
-              .then((response) => {
-                //response OK
-                const retourServer = response;
-                console.log(retourServer.message);
-                this.createPostForm = false; // on replie le formulaire
-                window.alert(retourServer.message); // affiche msg de retour du serveur
-                window.location.reload(); // et on recharge
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                this.erroredComments = true;
-              });
+                //Url des commentaires du post
+                const postUrl = "http://localhost:3000/api/post";
+                fetch(postUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                    this.erroredComments = true;
+                  })
+                  .then((response) => {
+                    //response OK
+                    const retourServer = response;
+                    console.log(retourServer.message);
+                    this.createPostForm = false; // on replie le formulaire
+                    window.alert(retourServer.message); // affiche msg de retour du serveur
+                    window.location.reload(); // et on recharge
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                    this.erroredComments = true;
+                  });
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft validateCreationPost : " + err);
+            }
           }, //Fin validateCreationPost
 
           //cancel création post
