@@ -605,7 +605,7 @@
         // Page complètement chargée
         //------------------------------------------------------------------------------------
         mounted() {
-          // Load terminé
+          // Load en cours
           this.loading = false;
         },
 
@@ -621,8 +621,17 @@
           //---------------------------------------------------------------------------------
 
           createPost() {
-            console.log("create post");
-            this.createPostForm = true; //affichage du formulaire de creatino de post
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log("create post");
+                this.createPostForm = true; //affichage du formulaire de creation de post
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft createPost : " + err);
+            }
           },
 
           //-----------------------------------------------------------------------------------------
