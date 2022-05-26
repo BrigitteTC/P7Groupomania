@@ -1,8 +1,8 @@
-//Piiquante
+//P7 groupomania
 
 /*-----------------------------------------------------------------------------
 middleware/multer-config.js
-Date de création: 30/03/2022
+Date de création: 26/05/2022
 Auteur: BTC
 
 Gère les fichiers d'images  et permet leur téléchargement
