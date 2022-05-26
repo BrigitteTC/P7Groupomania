@@ -135,7 +135,7 @@
                     </div>
                     <!-- Fin des boutons valid/cancel -->
                   </div>
-                  <!-- Fin partie modify -->
+                  <!-- Fin partie modify profil-->
 
                   <!-- partie suppression du compte -->
                   <div v-if="deleteUser" class="flexColons">
@@ -188,7 +188,7 @@
         <template v-else>
           <!-- Affichage entete pour les users connectés -->
           <div class="postHeader">
-            <h3>Bonjour {{connectedName}} {{connectedUserId}}</h3>
+            <h3>Bonjour {{connectedName}}</h3>
             <template v-if="connectedModerator">
               <h3>Vous êtes moderateur</h3>
             </template>
@@ -207,6 +207,7 @@
               <div>
                 <label for="newPost">Votre nouveau post</label>
                 <input type="text" v-model="newPost" id="newPost" />
+                <input type="file" v-model="newFile" />
               </div>
 
               <!-- Boutons pour valider ou annuler cette creation -->
@@ -662,7 +663,7 @@
                   const bearerToken = "Bearer " + userToken;
                   //{"post":" post de toutou 6 mai","imageUrl":""}st/";
 
-                  const data = { post: this.newPost, imageUrl: "" };
+                  const data = { post: this.newPost, imageUrl: this.NewFile };
 
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
