@@ -10,35 +10,9 @@ pour protéger les routes sensibles
 
 Algo:
 Test user authentifié
-
-SI authentifié
-  Si methode = POST ou GET
-    next()
-  sinon
-    Si (utilisateur = moderateur)
-      next()
-    Sinon
-      Si (utilisateur = post/comment owner)
-        next()
-      sinon
-        Retour requete non autorisée
-      FSI
-    FSI
-  FSI
-FSI
+avec le token envoye dans le header décodé avec la clé secrete
 
 
-ATTENTION: pour DELETE et PUT
-  Ne pas mettre le userId dans le body mais:
-  Utilisation de req.auth pour authentifier l'utilisateur
-  car la vérification du user envoyé par le body peut être falsifiée
-  par une personne malveillante qui utiliserait POSTMAN par exemple pour envoyer une
-  requete.
-
-
-  req.auth.userId: est l'id déduit du token du header.
-  req.params.postId: est l'id du post donné dans l'URL
-  userId = id du user proprietaire du post.
 
 
 ------------------------------------------------*/
@@ -46,15 +20,6 @@ ATTENTION: pour DELETE et PUT
 //jsonwebtoken pour vérifier les token
 
 const jwt = require("jsonwebtoken");
-
-//Base de données mysql
-// connection database groupomania
-const connection = require("../mysqlp7").connection;
-
-//Tables des posts et des commentaires
-const usersTable = require("../mysqlp7").usersTable;
-const postsTable = require("../mysqlp7").postsTable;
-const commentsTable = require("../mysqlp7").commentsTable;
 
 /*------------------------------------------------------------------------
 authPost
