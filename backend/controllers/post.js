@@ -42,11 +42,11 @@ exports.createPost = (req, res, next) => {
   console.log("DEBUG createPost");
   try {
     const imageUrl = req.body.imageUrl;
-    /* on verra plus tard pour recuperer l'image rentree par le user
+    //Gestion de l'image
     imageUrl = `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
-*/
+
     // Requete sql pour creer le post
     const userId = req.auth.userId; //userId déduit du token du header
 
