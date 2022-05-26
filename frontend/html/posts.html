@@ -309,10 +309,21 @@
 
                         <!-- Fin du formulaire pour modifier le post -->
                       </div>
+
+                      <!-- Affichage du texte du post et de son image-->
                       <div class="postInfos">
                         <div class="postText">
                           <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
                         </div>
+                        <!-- Affichage de l'image avec v-bind -->
+                        <!-- <div v-if="itemPost.imageUrl"> -->
+                        <!-- <img -->
+                        <!-- v-bind:src="itemPost.imageUrl" -->
+                        <!-- v-bind:alt="image du post " -->
+                        <!-- /> -->
+                        <!-- </div> -->
+
+                        <!-- Boutons pour afficher ou ajouter les commentaires. -->
                         <div class="commentButtonsHeader">
                           <button @click="displayComments(itemPost.postId)">
                             Afficher les commentaires
