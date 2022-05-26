@@ -1370,10 +1370,15 @@
           // cancel suite click sur bouton cancel
           //--------------------------------------------------------------------------
           cancelModifyProfil() {
-            this.modifyProfilForm = false; // on replie le formulaire et on reinit les variables.
-            this.valueToModify = "";
-            this.askValue = false;
-            this.displayOkCancel = false;
+            try {
+              this.modifyProfilForm = false; // on replie le formulaire et on reinit les variables.
+              this.valueToModify = "";
+              this.askValue = false;
+              this.displayOkCancel = false;
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft cancelModifyProfil : " + err);
+            }
           },
 
           //---------------------------------------------------------------------------
@@ -1397,12 +1402,11 @@
           //---------------------------------------------------------------------------
           //deleteProfil()
           //
-          // Suppression du compte du user en cours:
-
+          // Suite click sur choix deleteProfil
+          // pour suppression du compte du user en cours:
+          // Affichage d'une alerte pour informer l'utilisateur
           // Affichage d'un choix de bouton OK/Cancel
           //
-          // recherche tu token dan sle local Storage
-          //  Appel ft DELETE
           //
           //-------------------------------------------------------------------------------
           deleteProfil() {
@@ -1422,6 +1426,14 @@
           },
 
           //------------------------------------------------------
+          // validateDeleteprofil
+          //
+          // suppression du profil apres click sur bouton valider
+          //
+          //
+          // recherche tu token dan s le local Storage
+          //  Appel ft DELETE
+          //---------------------------------------------------------------------
 
           validateDeleteProfil() {
             try {
