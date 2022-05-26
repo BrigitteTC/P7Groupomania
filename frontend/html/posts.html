@@ -643,49 +643,55 @@
           //---------------------------------------------------------------------------------
           validateCreationPost() {
             try {
-              // Lecture du local storage
-              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
-              if ("user" in localStorage) {
-                console.log("creation new post : " + this.newPost);
+              if (this.newPost == "") {
+                //post vide
+                window.alert("rentrez un post non vide");
+              } else {
+                //post valide on le traite
+                // Lecture du local storage
+                // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+                if ("user" in localStorage) {
+                  console.log("creation new post : " + this.newPost);
 
-                // Lecture du local storage pour récupérer le token  du user
-                let userInLocalStorage = JSON.parse(
-                  localStorage.getItem("user")
-                ); //objet "user" du local storage
-                const userToken = userInLocalStorage.token; // le token
+                  // Lecture du local storage pour récupérer le token  du user
+                  let userInLocalStorage = JSON.parse(
+                    localStorage.getItem("user")
+                  ); //objet "user" du local storage
+                  const userToken = userInLocalStorage.token; // le token
 
-                const bearerToken = "Bearer " + userToken;
-                //{"post":" post de toutou 6 mai","imageUrl":""}st/";
+                  const bearerToken = "Bearer " + userToken;
+                  //{"post":" post de toutou 6 mai","imageUrl":""}st/";
 
-                const data = { post: this.newPost, imageUrl: "" };
+                  const data = { post: this.newPost, imageUrl: "" };
 
-                //Url des commentaires du post
-                const postUrl = "http://localhost:3000/api/post";
-                fetch(postUrl, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: bearerToken,
-                  },
-                  body: JSON.stringify(data),
-                })
-                  .then((response) => response.json()) //reponse du fetch
-                  .catch((error) => {
-                    console.log("Fetch error: ", error);
-                    this.erroredComments = true;
+                  //Url des commentaires du post
+                  const postUrl = "http://localhost:3000/api/post";
+                  fetch(postUrl, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: bearerToken,
+                    },
+                    body: JSON.stringify(data),
                   })
-                  .then((response) => {
-                    //response OK
-                    const retourServer = response;
-                    console.log(retourServer.message);
-                    this.createPostForm = false; // on replie le formulaire
-                    window.alert(retourServer.message); // affiche msg de retour du serveur
-                    window.location.reload(); // et on recharge
-                  })
-                  .catch((error) => {
-                    console.log("Response error: ", error);
-                    this.erroredComments = true;
-                  });
+                    .then((response) => response.json()) //reponse du fetch
+                    .catch((error) => {
+                      console.log("Fetch error: ", error);
+                      this.erroredComments = true;
+                    })
+                    .then((response) => {
+                      //response OK
+                      const retourServer = response;
+                      console.log(retourServer.message);
+                      this.createPostForm = false; // on replie le formulaire
+                      window.alert(retourServer.message); // affiche msg de retour du serveur
+                      window.location.reload(); // et on recharge
+                    })
+                    .catch((error) => {
+                      console.log("Response error: ", error);
+                      this.erroredComments = true;
+                    });
+                } //fin test post vide
               } // fin du test "user" in local Storage
             } catch (err) {
               //fin du try
@@ -740,48 +746,55 @@
           //---------------------------------------------------------------------------------
           validateModifyPost(postId) {
             try {
-              // Lecture du local storage
-              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
-              if ("user" in localStorage) {
-                console.log("modification  post : " + this.newPost);
+              if (this.newPost == "") {
+                //post vide
+                window.alert("rentrez un post non vide");
+              } else {
+                //post valide on le traite
 
-                // Lecture du local storage pour récupérer le token  du user
-                let userInLocalStorage = JSON.parse(
-                  localStorage.getItem("user")
-                ); //objet "user" du local storage
-                const userToken = userInLocalStorage.token; // le token
+                // Lecture du local storage
+                // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+                if ("user" in localStorage) {
+                  console.log("modification  post : " + this.newPost);
 
-                const bearerToken = "Bearer " + userToken;
+                  // Lecture du local storage pour récupérer le token  du user
+                  let userInLocalStorage = JSON.parse(
+                    localStorage.getItem("user")
+                  ); //objet "user" du local storage
+                  const userToken = userInLocalStorage.token; // le token
 
-                const data = { post: this.newPost, imageUrl: "" };
+                  const bearerToken = "Bearer " + userToken;
 
-                //Url des commentaires du post
-                const postUrl = "http://localhost:3000/api/post/" + postId;
-                fetch(postUrl, {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: bearerToken,
-                  },
-                  body: JSON.stringify(data),
-                })
-                  .then((response) => response.json()) //reponse du fetch
-                  .catch((error) => {
-                    console.log("Fetch error: ", error);
-                    this.erroredComments = true;
+                  const data = { post: this.newPost, imageUrl: "" };
+
+                  //Url des commentaires du post
+                  const postUrl = "http://localhost:3000/api/post/" + postId;
+                  fetch(postUrl, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: bearerToken,
+                    },
+                    body: JSON.stringify(data),
                   })
-                  .then((response) => {
-                    //response OK
+                    .then((response) => response.json()) //reponse du fetch
+                    .catch((error) => {
+                      console.log("Fetch error: ", error);
+                      this.erroredComments = true;
+                    })
+                    .then((response) => {
+                      //response OK
 
-                    this.modifyPostForm = ""; // on replie le formulaire et init var
-                    this.newPost = "";
+                      this.modifyPostForm = ""; // on replie le formulaire et init var
+                      this.newPost = "";
 
-                    window.location.reload(); // et on recharge
-                  })
-                  .catch((error) => {
-                    console.log("Response error: ", error);
-                    this.erroredComments = true;
-                  });
+                      window.location.reload(); // et on recharge
+                    })
+                    .catch((error) => {
+                      console.log("Response error: ", error);
+                      this.erroredComments = true;
+                    });
+                } //fin test post valide
               } // fin du test "user" in local Storage
             } catch (err) {
               //fin du try
