@@ -107,7 +107,8 @@
                     </div>
                   </template>
                   <!-- Fin formulaire de modif du profil (modif ou suppression)-->
-                  <!-- Champ pour saisir la nouvelle valeur cas du modify-->
+
+                  <!-- Modify profil  Champ pour saisir la nouvelle valeur cas du modify-->
                   <div v-if="modifyProfil">
                     <label for="newValue"
                       >Modification {{valueToModify}} Nouvelle valeur</label
@@ -134,6 +135,7 @@
                     </div>
                     <!-- Fin des boutons valid/cancel -->
                   </div>
+                  <!-- Fin partie modify -->
 
                   <!-- partie suppression du compte -->
                   <div v-if="deleteUser" class="flexColons">
@@ -1226,6 +1228,7 @@
               // du param à modifier
 
               this.valueToModify = "email";
+              this.newValue = ""; //reset nouvelle valeur
               this.displayOkCancel = true; //boutons valid/cancel modif
               this.deleteUser = false; // boutons valid/cancel deleteUser cachés
             } catch (err) {
@@ -1246,6 +1249,7 @@
               // du param à modifier
 
               this.valueToModify = "password";
+              this.newValue = ""; //reset nouvelle valeur
               this.displayOkCancel = true; //boutons valid/cancel modif
               this.deleteUser = false; // boutons valid/cancel deleteUser cachés
             } catch (err) {
@@ -1267,6 +1271,7 @@
               // du param à modifier
 
               this.valueToModify = "pseudo";
+              this.newValue = ""; //reset nouvelle valeur
               this.displayOkCancel = true; //boutons valid/cancel modif
               this.deleteUser = false; // boutons valid/cancel deleteUser cachés
             } catch (err) {
@@ -1357,6 +1362,10 @@
                       this.valueToModify = "";
                       this.modifyProfil = false;
                       this.displayOkCancel = false;
+                      // Correction local storage avec nouveau pseudo  si pseudo modifié
+                      if (valueToModify === "pseudo") {
+                        this.connectedName = this.newValue;
+                      }
                     })
                     .catch((error) => {
                       console.log("Response error: ", error);
