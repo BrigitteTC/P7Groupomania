@@ -1314,17 +1314,17 @@
                 // Maj du body en ft de la donnée à modifier
                 switch (valueToModify) {
                   case "email":
-                    if (emailPatern.test(this.email)) {
+                    if (emailPatern.test(this.newValue)) {
                       data = { email: this.newValue };
                     }
                     break;
                   case "pseudo":
-                    if (pseudoPatern.test(this.pseudo)) {
+                    if (pseudoPatern.test(this.newValue)) {
                       data = { pseudo: this.newValue };
                     }
                     break;
                   case "password":
-                    if (passwdPatern.test(this.passwd)) {
+                    if (passwdPatern.test(this.newValue)) {
                       data = { password: this.newValue };
                     }
                     break;
