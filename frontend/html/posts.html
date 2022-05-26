@@ -814,42 +814,53 @@
           //  URL: http://localhost:3000/api/post/postId/comment
           //---------------------------------------------------------------------------------
           displayComments(postId, event) {
-            console.log(postId);
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log(postId);
 
-            // Lecture du local storage pour récupérer le token  du user
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
+                // Lecture du local storage pour récupérer le token  du user
+                let userInLocalStorage = JSON.parse(
+                  localStorage.getItem("user")
+                ); //objet "user" du local storage
+                const userToken = userInLocalStorage.token; // le token
 
-            const bearerToken = "Bearer " + userToken;
+                const bearerToken = "Bearer " + userToken;
 
-            //Url des commentaires du post
-            const commentsUrl =
-              "http://localhost:3000/api/post/" + postId + "/comment";
+                //Url des commentaires du post
+                const commentsUrl =
+                  "http://localhost:3000/api/post/" + postId + "/comment";
 
-            fetch(commentsUrl, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-                this.erroredComments = true;
-              })
-              .then((response) => {
-                this.comments = response; //les commentaires renvoyés de l'API
-                this.nbComments = this.comments.comment.length;
-                console.log("nombre de commentaires: " + this.nbComments);
-                if (this.nbComments == 0) {
-                  window.alert("pas de commentaires pour ce post");
-                }
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                this.erroredComments = true;
-              });
+                fetch(commentsUrl, {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                    this.erroredComments = true;
+                  })
+                  .then((response) => {
+                    this.comments = response; //les commentaires renvoyés de l'API
+                    this.nbComments = this.comments.comment.length;
+                    console.log("nombre de commentaires: " + this.nbComments);
+                    if (this.nbComments == 0) {
+                      window.alert("pas de commentaires pour ce post");
+                    }
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                    this.erroredComments = true;
+                  });
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft displayComments : " + err);
+            }
           }, //Fin displayComments
 
           //-----------------------------------------------------------------------------------------
