@@ -693,9 +693,19 @@
             }
           }, //Fin validateCreationPost
 
+          //-----------------------------------------------------------------
+          // cancel création post
+          //
+          // repli du formulaire si le user a cliqué sur cancel
+          //--------------------------------------------------------------
           //cancel création post
           cancelCreationPost() {
-            this.createPostForm = false; // on replie le formulaire
+            try {
+              this.createPostForm = false; // on replie le formulaire
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft cancelCreationPost : " + err);
+            }
           },
 
           //-----------------------------------------------------------------------------------------
@@ -706,8 +716,17 @@
           //---------------------------------------------------------------------------------
 
           modifyPost(postId) {
-            console.log("modify post");
-            this.modifyPostForm = postId; //affichage du formulaire de modif de post
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log("modify post");
+                this.modifyPostForm = postId; //affichage du formulaire de modif de post
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft modifyPost : " + err);
+            }
           },
 
           //-----------------------------------------------------------------------------------------
