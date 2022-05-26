@@ -1014,50 +1014,70 @@
           //  URL: http://localhost:3000/api/post/postId
           //---------------------------------------------------------------------------------
           validateCreationComment(postId) {
-            console.log("creation new comment pour post  : " + postId);
+            try {
+              // Lecture du local storage
+              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+              if ("user" in localStorage) {
+                console.log("creation new comment pour post  : " + postId);
 
-            // Lecture du local storage pour récupérer le token  du user
-            let userInLocalStorage = JSON.parse(localStorage.getItem("user")); //objet "user" du local storage
-            const userToken = userInLocalStorage.token; // le token
+                // Lecture du local storage pour récupérer le token  du user
+                let userInLocalStorage = JSON.parse(
+                  localStorage.getItem("user")
+                ); //objet "user" du local storage
+                const userToken = userInLocalStorage.token; // le token
 
-            const bearerToken = "Bearer " + userToken;
+                const bearerToken = "Bearer " + userToken;
 
-            const data = { comment: this.newComment };
+                const data = { comment: this.newComment };
 
-            //Url des commentaires du post
-            const postUrl =
-              "http://localhost:3000/api/post/" + postId + "/comment";
-            fetch(postUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: bearerToken,
-              },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json()) //reponse du fetch
-              .catch((error) => {
-                console.log("Fetch error: ", error);
-                this.erroredComments = true;
-              })
-              .then((response) => {
-                //response OK
+                //Url des commentaires du post
+                const postUrl =
+                  "http://localhost:3000/api/post/" + postId + "/comment";
+                fetch(postUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: bearerToken,
+                  },
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json()) //reponse du fetch
+                  .catch((error) => {
+                    console.log("Fetch error: ", error);
+                    this.erroredComments = true;
+                  })
+                  .then((response) => {
+                    //response OK
 
-                console.log(response.message);
-                this.createCommentForm = ""; // on replie le formulaire
-                this.newComment = "";
-                window.alert(response.message); // affiche msg de retour du serveur
-              })
-              .catch((error) => {
-                console.log("Response error: ", error);
-                this.erroredComments = true;
-              });
+                    console.log(response.message);
+                    this.createCommentForm = ""; // on replie le formulaire
+                    this.newComment = "";
+                    window.alert(response.message); // affiche msg de retour du serveur
+                  })
+                  .catch((error) => {
+                    console.log("Response error: ", error);
+                    this.erroredComments = true;
+                  });
+              } // fin du test "user" in local Storage
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft xxx : " + err);
+            }
           }, //Fin validateCreationComment
 
+          //-----------------------------------------------------------------------------
           //cancel création comment
+          //
+          // Cancel creation du comment suite à click sur bouton cancel
+          //-------------------------------------------------------------------------------
           cancelCreationComment() {
-            this.createCommentForm = ""; // on replie le formulaire
-            this.newComment = "";
+            try {
+              this.createCommentForm = ""; // on replie le formulaire
+              this.newComment = "";
+            } catch (err) {
+              //fin du try
+              console.log("erreur ft cancelCreationComment : " + err);
+            }
           },
 
           //-----------------------------------------------------------------------------------------
