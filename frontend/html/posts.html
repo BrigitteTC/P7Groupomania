@@ -85,80 +85,78 @@
                   <!--Fin boutons de navigation    -->
 
                   <!-- Debut formulaire de modif profil -->
-                  <template v-if="modifyProfilForm">
+                  <template v-if="profilForm">
                     <div>
                       <div class="profilMenu">
                         <ul class="pucesItems">
                           <!-- Affichage du menu de modif du profil-->
                           <!-- Menu avec 4 choix -->
                           <!-- sera caché quand on aura fait le choix -->
-                          <li v-if="!askValue" @click="modifyEmailProfil()">
+                          <li @click="modifyEmailProfil()">
                             Modification email
                           </li>
-                          <li v-if="!askValue" @click="modifyPasswdProfil()">
+                          <li @click="modifyPasswdProfil()">
                             Modification passwd
                           </li>
-                          <li v-if="!askValue" @click="modifyPseudoProfil()">
+                          <li @click="modifyPseudoProfil()">
                             Modification pseudo
                           </li>
-                          <li v-if="!askValue" @click="deleteProfil()">
-                            Suppression du compte
-                          </li>
+                          <li @click="deleteProfil()">Suppression du compte</li>
                         </ul>
                       </div>
                     </div>
-                    <!-- Champ pour saisir la nouvelle valeur -->
-                    <div v-if="askValue">
-                      <label for="newValue"
-                        >Modification {{valueToModify}} Nouvelle valeur</label
-                      >
-                      <input type="text" v-model="newValue" id="newValue" />
-
-                      <div v-if="displayOkCancel" class="flexRows">
-                        <!-- Boutons pour valider ou annuler la modif -->
-                        <div>
-                          <input
-                            @click="validateModifyProfil()"
-                            type="submit"
-                            value="Valider"
-                          />
-                        </div>
-
-                        <div>
-                          <input
-                            @click="cancelModifyProfil()"
-                            type="submit"
-                            value="Annuler"
-                          />
-                        </div>
-                      </div>
-                      <!-- Fin des boutons valid/cancel -->
-                    </div>
-
-                    <!-- partie suppression du compte -->
-                    <div v-if="deleteValue" class="flexColons">
-                      <h3>Delete compte de {{connectedName}}</h3>
-                      <div class="flexRows">
-                        <div>
-                          <input
-                            @click="validateDeleteProfil()"
-                            type="submit"
-                            value="Valider suppression du compte"
-                          />
-                        </div>
-
-                        <div>
-                          <input
-                            @click="cancelDeleteProfil()"
-                            type="submit"
-                            value="Annuler suppression du compte"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Fin  suppression du compte -->
                   </template>
                   <!-- Fin formulaire de modif du profil (modif ou suppression)-->
+                  <!-- Champ pour saisir la nouvelle valeur cas du modify-->
+                  <div v-if="modifyProfil">
+                    <label for="newValue"
+                      >Modification {{valueToModify}} Nouvelle valeur</label
+                    >
+                    <input type="text" v-model="newValue" id="newValue" />
+
+                    <div v-if="displayOkCancel" class="flexRows">
+                      <!-- Boutons pour valider ou annuler la modif -->
+                      <div>
+                        <input
+                          @click="validateModifyProfil()"
+                          type="submit"
+                          value="Valider"
+                        />
+                      </div>
+
+                      <div>
+                        <input
+                          @click="cancelModifyProfil()"
+                          type="submit"
+                          value="Annuler"
+                        />
+                      </div>
+                    </div>
+                    <!-- Fin des boutons valid/cancel -->
+                  </div>
+
+                  <!-- partie suppression du compte -->
+                  <div v-if="deleteUser" class="flexColons">
+                    <h3>Delete compte de {{connectedName}}</h3>
+                    <div class="flexRows">
+                      <div>
+                        <input
+                          @click="validateDeleteProfil()"
+                          type="submit"
+                          value="Valider suppression du compte"
+                        />
+                      </div>
+
+                      <div>
+                        <input
+                          @click="cancelDeleteProfil()"
+                          type="submit"
+                          value="Annuler suppression du compte"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Fin  suppression du compte -->
                 </div>
 
                 <!-- -->
@@ -522,7 +520,7 @@
             newComment: "",
 
             // Utilisateurs
-            modifyProfilForm: false, // sera true pour modifier le profil de l'utilisateur
+            profilForm: false, // sera true pour modifier le profil de l'utilisateur
             newEmail: "", // nouvel email
             newPasswd: "", //      newPasswd = nouveau passwd
             newPseudo: "", //      newPseudo = nouveau pseudo
@@ -530,12 +528,12 @@
             valueToModify: "", // Valeur de profil à modifier
             newValue: "", // Nouvelle valeur du champ modifié
 
-            askValue: false, // sera mis à true pour ouvrir le champ de saisie pour modif profil
-            askEmail: false, // sera mis à true pour modifier le champ
-            askPseudo: false, // sera mis à true pour modifier le champ
-            askpasswd: false, // sera mis à true pour modifier le champ
+            modifyProfil: false, // sera mis à true pour ouvrir le champ de saisie pour modif profil
+            askEmail: false, // sera mis à true pour modifier le champ email
+            askPseudo: false, // sera mis à true pour modifier le champ pseudo
+            askpasswd: false, // sera mis à true pour modifier le champ passwd
 
-            deleteValue: false, //sera mis a true pour supprimer un compte
+            deleteUser: false, //sera mis a true pour supprimer un compte user
           };
         }, // fin des data
 
@@ -1207,7 +1205,7 @@
           profil() {
             try {
               console.log("profil utilisateur");
-              this.modifyProfilForm = true; // ouverture formulaire profil
+              this.profilForm = true; // ouverture formulaire profil
             } catch (err) {
               //fin du try
               console.log("erreur ft profil : " + err);
@@ -1223,11 +1221,13 @@
 
           modifyEmailProfil() {
             try {
-              this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
+              this.profilForm = false; // fermeture formulaire profil
+              this.modifyProfil = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
               // du param à modifier
 
               this.valueToModify = "email";
-              this.displayOkCancel = true;
+              this.displayOkCancel = true; //boutons valid/cancel modif
+              this.deleteUser = false; // boutons valid/cancel deleteUser cachés
             } catch (err) {
               console.log("Erreur modifyEmailProfil" + err);
             }
@@ -1241,11 +1241,13 @@
           //-----------------------------------------------------------------------------------------
           modifyPasswdProfil() {
             try {
-              this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
+              this.profilForm = false; // fermeture formulaire profil
+              this.modifyProfil = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
               // du param à modifier
 
               this.valueToModify = "password";
-              this.displayOkCancel = true;
+              this.displayOkCancel = true; //boutons valid/cancel modif
+              this.deleteUser = false; // boutons valid/cancel deleteUser cachés
             } catch (err) {
               console.log("Erreur modifyPasswdProfil " + err);
             }
@@ -1260,11 +1262,13 @@
 
           modifyPseudoProfil() {
             try {
-              this.askValue = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
+              this.profilForm = false; // fermeture formulaire profil
+              this.modifyProfil = "true"; // Ouverture du formulaire pour rentrer la nouvelle valeur
               // du param à modifier
 
               this.valueToModify = "pseudo";
-              this.displayOkCancel = true;
+              this.displayOkCancel = true; //boutons valid/cancel modif
+              this.deleteUser = false; // boutons valid/cancel deleteUser cachés
             } catch (err) {
               console.log("Erreur modifyPseudoProfil " + err);
             }
@@ -1349,9 +1353,9 @@
                     })
                     .then((response) => {
                       window.alert(response.message); // affiche msg de retour du serveur
-                      this.modifyProfilForm = false; // on replie le formulaire
+                      this.profilForm = false; // on replie le formulaire
                       this.valueToModify = "";
-                      this.askValue = false;
+                      this.modifyProfil = false;
                       this.displayOkCancel = false;
                     })
                     .catch((error) => {
@@ -1371,9 +1375,9 @@
           //--------------------------------------------------------------------------
           cancelModifyProfil() {
             try {
-              this.modifyProfilForm = false; // on replie le formulaire et on reinit les variables.
+              this.profilForm = false; // on replie le formulaire et on reinit les variables.
               this.valueToModify = "";
-              this.askValue = false;
+              this.modifyProfil = false;
               this.displayOkCancel = false;
             } catch (err) {
               //fin du try
@@ -1411,12 +1415,12 @@
           //-------------------------------------------------------------------------------
           deleteProfil() {
             try {
-              this.modifyProfilForm = false; // on replie le formulaire
-              this.askValue = false; // pas de champ de saisie a ouvrir
+              this.profilForm = false; // on replie le formulaire
+              this.modifyProfil = false; // pas de champ de saisie a ouvrir
 
               this.displayOkCancel = false;
-              this.deleteValue = true;
-              this.isUserConnected = false; // plus de user connecté
+              this.deleteUser = true;
+
               window.alert(
                 "ATTENTION: vous vous appretez à supprimer votre compte avec les posts et commentaires crées"
               );
@@ -1483,7 +1487,7 @@
 
           //cancel Delete profil
           cancelDeleteProfil() {
-            this.deleteValue = false;
+            this.deleteUser = false;
           },
         }, // Fin des methodes
       }; // Fin RootComponent
