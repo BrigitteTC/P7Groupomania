@@ -69,9 +69,7 @@
               <div class="cart__order__form__question">
                 <label for="passwd">Passwd: </label>
                 <input type="passwd" v-model="passwd" id="passwd" required />
-                <p v-if="!passwd && signupForm">
-                  Valeur obligatoire requise tous caracteres sauf apostrophe
-                </p>
+                <p v-if="!passwd && signupForm">Valeur obligatoire requise</p>
               </div>
 
               <div v-if="signupForm" class="cart__order__form__question">
@@ -225,7 +223,7 @@
               );
 
               const pseudoPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
-              const passwdPatern = /!'/; //pas d'apostrophe
+              const passwdPatern = /^[A-Za-z0-9]+$/; //lettres + chiffres
               const userCreatedOK = "Utilisateur créé"; //msg renvoyé du back si user crée
 
               // test si champs non vides pour valider le formulaire
@@ -284,9 +282,7 @@
                         });
                     } //fin test passwd
                     else {
-                      window.alert(
-                        "pseudo invalide ne doit pas contenir d'apostrophes"
-                      );
+                      window.alert("passwd invalide ");
                     }
                   } //fin test pseudo
                   else {
