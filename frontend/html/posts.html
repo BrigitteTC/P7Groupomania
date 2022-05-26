@@ -1364,7 +1364,16 @@
                       this.displayOkCancel = false;
                       // Correction local storage avec nouveau pseudo  si pseudo modifié
                       if (valueToModify === "pseudo") {
-                        this.connectedName = this.newValue;
+                        this.connectedName = this.newValue; // le nom a afficher ds la page
+                        // maj local storage avec le pseudo
+                        let connectedUser = JSON.parse(
+                          localStorage.getItem("user")
+                        ); //user ds localStorage
+                        connectedUser.pseudo = this.newValue;
+                        localStorage.setItem(
+                          "user",
+                          JSON.stringify(connectedUser)
+                        );
                       }
                     })
                     .catch((error) => {
