@@ -41,12 +41,12 @@ const authCommentOwner = require("../middleware/authCommentOwner");
 
 //auth dans chaque route permet de vérifier l'authentification et de la protéger
 
-router.post("/", authPost, postCtrl.createPost);
+router.post("/", authPost, multer, postCtrl.createPost);
 
 router.get("/", authPost, postCtrl.getAllPost);
 router.get("/:postId", authPost, postCtrl.getOnePost);
 
-router.put("/:postId", authPost, authPostOwner, postCtrl.modifyPost);
+router.put("/:postId", authPost, authPostOwner, multer, postCtrl.modifyPost);
 
 router.delete("/:postId", authPost, authPostOwner, postCtrl.deletePost);
 
