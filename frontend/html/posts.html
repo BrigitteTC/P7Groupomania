@@ -205,12 +205,13 @@
               <!-- Affichage du formulaire de creation du post -->
               <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
               <div>
-                <label for="newPost">Votre nouveau post</label>
                 <div class="cart__order__form__question">
+                  <label for="newPost">Votre nouveau post : </label>
                   <input type="text" v-model="newPost" id="newPost" />
                 </div>
                 <div class="cart__order__form__question">
-                  <input type="file" v-model="newFile" />
+                  <label for="newFile">Vous pouvez ajouter une image : </label>
+                  <input type="file" v-model="newFile" id="newFile" />
                 </div>
               </div>
 
@@ -689,6 +690,7 @@
                       Authorization: bearerToken,
                     },
                     body: JSON.stringify(data),
+                    file: this.NewFile,
                   })
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
