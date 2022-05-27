@@ -315,6 +315,10 @@
                       <div class="postInfos">
                         <div class="postText">
                           <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
+                          <p>
+                            post n° {{itemPost.imageUrl}} : {{itemPost.post}}
+                          </p>
+                          <img :src="itemPost.imageUrl" alt="image du post " />
                         </div>
                         <!-- Affichage de l'image avec v-bind -->
                         <!-- <div v-if="itemPost.imageUrl"> -->
@@ -323,6 +327,14 @@
                         <!-- v-bind:alt="image du post " -->
                         <!-- /> -->
                         <!-- </div> -->
+
+                        <!-- Affichage de l'image avec v-bind -->
+                        <!-- <div>
+                          <img
+                            :src="require(`${itemPost.imageUrl}`)"
+                            alt="image du post "
+                          />
+                        </div> -->
 
                         <!-- Boutons pour afficher ou ajouter les commentaires. -->
                         <div class="commentButtonsHeader">
@@ -690,7 +702,6 @@
                       Authorization: bearerToken,
                     },
                     body: JSON.stringify(data),
-                    file: this.NewFile,
                   })
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {

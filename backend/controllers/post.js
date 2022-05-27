@@ -44,7 +44,9 @@ exports.createPost = (req, res, next) => {
     let imageUrl = "";
     //Gestion de l'image
     // image dans req.file
+    console.log("req.: " + req);
     if (req.file) {
+      console.log("req.file : " + req.file);
       imageUrl = `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
@@ -61,7 +63,7 @@ exports.createPost = (req, res, next) => {
     let newPost = req.body.post;
     const newPostCorrected = newPost.replace("'", "\\'");
     console.log("newPostCorrected= " + newPostCorrected);
-    console.log("imageUrl : " + imageUrl);
+    console.log("imageUrl : " + req.file + imageUrl);
 
     console.log("DEBUG   req.auth.userId  :  " + userId);
     sql =
