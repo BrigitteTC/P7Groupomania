@@ -315,10 +315,12 @@
                       <div class="postInfos">
                         <div class="postText">
                           <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
-                          <p>
-                            post n° {{itemPost.imageUrl}} : {{itemPost.post}}
-                          </p>
-                          <img :src="itemPost.imageUrl" alt="image du post " />
+                          <div v-if="itemPost.imageUrl">
+                            <img
+                              :src="itemPost.imageUrl"
+                              alt="image du post "
+                            />
+                          </div>
                         </div>
                         <!-- Affichage de l'image avec v-bind -->
                         <!-- <div v-if="itemPost.imageUrl"> -->
