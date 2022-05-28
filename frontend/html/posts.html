@@ -192,12 +192,14 @@
             <template v-if="connectedModerator">
               <h3>Vous êtes moderateur</h3>
             </template>
-            <div>
+            <div class="cart__order__form__submit">
               <!-- Bouton pour créer un post -->
 
-              <button class="createPostButton" @click="createPost()">
-                Créer un post
-              </button>
+              <input
+                @click="createPost()"
+                type="submit"
+                value="Créer un post"
+              />
             </div>
 
             <!-- Debut formulaire de creation du post -->
