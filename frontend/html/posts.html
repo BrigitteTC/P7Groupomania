@@ -260,59 +260,6 @@
                 >
                   <article class="postArticle">
                     <div class="postItem">
-                      <div class="postHeader">
-                        <div class="postDate">
-                          <p>Date: {{itemPost.date}}</p>
-                        </div>
-                        <div class="postOwner">
-                          <p>par: {{itemPost.pseudo}}</p>
-                        </div>
-
-                        <!-- La petite poubelle pour detruire le post -->
-                        <!-- et le petit crayon pour le modifier -->
-                        <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
-                        <div>
-                          <template
-                            v-if="connectedModerator || connectedUserId==itemPost.userId"
-                          >
-                            <button @click="deletePost(itemPost.postId)">
-                              <span class="fas fa-trash"> Delete</span>
-                            </button>
-                            <button @click="modifyPost(itemPost.postId)">
-                              <span class="fas fa-pen"> Modify</span>
-                            </button>
-                          </template>
-                        </div>
-
-                        <!-- Formulaire pour modifier le post -->
-                        <template v-if="modifyPostForm===itemPost.postId">
-                          <!-- Affichage du formulaire de modif du post -->
-
-                          <div>
-                            <label for="newPost">Votre nouveau post</label>
-                            <input type="text" v-model="newPost" />
-                          </div>
-
-                          <!-- Boutons pour valider ou annuler cette modif -->
-                          <div>
-                            <input
-                              @click="validateModifyPost(itemPost.postId)"
-                              type="submit"
-                              value="Valider"
-                            />
-                          </div>
-                          <div>
-                            <input
-                              @click="cancelModifyPost()"
-                              type="submit"
-                              value="Annuler"
-                            />
-                          </div>
-                        </template>
-
-                        <!-- Fin du formulaire pour modifier le post -->
-                      </div>
-
                       <!-- Affichage du texte du post et de son image-->
                       <div class="postInfos">
                         <div class="postText">
@@ -324,22 +271,58 @@
                             />
                           </div>
                         </div>
-                        <!-- Affichage de l'image avec v-bind -->
-                        <!-- <div v-if="itemPost.imageUrl"> -->
-                        <!-- <img -->
-                        <!-- v-bind:src="itemPost.imageUrl" -->
-                        <!-- v-bind:alt="image du post " -->
-                        <!-- /> -->
-                        <!-- </div> -->
+                        <div class="postHeader">
+                          <div class="postDate">
+                            <p>Date: {{itemPost.date}}</p>
+                          </div>
+                          <div class="postOwner">
+                            <p>par: {{itemPost.pseudo}}</p>
+                          </div>
 
-                        <!-- Affichage de l'image avec v-bind -->
-                        <!-- <div>
-                          <img
-                            :src="require(`${itemPost.imageUrl}`)"
-                            alt="image du post "
-                          />
-                        </div> -->
+                          <!-- La petite poubelle pour detruire le post -->
+                          <!-- et le petit crayon pour le modifier -->
+                          <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
+                          <div>
+                            <template
+                              v-if="connectedModerator || connectedUserId==itemPost.userId"
+                            >
+                              <button @click="deletePost(itemPost.postId)">
+                                <span class="fas fa-trash"> Delete</span>
+                              </button>
+                              <button @click="modifyPost(itemPost.postId)">
+                                <span class="fas fa-pen"> Modify</span>
+                              </button>
+                            </template>
+                          </div>
 
+                          <!-- Formulaire pour modifier le post -->
+                          <template v-if="modifyPostForm===itemPost.postId">
+                            <!-- Affichage du formulaire de modif du post -->
+
+                            <div>
+                              <label for="newPost">Votre nouveau post</label>
+                              <input type="text" v-model="newPost" />
+                            </div>
+
+                            <!-- Boutons pour valider ou annuler cette modif -->
+                            <div>
+                              <input
+                                @click="validateModifyPost(itemPost.postId)"
+                                type="submit"
+                                value="Valider"
+                              />
+                            </div>
+                            <div>
+                              <input
+                                @click="cancelModifyPost()"
+                                type="submit"
+                                value="Annuler"
+                              />
+                            </div>
+                          </template>
+
+                          <!-- Fin du formulaire pour modifier le post -->
+                        </div>
                         <!-- Boutons pour afficher ou ajouter les commentaires. -->
                         <div class="commentButtonsHeader">
                           <button @click="displayComments(itemPost.postId)">
