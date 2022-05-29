@@ -126,6 +126,8 @@ Bouton de nav du header
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
+  height: 100px;
+  width: 600px;
 }
 .post__order__form__question input {
   border-radius: 13px;

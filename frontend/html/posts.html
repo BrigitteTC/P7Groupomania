@@ -209,11 +209,11 @@
               <div>
                 <div class="post__order__form__question">
                   <label for="newPost">Votre nouveau post : </label>
-                  <input type="text" v-model="newPost" id="newPost" />
+                  <input type="text" v-model="newPost" required />
                 </div>
                 <div class="post__order__form__question">
                   <label for="newFile">Vous pouvez ajouter une image : </label>
-                  <input type="file" v-model="newFile" id="newFile" />
+                  <input type="file" v-model="newFile" />
                 </div>
               </div>
 
@@ -264,7 +264,12 @@
                       <div class="postInfos">
                         <div class="postText">
                           <div v-if="modifyPostForm===itemPost.postId">
-                            <p>post n° {{itemPost.postId}} : {{newPost}}</p>
+                            <p v-if="newPost">
+                              post n° {{itemPost.postId}} : {{newPost}}
+                            </p>
+                            <p v-else>
+                              post n° {{itemPost.postId}} : {{itemPost.post}}
+                            </p>
                           </div>
                           <div v-else>
                             <p>
@@ -305,14 +310,13 @@
                           <!-- Formulaire pour modifier le post -->
                           <template v-if="modifyPostForm===itemPost.postId">
                             <!-- Affichage du formulaire de modif du post -->
-
+                            <!-- :placeholder="itemPost.post"   placeholder supprimé-->
                             <div>
                               <label for="newPost">Votre nouveau post</label>
                               <input
-                                class="postText"
+                                class="post__order__form__question"
                                 type="textarea"
                                 v-model="newPost"
-                                :placeholder="itemPost.post"
                               />
                             </div>
 
