@@ -5,9 +5,13 @@
 /*Colors*/
 :root {
   --main-color: #999999; /*gris*/
+  --main-color: #3d4c68;
+  --main-color: #122442;
   --secondary-color: #ffd7d7; /*rose*/
   --Third-color: #fd2d01; /*rouge*/
   --text-color: #3d4c68;
+  --text-color: #fd2d01;
+  --text-color: #d1515a;
   --secondary-text-color: #fd2d01;
   --footer-text-color: #a6b0b3;
   --footer-main-color: #3d424f;
