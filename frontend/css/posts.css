@@ -213,6 +213,17 @@ Bouton de nav du header
   justify-content: space-around;
 }
 
+/* Champ pour écrire un commentaire*/
+.commentText {
+  height: 60px;
+  width: 300px;
+
+  border-radius: 13px;
+  border: 2px var(--secondary-color);
+  margin: 5px;
+  padding: 5px;
+}
+
 /***************/
 /*Media queries*/
 /***************/

@@ -354,7 +354,7 @@
                           <template v-if="createCommentForm===itemPost.postId">
                             <!-- Affichage du formulaire de creation du commentaire -->
                             <div class="flexColumns">
-                              <div>
+                              <div class="flexColumns">
                                 <label for="newComment"
                                   >Votre commentaire</label
                                 >
@@ -396,11 +396,16 @@
                               <div class="commentList">
                                 <div class="commentItem">
                                   <div class="commentHeader">
+                                    <!-- Affichage du commentaire -->
                                     <p>
                                       Date: {{itemComment.date}} par
                                       {{itemComment.pseudo}}
                                     </p>
-                                    <div>
+                                    <!-- Affichage du commentaire en cours de modif -->
+                                    <div v-if="newComment">
+                                      <p>{{newComment}}</p>
+                                    </div>
+                                    <div v-else>
                                       <p>{{itemComment.comment}}</p>
                                     </div>
                                   </div>
@@ -429,12 +434,13 @@
                                       <!-- Affichage du formulaire de modif du comment -->
                                       <div class="flexColumns">
                                         <!-- champ pour ecrire le nouveau commentaire -->
-                                        <div>
+                                        <div class="flexColumns">
                                           <label for="newComment"
-                                            >Votre nouveau commentaire</label
-                                          >
+                                            >Votre nouveau commentaire :
+                                          </label>
                                           <input
                                             type="text"
+                                            maxlength="200"
                                             v-model="newComment"
                                           />
                                         </div>
@@ -688,7 +694,6 @@
                   const userToken = userInLocalStorage.token; // le token
 
                   const bearerToken = "Bearer " + userToken;
-                  //{"post":" post de toutou 6 mai","imageUrl":""}st/";
 
                   const data = { post: this.newPost, imageUrl: this.NewFile };
 
