@@ -96,9 +96,13 @@ Bouton de nav du header
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
 }
 
+/* Champ pour écrire un post*/
 .postText {
   height: 100px;
   width: 600px;
+
+  border-radius: 13px;
+  border: 0;
 }
 
 .postHeader {
