@@ -301,7 +301,11 @@
 
                             <div>
                               <label for="newPost">Votre nouveau post</label>
-                              <input type="text" v-model="newPost" />
+                              <input
+                                class="postText"
+                                type="textarea"
+                                v-model="newPost"
+                              />
                             </div>
 
                             <!-- Boutons pour valider ou annuler cette modif -->

@@ -96,6 +96,11 @@ Bouton de nav du header
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
 }
 
+.postText {
+  height: 100px;
+  width: 600px;
+}
+
 .postHeader {
   display: flex;
   flex-direction: rows;
