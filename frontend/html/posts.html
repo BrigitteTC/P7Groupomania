@@ -263,7 +263,14 @@
                       <!-- Affichage du texte du post et de son image-->
                       <div class="postInfos">
                         <div class="postText">
-                          <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
+                          <div v-if="modifyPostForm===itemPost.postId">
+                            <p>post n° {{itemPost.postId}} : {{newPost}}</p>
+                          </div>
+                          <div v-else>
+                            <p>
+                              post n° {{itemPost.postId}} : {{itemPost.post}}
+                            </p>
+                          </div>
                           <div v-if="itemPost.imageUrl">
                             <img
                               :src="itemPost.imageUrl"
