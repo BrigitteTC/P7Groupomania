@@ -114,6 +114,56 @@ Bouton de nav du header
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
 }
 
+.post__order {
+  display: flex;
+  justify-content: center;
+  margin-top: 90px;
+}
+.post__order__form {
+  width: 100%;
+}
+.post__order__form__question {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+.post__order__form__question input {
+  border-radius: 13px;
+  border: 0;
+  height: 26px;
+  width: 300px;
+
+  margin-top: 4px;
+}
+.post__order__form__question input:focus {
+  outline: none;
+}
+.post__order__form__question p {
+  margin: 0;
+  color: #fbbcbc;
+  font-size: 15px;
+  margin-left: 8px;
+}
+.post__order__form__submit {
+  display: flex;
+  justify-content: center;
+}
+.post__order__form__submit input {
+  font-size: 22px;
+  border-radius: 40px;
+  border: 0;
+  background-color: var(--Third-color);
+  color: white;
+  padding: 18px 28px;
+  cursor: pointer;
+  margin-top: 40px;
+}
+.post__order__form__submit input:hover {
+  box-shadow: rgb(42 18 206 / 90%) 0 0 22px 6px;
+}
+
+/*---------------------------------------------------*/
+
 .commentList {
   display: flex;
   flex-direction: column;
@@ -188,10 +238,10 @@ Bouton de nav du header
   .cart__price p {
     text-align: center;
   }
-  .cart__order {
+  .post__order {
     justify-content: center;
   }
-  .cart__order__form {
+  .post__order__form {
     width: 75%;
   }
 }
