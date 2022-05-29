@@ -346,41 +346,49 @@
                             value="Afficher les commentaires"
                           />
 
-                          <input
-                            @click="createComment(itemPost.postId)"
-                            value="Ajouter un commentaire"
-                          />
+                          <div class="flexColumns">
+                            <input
+                              @click="createComment(itemPost.postId)"
+                              value="Ajouter un commentaire"
+                            />
 
-                          <!-- Formulaire pour Ajouter un commentaire -->
+                            <!-- Formulaire pour Ajouter un commentaire -->
 
-                          <template v-if="createCommentForm===itemPost.postId">
-                            <!-- Affichage du formulaire de creation du commentaire -->
-                            <div class="flexColumns">
+                            <template
+                              v-if="createCommentForm===itemPost.postId"
+                            >
+                              <!-- Affichage du formulaire de creation du commentaire -->
                               <div class="flexColumns">
-                                <label for="newComment"
-                                  >Votre commentaire</label
-                                >
-                                <input type="text" v-model="newComment" />
-                              </div>
-                              <div class="flexRows">
-                                <!-- Boutons pour valider ou annuler cette modif -->
-                                <div>
+                                <div class="flexColumns">
+                                  <label for="newComment"
+                                    >Votre commentaire</label
+                                  >
                                   <input
-                                    @click="validateCreationComment(itemPost.postId)"
-                                    type="submit"
-                                    value="Valider"
+                                    type="text"
+                                    v-model="newComment"
+                                    maxlength="200"
                                   />
                                 </div>
-                                <div>
-                                  <input
-                                    @click="cancelCreationComment()"
-                                    type="submit"
-                                    value="Annuler"
-                                  />
+                                <div class="flexRows">
+                                  <!-- Boutons pour valider ou annuler cette modif -->
+                                  <div>
+                                    <input
+                                      @click="validateCreationComment(itemPost.postId)"
+                                      type="submit"
+                                      value="Valider"
+                                    />
+                                  </div>
+                                  <div>
+                                    <input
+                                      @click="cancelCreationComment()"
+                                      type="submit"
+                                      value="Annuler"
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </template>
+                            </template>
+                          </div>
 
                           <!-- Fin formulaire ajout d'un commentaire -->
                         </div>
