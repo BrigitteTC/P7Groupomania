@@ -341,13 +341,15 @@
                         </div>
                         <!-- Boutons pour afficher ou ajouter les commentaires. -->
                         <div class="commentButtonsHeader">
-                          <button @click="displayComments(itemPost.postId)">
-                            Afficher les commentaires
-                          </button>
+                          <input
+                            @click="displayComments(itemPost.postId)"
+                            value="Afficher les commentaires"
+                          />
 
-                          <button @click="createComment(itemPost.postId)">
-                            Ajouter un commentaire
-                          </button>
+                          <input
+                            @click="createComment(itemPost.postId)"
+                            value="Ajouter un commentaire"
+                          />
 
                           <!-- Formulaire pour Ajouter un commentaire -->
 
