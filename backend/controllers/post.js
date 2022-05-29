@@ -386,7 +386,7 @@ exports.createComment = (req, res, next) => {
 
     //le commentaire dont on va echapper les ' avec \'
     let newComment = req.body.comment;
-    const newCommentCorrected = newComment.replace("'", "\\'");
+    const newCommentCorrected = newComment.replace(/[']/g, "\\'");
     console.log("newCommentCorrected= " + newCommentCorrected);
 
     sql =
@@ -589,7 +589,7 @@ exports.modifyComment = (req, res, next) => {
 
     //le commentaire dont on va echapper les ' avec \'
     let newComment = req.body.comment;
-    const newCommentCorrected = newComment.replace("'", "\\'");
+    const newCommentCorrected = newComment.replace(/[']/g, "\\'");
     console.log("newCommentCorrected= " + newCommentCorrected);
 
     sql =
