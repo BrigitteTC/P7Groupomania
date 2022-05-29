@@ -61,7 +61,7 @@ exports.createPost = (req, res, next) => {
 
     //le post dont on va echapper les ' avec \'
     let newPost = req.body.post;
-    const newPostCorrected = newPost.replace("'", "\\'");
+    const newPostCorrected = newPost.replace(/[']/g, "\\'");
     console.log("newPostCorrected= " + newPostCorrected);
     console.log("imageUrl : " + req.file + imageUrl);
 
@@ -180,7 +180,7 @@ exports.modifyPost = (req, res, next) => {
 
     //le post dont on va echapper les ' avec \'
     let newPost = req.body.post;
-    const newPostCorrected = newPost.replace("'", "\\'");
+    const newPostCorrected = newPost.replace(/[']/g, "\\'");
     console.log("newPostCorrected= " + newPostCorrected);
 
     sql =
