@@ -708,15 +708,21 @@
 
                   const data = { post: this.newPost, imageUrl: this.newFile };
 
+                  var formData = new FormData();
+                  formData.append("post", this.newPost);
+                  formData.append("file", this.newFile);
+
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
                   fetch(postUrl, {
                     method: "POST",
                     headers: {
-                      "Content-Type": "application/json",
+                      Accept: "application/json",
+                      "Content-Type": "multipart/form-data",
                       Authorization: bearerToken,
                     },
-                    body: JSON.stringify(data),
+                    //body: JSON.stringify(formData),
+                    body: formData,
                   })
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
