@@ -213,7 +213,12 @@
                 </div>
                 <div class="post__order__form__question">
                   <label for="newFile">Vous pouvez ajouter une image : </label>
-                  <input type="file" v-model="newFile" />
+                  <input
+                    type="file"
+                    v-model="newFile"
+                    @change="uploadFile"
+                    ref="file"
+                  />
                 </div>
               </div>
 
@@ -245,7 +250,7 @@
           <div>
             <!-- cas serveur indisponible -->
             <template v-if="errored">
-              <p>Serveur indisponible</p>
+              <h3>Serveur indisponible</h3>
             </template>
 
             <!-- Affichage des posts -->
@@ -560,7 +565,9 @@
             // champs du formulaire pour creéation ou modification posts et comments
             createPostForm: false, //sera true pour crer un post
             modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
-            newPost: "",
+            newPost: "", //texte du post
+            newFile: "", //nouvelle image du post
+            images: null,
 
             createCommentForm: "", //sera egal au num du post sue lequel on veut creer un commentaire
             modifyCommentForm: "", //sera egal au num du commentaire à modifier
@@ -688,6 +695,7 @@
           //---------------------------------------------------------------------------------
           validateCreationPost() {
             try {
+              console.log("validationCreatePost");
               if (this.newPost == "") {
                 //post vide
                 window.alert("rentrez un post non vide");
@@ -707,10 +715,14 @@
                   const bearerToken = "Bearer " + userToken;
 
                   const data = { post: this.newPost, imageUrl: this.newFile };
+                  console.log("this.newFile " + this.newFile);
+
+                  //image
+                  this.Images = this.$refs.file.files[0];
 
                   var formData = new FormData();
                   formData.append("post", this.newPost);
-                  formData.append("file", this.newFile);
+                  formData.append("file", this.Images);
 
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
@@ -719,6 +731,8 @@
                     headers: {
                       Accept: "application/json",
                       "Content-Type": "multipart/form-data",
+                      boundary: "----WebKitFormBoundary2sybruw6OUwjOZ0t",
+
                       Authorization: bearerToken,
                     },
                     //body: JSON.stringify(formData),

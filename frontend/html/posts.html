@@ -245,7 +245,7 @@
           <div>
             <!-- cas serveur indisponible -->
             <template v-if="errored">
-              <p>Serveur indisponible</p>
+              <h3>Serveur indisponible</h3>
             </template>
 
             <!-- Affichage des posts -->
@@ -560,7 +560,8 @@
             // champs du formulaire pour creéation ou modification posts et comments
             createPostForm: false, //sera true pour crer un post
             modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
-            newPost: "",
+            newPost: "", //texte du post
+            newFile: "", //nouvelle image du post
 
             createCommentForm: "", //sera egal au num du post sue lequel on veut creer un commentaire
             modifyCommentForm: "", //sera egal au num du commentaire à modifier
