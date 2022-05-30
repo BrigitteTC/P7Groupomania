@@ -112,6 +112,7 @@ Bouton de nav du header
 
   border-radius: 13px;
   border: 0;
+  overflow: hidden;
 }
 
 .postHeader {
