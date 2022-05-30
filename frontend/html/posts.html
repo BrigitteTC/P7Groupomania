@@ -260,8 +260,12 @@
                 >
                   <article class="postArticle">
                     <div class="postItem">
-                      <!-- Affichage du texte du post et de son image-->
-                      <div class="postInfos">
+                      <div class="flexRows">
+                        <!-- Affichage de l'image -->
+                        <div class="postImage" v-if="itemPost.imageUrl">
+                          <img :src="itemPost.imageUrl" alt="image du post " />
+                        </div>
+                        <!-- Affichage du texte du post -->
                         <div class="postText">
                           <div v-if="modifyPostForm===itemPost.postId">
                             <p v-if="newPost">
@@ -276,13 +280,10 @@
                               post n° {{itemPost.postId}} : {{itemPost.post}}
                             </p>
                           </div>
-                          <div v-if="itemPost.imageUrl">
-                            <img
-                              :src="itemPost.imageUrl"
-                              alt="image du post "
-                            />
-                          </div>
                         </div>
+                      </div>
+                      <!-- fin Affichage du texte du post -->
+                      <div class="postInfos">
                         <div class="postHeader">
                           <div class="postDate">
                             <p>Date: {{itemPost.date}}</p>

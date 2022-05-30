@@ -105,11 +105,20 @@ Bouton de nav du header
   border: 0;
 }
 
+/* l'image associée au post*/
+.postImage {
+  height: 200px;
+  width: 600px;
+
+  border-radius: 13px;
+  border: 0;
+}
+
 .postHeader {
   display: flex;
   flex-direction: rows;
   justify-content: space-around;
-  border: 1px solid black;
+  /* border: 1px solid black;*/
 
   padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
 }
