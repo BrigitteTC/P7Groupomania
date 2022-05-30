@@ -67,7 +67,7 @@
               </div>
 
               <div class="cart__order__form__question">
-                <label for="passwd">Passwd: </label>
+                <label for="passwd">Password: </label>
                 <input type="passwd" v-model="passwd" id="passwd" required />
                 <p v-if="!passwd && signupForm">Valeur obligatoire requise</p>
               </div>
@@ -282,7 +282,7 @@
                         });
                     } //fin test passwd
                     else {
-                      window.alert("passwd invalide ");
+                      window.alert("password invalide ");
                     }
                   } //fin test pseudo
                   else {
