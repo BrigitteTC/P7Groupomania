@@ -87,6 +87,11 @@
                   <!-- Debut formulaire de modif profil -->
                   <template v-if="profilForm">
                     <div>
+                      <div>
+                        <h2>Mon profil</h2>
+                        <p>email: {{connectedNEmail}}</p>
+                        <p>pseudo : {{connectedName}}</p>
+                      </div>
                       <div class="profilMenu">
                         <ul class="pucesItems">
                           <!-- Affichage du menu de modif du profil-->
@@ -541,9 +546,12 @@
             tel: "01 23 45 67 89",
             //nom et infos de l'utilisateur connecté
             isUserConnected: false, //sera true quand le user sera connecté par login
+
+            // infos du user connecté
             connectedName: "",
             connectedUserId: "",
             connectedModerator: false,
+            connectedEmail: "",
 
             //tableau des posts et des commentaires
             posts: [],
@@ -614,6 +622,7 @@
             this.connectedName = userInLocalStorage.pseudo; // le nom affiché en entete de feuille
             this.connectedUserId = userInLocalStorage.userId;
             this.connectedModerator = userInLocalStorage.moderator;
+            this.connectedEmail = userInLocalStorage.email;
 
             console.log(
               "user connecte ;" +
