@@ -727,25 +727,28 @@
 
                   const bearerToken = "Bearer " + userToken;
 
-                  const data = {
-                    post: this.newPost,
-                    imageUrl: this.images.name,
-                    imageBody: this.images,
-                  };
+                  // const data = {
+                  //   post: this.newPost,
+                  //   imageUrl: this.images.name,
+                  //   image: this.images,
+                  // };
 
                   const formData = new FormData();
                   formData.append("post", this.newPost);
-                  formData.append("file", this.images, this.images.name);
+                  formData.append("imageUrl", this.images.name);
+                  formData.append("image", this.images, this.images.name);
 
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
+
                   fetch(postUrl, {
                     method: "POST",
                     headers: {
-                      "Content-Type": "application/json",
+                      //  "Content-Type": "application/json",
                       Authorization: bearerToken,
                     },
-                    body: JSON.stringify(data),
+                    // body: JSON.stringify(data),
+                    body: formData,
                   })
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
