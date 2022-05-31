@@ -213,7 +213,7 @@
                 </div>
                 <div class="post__order__form__question">
                   <label for="newFile">Vous pouvez ajouter une image : </label>
-                  <input type="file" v-model="newFile" />
+                  <input type="file" @change="uploadFile" ref="file" />
                 </div>
               </div>
 
@@ -561,7 +561,8 @@
             createPostForm: false, //sera true pour crer un post
             modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
             newPost: "", //texte du post
-            newFile: "", //nouvelle image du post
+
+            images: null, //image du post
 
             createCommentForm: "", //sera egal au num du post sue lequel on veut creer un commentaire
             modifyCommentForm: "", //sera egal au num du commentaire à modifier
@@ -679,6 +680,16 @@
               console.log("erreur ft createPost : " + err);
             }
           },
+          /*---------------------------------------------------
+          uploadfile
+
+          Pour uploader un ficher
+          -------------------------------------------------------*/
+
+          uploadFile() {
+            this.images = this.$refs.file.files[0];
+            this.newFile = this.images.name;
+          },
 
           //-----------------------------------------------------------------------------------------
           // validateCreationPost
@@ -707,7 +718,11 @@
 
                   const bearerToken = "Bearer " + userToken;
 
-                  const data = { post: this.newPost, imageUrl: this.newFile };
+                  const data = { post: this.newPost, imageUrl: this.images };
+
+                  const formData = new FormData();
+                  formData.append("post", this.newPost);
+                  formData.append("file", this.images);
 
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
