@@ -718,11 +718,15 @@
 
                   const bearerToken = "Bearer " + userToken;
 
-                  const data = { post: this.newPost, imageUrl: this.images };
+                  const data = {
+                    post: this.newPost,
+                    imageUrl: this.images.name,
+                    imageBody: this.images,
+                  };
 
                   const formData = new FormData();
                   formData.append("post", this.newPost);
-                  formData.append("file", this.images);
+                  formData.append("file", this.images, this.images.name);
 
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
