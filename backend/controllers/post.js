@@ -202,7 +202,7 @@ exports.modifyPost = (req, res, next) => {
       console.log("newPostCorrected= " + newPostCorrected);
 
       // partie requete sql correspondant au post
-      postSql = "post '" + newPostCorrected + "'";
+      postSql = "post='" + newPostCorrected + "'";
     }
 
     //req sql en ft de post et image Url
@@ -226,7 +226,6 @@ exports.modifyPost = (req, res, next) => {
           postsTable +
           "  SET " +
           postSql +
-          "," +
           " WHERE postId='" +
           req.params.postId +
           "';";
@@ -239,7 +238,6 @@ exports.modifyPost = (req, res, next) => {
           postsTable +
           "  SET " +
           imageSql +
-          "," +
           " WHERE postId='" +
           req.params.postId +
           "';";
