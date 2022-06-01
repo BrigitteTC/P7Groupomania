@@ -137,13 +137,13 @@ Bouton de nav du header
   flex-direction: column;
   margin-bottom: 25px;
   height: 100px;
-  width: 600px;
+  width: 400px;
 }
 .post__order__form__question input {
   border-radius: 13px;
   border: 0;
   height: 100px;
-  width: 600px;
+  width: 400px;
 
   margin-top: 4px;
 }
