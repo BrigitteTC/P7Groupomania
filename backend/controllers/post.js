@@ -184,6 +184,7 @@ exports.modifyPost = (req, res, next) => {
     let postSql = ""; //init part sql pour le post
     let imageSql = ""; //init partie SQL pour l'image
     let sql = ""; //requete sql complete
+    let oldImageSql = ""; //requete pour récupérer l'ancienne image du post
 
     if (req.file) {
       console.log("req.file : " + req.file);
@@ -193,6 +194,10 @@ exports.modifyPost = (req, res, next) => {
 
       //partie requete sql correspondant à l'image
       imageSql = " imageUrl='" + imageUrl + "'";
+
+      //recherche ancienne image et la détruit
+
+      delFile(req.params.postId); //On supprime l'ancien fichier de l'image
     }
 
     //le post dont on va echapper les ' avec \'
@@ -221,7 +226,7 @@ exports.modifyPost = (req, res, next) => {
           " WHERE postId='" +
           req.params.postId +
           "';";
-        console.log("sql avec post et image" + sql);
+        console.log("sql avec post et image : " + sql);
       } else {
         //sql avec post seulement
         sql =
@@ -232,7 +237,7 @@ exports.modifyPost = (req, res, next) => {
           " WHERE postId='" +
           req.params.postId +
           "';";
-        console.log("sql avec post " + sql);
+        console.log("sql avec post : " + sql);
       }
     } else {
       if (imageUrl) {
@@ -245,7 +250,7 @@ exports.modifyPost = (req, res, next) => {
           " WHERE postId='" +
           req.params.postId +
           "';";
-        console.log("sql avec image" + sql);
+        console.log("sql avec image : " + sql);
       }
     }
 
@@ -288,6 +293,12 @@ Algo:
 
 function delFile(postId) {
   try {
+    const oldImageSql =
+      "SELECT imageUrl from posts WHERE postId = '" + postId + "'";
+    console.log("oldImageSql : " + oldImageSql);
+
+    // appel de la requete pour trouver l'image puis destruction
+
     Sauce.findOne({ _id: sauceId })
       .then((sauce) => {
         const filename = sauce.imageUrl.split("/images/")[1];
