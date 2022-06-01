@@ -89,7 +89,7 @@
                     <div>
                       <div>
                         <h2>Mon profil</h2>
-                        <p>email: {{connectedNEmail}}</p>
+                        <p>email: {{connectedEmail}}</p>
                         <p>pseudo : {{connectedName}}</p>
                       </div>
                       <div class="profilMenu">
@@ -268,7 +268,12 @@
                       <div class="flexRows">
                         <!-- Affichage de l'image -->
                         <div class="postImage" v-if="itemPost.imageUrl">
-                          <img :src="itemPost.imageUrl" alt="image du post " />
+                          <img
+                            :src="itemPost.imageUrl"
+                            width="200"
+                            height="300"
+                            alt="image du post "
+                          />
                         </div>
                         <!-- Affichage du texte du post -->
                         <div class="postText">

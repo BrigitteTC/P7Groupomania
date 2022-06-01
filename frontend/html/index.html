@@ -349,12 +349,14 @@
               class localStorageUser {
                 constructor(
                   pseudo,
+                  email,
                   userId,
                   token,
                   moderator,
                   userInLocalStorageOK
                 ) {
                   this.pseudo = pseudo;
+                  this.email = email;
                   this.userId = userId;
                   this.token = token;
                   this.moderator = moderator;
@@ -406,6 +408,7 @@
                       userConnected.moderator = this.moderator;
                       userConnected.token = this.token;
                       userConnected.pseudo = this.pseudo;
+                      userConnected.email = this.email;
                       userConnected.userInLocalStorageOK = true;
 
                       // Maj de la clé user dans le local storage
