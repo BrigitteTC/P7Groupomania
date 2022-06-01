@@ -293,18 +293,28 @@ Algo:
 
 function delFile(postId) {
   try {
-    const oldImageSql =
-      "SELECT imageUrl from posts WHERE postId = '" + postId + "'";
-    console.log("oldImageSql : " + oldImageSql);
+    // req sql pour récupérer l'image du post
+    const sql = "SELECT imageUrl from posts WHERE postId = '" + postId + "'";
+    console.log("oldImageSql : " + sql);
 
     // appel de la requete pour trouver l'image puis destruction
-
-    Sauce.findOne({ _id: sauceId })
-      .then((sauce) => {
-        const filename = sauce.imageUrl.split("/images/")[1];
+    connection.query(sql, (err, data, fields) => {
+      if (err) {
+        // Reponse avec code et message d'erreur
+        res.status(400).json({
+          message: "code: " + err.code + " message: " + err.sqlMessage,
+        });
+        console.log("erreur" + err);
+      } else {
+        // OK
+        const imageUrl = JSON.stringify(data);
+        console.log("old image = " + imageUrl);
+        const filename = imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {});
-      })
-      .catch((error) => res.status(500).json({ error }));
+
+        res.status(200).json({ message: "ancienne image suprimée" });
+      }
+    });
   } catch (err) {
     console.log("erreur: " + err);
   }
