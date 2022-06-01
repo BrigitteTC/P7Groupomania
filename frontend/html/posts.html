@@ -87,6 +87,7 @@
                   <!-- Debut formulaire de modif profil -->
                   <template v-if="profilForm">
                     <div>
+                      <!-- Affichage du profil en cours -->
                       <div>
                         <h2>Mon profil</h2>
                         <p>email: {{connectedEmail}}</p>
@@ -111,7 +112,7 @@
                       </div>
                     </div>
                   </template>
-                  <!-- Fin formulaire de modif du profil (modif ou suppression)-->
+                  <!-- Fin affichage choix de modif du profil (modif ou suppression)-->
 
                   <!-- Modify profil  Champ pour saisir la nouvelle valeur cas du modify-->
                   <div v-if="modifyProfil">
@@ -323,12 +324,24 @@
                             <!-- Affichage du formulaire de modif du post -->
                             <!-- :placeholder="itemPost.post"   placeholder supprimé-->
                             <div>
+                              <!-- Texte -->
                               <label for="newPost">Votre nouveau post</label>
                               <input
                                 class="post__order__form__question"
                                 type="textarea"
                                 v-model="newPost"
                               />
+                              <!-- Nouvelle image -->
+                              <div class="post__order__form__question">
+                                <label for="newFile"
+                                  >Vous pouvez ajouter une image :
+                                </label>
+                                <input
+                                  type="file"
+                                  @change="uploadFile"
+                                  ref="file"
+                                />
+                              </div>
                             </div>
 
                             <!-- Boutons pour valider ou annuler cette modif -->
@@ -567,9 +580,6 @@
             loading: false,
             errored: false,
 
-            loadingComments: false,
-            erroredComments: false,
-
             // champs du formulaire pour creéation ou modification posts et comments
             createPostForm: false, //sera true pour crer un post
             modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
@@ -758,7 +768,6 @@
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
                       console.log("Fetch error: ", error);
-                      this.erroredComments = true;
                     })
                     .then((response) => {
                       //response OK
@@ -861,7 +870,6 @@
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
                       console.log("Fetch error: ", error);
-                      this.erroredComments = true;
                     })
                     .then((response) => {
                       //response OK
@@ -873,7 +881,6 @@
                     })
                     .catch((error) => {
                       console.log("Response error: ", error);
-                      this.erroredComments = true;
                     });
                 } //fin test post valide
               } // fin du test "user" in local Storage
@@ -936,7 +943,6 @@
                   .then((response) => response.json()) //reponse du fetch
                   .catch((error) => {
                     console.log("Fetch error: ", error);
-                    this.erroredComments = true;
                   })
                   .then((response) => {
                     this.comments = response; //les commentaires renvoyés de l'API
@@ -948,7 +954,6 @@
                   })
                   .catch((error) => {
                     console.log("Response error: ", error);
-                    this.erroredComments = true;
                   });
               } // fin du test "user" in local Storage
             } catch (err) {
@@ -993,7 +998,6 @@
                   .then((response) => response.json()) //reponse du fetch
                   .catch((error) => {
                     console.log("Fetch error: ", error);
-                    this.erroredComments = true;
                   })
                   .then((response) => {
                     window.alert(response.message); // affiche msg de retour du serveur
@@ -1001,7 +1005,6 @@
                   })
                   .catch((error) => {
                     console.log("Response error: ", error);
-                    this.erroredComments = true;
                   });
               } // fin du test "user" in local Storage
             } catch (err) {
@@ -1060,7 +1063,6 @@
                   .then((response) => response.json()) //reponse du fetch
                   .catch((error) => {
                     console.log("Fetch error: ", error);
-                    this.erroredComments = true;
                   })
                   .then((response) => {
                     this.comments = response;
@@ -1068,7 +1070,6 @@
                   })
                   .catch((error) => {
                     console.log("Response error: ", error);
-                    this.erroredComments = true;
                   });
               } // fin du test "user" in local Storage
             } catch (err) {
@@ -1144,7 +1145,6 @@
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
                       console.log("Fetch error: ", error);
-                      this.erroredComments = true;
                     })
                     .then((response) => {
                       //response OK
@@ -1156,7 +1156,6 @@
                     })
                     .catch((error) => {
                       console.log("Response error: ", error);
-                      this.erroredComments = true;
                     });
                 } // fin du test "user" in local Storage
               } // fin du test commentaire vide.
@@ -1260,7 +1259,6 @@
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
                       console.log("Fetch error: ", error);
-                      this.erroredComments = true;
                     })
                     .then((response) => {
                       this.modifyCommentForm = ""; // on replie le formulaire
@@ -1269,7 +1267,6 @@
                     })
                     .catch((error) => {
                       console.log("Response error: ", error);
-                      this.erroredComments = true;
                     });
                 } // fin du test "user" in local Storage
               } //fin test commentaire non vide
