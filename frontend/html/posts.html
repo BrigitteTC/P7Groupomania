@@ -1481,6 +1481,17 @@
                           "user",
                           JSON.stringify(connectedUser)
                         );
+                      } else if (valueToModify === "email") {
+                        this.connectedEmail = this.newValue; // le nom a afficher ds la page
+                        // maj local storage avec l'email'
+                        let connectedUser = JSON.parse(
+                          localStorage.getItem("user")
+                        ); //user ds localStorage
+                        connectedUser.email = this.newValue;
+                        localStorage.setItem(
+                          "user",
+                          JSON.stringify(connectedUser)
+                        );
                       }
                     })
                     .catch((error) => {
