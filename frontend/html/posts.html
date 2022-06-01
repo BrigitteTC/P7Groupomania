@@ -219,7 +219,7 @@
                 </div>
                 <div class="post__order__form__question">
                   <label for="newFile">Vous pouvez ajouter une image : </label>
-                  <input type="file" @change="uploadFile" ref="file" />
+                  <input type="file" @change="uploadFile()" ref="file" />
                 </div>
               </div>
 
@@ -339,7 +339,7 @@
                                 </label>
                                 <input
                                   type="file"
-                                  @change="uploadFile"
+                                  @change="uploadFileModif()"
                                   ref="file"
                                 />
                               </div>
@@ -713,6 +713,13 @@
 
           uploadFile() {
             this.images = this.$refs.file.files[0];
+            this.newFile = this.images.name;
+          },
+
+          /* cas de modif d'un fichier*/
+
+          uploadFileModif() {
+            this.images = this.$refs.file[0].files[0];
             this.newFile = this.images.name;
           },
 
