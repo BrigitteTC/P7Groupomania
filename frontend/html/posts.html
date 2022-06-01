@@ -750,8 +750,12 @@
 
                   const formData = new FormData();
                   formData.append("post", this.newPost);
-                  formData.append("imageUrl", this.images.name);
-                  formData.append("image", this.images, this.images.name);
+
+                  //Ajout image si sélectionnée
+                  if (this.images) {
+                    formData.append("imageUrl", this.images.name);
+                    formData.append("image", this.images, this.images.name);
+                  }
 
                   //Url des commentaires du post
                   const postUrl = "http://localhost:3000/api/post";
