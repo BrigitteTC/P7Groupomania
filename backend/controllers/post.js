@@ -176,13 +176,14 @@ remarque:
 exports.modifyPost = (req, res, next) => {
   console.log("DEBUG ft  modifyPost");
   try {
-    console.log("DEBUG ft modifyPost req.auth.userId =  " + req.auth.userId);
+    console.log("DEBUG : ft modifyPost req.auth.userId =  " + req.auth.userId);
 
     let imageUrl = "";
     //Gestion de l'image
     // image dans req.file
     let postSql = ""; //init part sql pour le post
     let imageSql = ""; //init partie SQL pour l'image
+    let sql = ""; //requete sql complete
 
     if (req.file) {
       console.log("req.file : " + req.file);
@@ -208,7 +209,8 @@ exports.modifyPost = (req, res, next) => {
     //req sql en ft de post et image Url
     if (newPost) {
       if (imageUrl) {
-        //req avec post et image
+        //sql avec post et image
+
         sql =
           "UPDATE  " +
           postsTable +
@@ -219,6 +221,7 @@ exports.modifyPost = (req, res, next) => {
           " WHERE postId='" +
           req.params.postId +
           "';";
+        console.log("sql avec post et image" + sql);
       } else {
         //sql avec post seulement
         sql =
@@ -229,6 +232,7 @@ exports.modifyPost = (req, res, next) => {
           " WHERE postId='" +
           req.params.postId +
           "';";
+        console.log("sql avec post " + sql);
       }
     } else {
       if (imageUrl) {
@@ -241,6 +245,7 @@ exports.modifyPost = (req, res, next) => {
           " WHERE postId='" +
           req.params.postId +
           "';";
+        console.log("sql avec image" + sql);
       }
     }
 
