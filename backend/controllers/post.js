@@ -44,18 +44,18 @@ exports.createPost = (req, res, next) => {
     let imageUrl = "";
     //Gestion de l'image
     // image dans req.file
-    console.log("req.: " + req);
+
     if (req.file) {
       console.log("req.file : " + req.file);
       imageUrl = `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
     }
-    /*  image dans le body*/
+    /*  image dans le body
     imageUrl = `${req.protocol}://${req.get("host")}/images/${
       req.body.imageUrl
     }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
-    /**/
+    */
     // Requete sql pour creer le post
     const userId = req.auth.userId; //userId déduit du token du header
 
