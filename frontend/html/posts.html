@@ -1320,13 +1320,18 @@
           // profil
           // affichage du formulaire de modif du profil ou de la suppression du compte
           //
+          // Si le formulaire est ouvert, on le ferme
           // param: aucun
           //-------------------------------------------------
 
           profil() {
             try {
               console.log("profil utilisateur");
-              this.profilForm = true; // ouverture formulaire profil
+              if (this.profilForm === false) {
+                this.profilForm = true; // ouverture formulaire profil
+              } else {
+                this.profilForm = false; // fermeture formulaire profil}
+              }
             } catch (err) {
               //fin du try
               console.log("erreur ft profil : " + err);
