@@ -758,7 +758,7 @@
                     formData.append("image", this.images, this.images.name);
                   }
 
-                  //Url des commentaires du post
+                  //Url du post
                   const postUrl = "http://localhost:3000/api/post";
 
                   fetch(postUrl, {
@@ -832,7 +832,7 @@
           },
 
           //-----------------------------------------------------------------------------------------
-          // validateModifPost
+          // validateModifyPost
           // Validation de la modification du post
           // suite click sur bouton validate
           // param: postId
@@ -862,13 +862,13 @@
 
                   //Le post avec son image
                   const formData = new FormData();
-                  if (!this.newPost) {
-                    // pas de nouveau texte, on prend l'ancienne valeur
-                    this.newPost = postId.post;
+                  if (this.newPost) {
+                    // nouveau texte
+                    formData.append("post", this.newPost);
                   }
-                  formData.append("post", this.newPost);
+
                   if (this.images) {
-                    // on teste l'image existe}
+                    // Nouvelle image
                     formData.append("imageUrl", this.images.name);
                     formData.append("image", this.images, this.images.name);
                   }

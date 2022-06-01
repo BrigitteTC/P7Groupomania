@@ -181,29 +181,70 @@ exports.modifyPost = (req, res, next) => {
     let imageUrl = "";
     //Gestion de l'image
     // image dans req.file
+    let postSql = ""; //init part sql pour le post
+    let imageSql = ""; //init partie SQL pour l'image
 
     if (req.file) {
       console.log("req.file : " + req.file);
       imageUrl = `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
+
+      //partie requete sql correspondant à l'image
+      imageSql = " imageUrl='" + imageUrl + "'";
     }
 
     //le post dont on va echapper les ' avec \'
-    let newPost = req.body.post;
-    const newPostCorrected = newPost.replace(/[']/g, "\\'");
-    console.log("newPostCorrected= " + newPostCorrected);
+    const newPost = req.body.post;
+    if (newPost) {
+      //on corrige les apostrophes
+      const newPostCorrected = newPost.replace(/[']/g, "\\'");
+      console.log("newPostCorrected= " + newPostCorrected);
 
-    sql =
-      "UPDATE  " +
-      postsTable +
-      "  SET post='" +
-      newPostCorrected +
-      "imageUrl='" +
-      imageUrl +
-      "' WHERE postId='" +
-      req.params.postId +
-      "';";
+      // partie requete sql correspondant au post
+      postSql = "post '" + newPostCorrected + "'";
+    }
+
+    //req sql en ft de post et image Url
+    if (newPost) {
+      if (imageUrl) {
+        //req avec post et image
+        sql =
+          "UPDATE  " +
+          postsTable +
+          "  SET " +
+          postSql +
+          "," +
+          imageSql +
+          " WHERE postId='" +
+          req.params.postId +
+          "';";
+      } else {
+        //sql avec post seulement
+        sql =
+          "UPDATE  " +
+          postsTable +
+          "  SET " +
+          postSql +
+          "," +
+          " WHERE postId='" +
+          req.params.postId +
+          "';";
+      }
+    } else {
+      if (imageUrl) {
+        //sql avec image seulement
+        sql =
+          "UPDATE  " +
+          postsTable +
+          "  SET " +
+          imageSql +
+          "," +
+          " WHERE postId='" +
+          req.params.postId +
+          "';";
+      }
+    }
 
     console.log("DEBUG modifyPost sql=  " + sql);
     connection.query(sql, (err, data, fields) => {
