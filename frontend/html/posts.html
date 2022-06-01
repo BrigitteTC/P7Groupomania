@@ -295,6 +295,7 @@
                       </div>
                       <!-- fin Affichage du texte du post -->
                       <div class="postInfos">
+                        <!-- Affichage auteur et date du post -->
                         <div class="postHeader">
                           <div class="postDate">
                             <p>Date: {{itemPost.date}}</p>
@@ -840,8 +841,8 @@
           //---------------------------------------------------------------------------------
           validateModifyPost(postId) {
             try {
-              if (!this.newPost && !this.images) {
-                //post vide pas de texte et pas d'image
+              if (!this.newPost && !this.images.name) {
+                //modif post vide pas de texte et pas d'image
                 window.alert("rentrez un texte ou une image");
               } else {
                 //post valide on le traite
@@ -863,7 +864,7 @@
                   const formData = new FormData();
                   if (!this.newPost) {
                     // pas de nouveau texte, on prend l'ancienne valeur
-                    this.newPost = this.post;
+                    this.newPost = postId.post;
                   }
                   formData.append("post", this.newPost);
                   if (this.images) {
