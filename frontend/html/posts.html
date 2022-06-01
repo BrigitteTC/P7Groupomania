@@ -644,7 +644,7 @@
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
                 console.log("Fetch error: ", error);
-                windows.alert(error);
+                window.alert("invalide requete ou session expirée");
                 this.errored = true;
               })
               .then((data) => {
@@ -765,7 +765,7 @@
                     })
                     .catch((error) => {
                       console.log("Response error: ", error);
-                      this.erroredComments = true;
+                      window.alert("requete non autorisée ou session expirée");
                     });
                 } //fin test post vide
               } // fin du test "user" in local Storage
