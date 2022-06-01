@@ -840,9 +840,9 @@
           //---------------------------------------------------------------------------------
           validateModifyPost(postId) {
             try {
-              if (this.newPost == "") {
-                //post vide
-                this.newPost = this.post; //on garde l'ancienne valeur
+              if (!this.newPost && !this.images) {
+                //post vide pas de texte et pas d'image
+                window.alert("rentrez un texte ou une image");
               } else {
                 //post valide on le traite
 
@@ -859,12 +859,18 @@
 
                   const bearerToken = "Bearer " + userToken;
 
-                  //Le post avec soon image
+                  //Le post avec son image
                   const formData = new FormData();
+                  if (!this.newPost) {
+                    // pas de nouveau texte, on prend l'ancienne valeur
+                    this.newPost = this.post;
+                  }
                   formData.append("post", this.newPost);
-                  formData.append("imageUrl", this.images.name);
-                  formData.append("image", this.images, this.images.name);
-
+                  if (this.images) {
+                    // on teste l'image existe}
+                    formData.append("imageUrl", this.images.name);
+                    formData.append("image", this.images, this.images.name);
+                  }
                   //Url du post
                   const postUrl = "http://localhost:3000/api/post/" + postId;
                   fetch(postUrl, {
