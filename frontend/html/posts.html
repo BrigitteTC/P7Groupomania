@@ -707,7 +707,7 @@
           /*---------------------------------------------------
           uploadfile
 
-          Pour uploader un ficher
+          Pour uploader un ficher selectionné comme image avec le post
           -------------------------------------------------------*/
 
           uploadFile() {
@@ -838,7 +838,7 @@
             try {
               if (this.newPost == "") {
                 //post vide
-                window.alert("rentrez un post non vide");
+                this.newPost = this.post; //on garde l'ancienne valeur
               } else {
                 //post valide on le traite
 
@@ -855,17 +855,21 @@
 
                   const bearerToken = "Bearer " + userToken;
 
-                  const data = { post: this.newPost, imageUrl: "" };
+                  //Le post avec soon image
+                  const formData = new FormData();
+                  formData.append("post", this.newPost);
+                  formData.append("imageUrl", this.images.name);
+                  formData.append("image", this.images, this.images.name);
 
-                  //Url des commentaires du post
+                  //Url du post
                   const postUrl = "http://localhost:3000/api/post/" + postId;
                   fetch(postUrl, {
                     method: "PUT",
                     headers: {
-                      "Content-Type": "application/json",
+                      //"Content-Type": "application/json",
                       Authorization: bearerToken,
                     },
-                    body: JSON.stringify(data),
+                    body: formData,
                   })
                     .then((response) => response.json()) //reponse du fetch
                     .catch((error) => {
