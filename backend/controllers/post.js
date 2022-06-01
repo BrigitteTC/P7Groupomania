@@ -178,6 +178,17 @@ exports.modifyPost = (req, res, next) => {
   try {
     console.log("DEBUG ft modifyPost req.auth.userId =  " + req.auth.userId);
 
+    let imageUrl = "";
+    //Gestion de l'image
+    // image dans req.file
+
+    if (req.file) {
+      console.log("req.file : " + req.file);
+      imageUrl = `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
+    }
+
     //le post dont on va echapper les ' avec \'
     let newPost = req.body.post;
     const newPostCorrected = newPost.replace(/[']/g, "\\'");
@@ -188,6 +199,8 @@ exports.modifyPost = (req, res, next) => {
       postsTable +
       "  SET post='" +
       newPostCorrected +
+      "imageUrl='" +
+      imageUrl +
       "' WHERE postId='" +
       req.params.postId +
       "';";
