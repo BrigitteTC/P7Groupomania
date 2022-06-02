@@ -660,7 +660,9 @@
               .then((response) => response.json()) //reponse du fetch
               .catch((error) => {
                 console.log("Fetch error: ", error);
-                window.alert("invalide requete ou session expirée");
+                window.alert(
+                  "invalide requete ou session expirée ou serveur indisponible"
+                );
                 this.errored = true;
               })
               .then((data) => {

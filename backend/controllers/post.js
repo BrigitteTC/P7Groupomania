@@ -18,6 +18,7 @@ require("dotenv").config();
 //jsonwebtoken pour vérifier les token
 
 const jwt = require("jsonwebtoken");
+const { stringify } = require("querystring");
 
 //Base de données mysql
 // connection database groupomania
@@ -197,7 +198,7 @@ exports.modifyPost = (req, res, next) => {
 
       //recherche ancienne image et la détruit
 
-      //delFile(req.params.postId); //On supprime l'ancien fichier de l'image
+      delFile(req.params.postId); //On supprime l'ancien fichier de l'image
     }
 
     //le post dont on va echapper les ' avec \'
@@ -289,9 +290,12 @@ Algo:
   Trouve le post
   Calcule le chemin du fichier
   Supprime le fichier de l'image
+
+  Utilisation de fs.unlink(path, callback)
 ---------------------------------------------------------*/
 
 function delFile(postId) {
+  console.log("delFile");
   try {
     // req sql pour récupérer l'image du post
     const sql = "SELECT imageUrl from posts WHERE postId = '" + postId + "'";
@@ -307,10 +311,27 @@ function delFile(postId) {
         console.log("erreur" + err);
       } else {
         // OK
-        const imageUrl = JSON.stringify(data);
+
+        //result est un tableau avec 1 seul elt
+        const result = Object.values(JSON.parse(JSON.stringify(data)));
+
+        const obj = result[0];
+
+        const imageUrl = obj.imageUrl;
         console.log("old image = " + imageUrl);
         const filename = imageUrl.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {});
+        console.log("filename = " + filename);
+        // fs.unlink(`images/${filename}`, () => { });
+
+        //fs.unlinkSync(`images/${filename}`);
+        //console.log("ancienne image suprimée");
+
+        // delete file named 'sample.txt'
+        fs.unlink(`images/${filename}`, function (err) {
+          if (err) throw err;
+          // si pas d'erreur "ancienne image suprimée"
+          console.log("ancienne image suprimée");
+        });
 
         res.status(200).json({ message: "ancienne image suprimée" });
       }
