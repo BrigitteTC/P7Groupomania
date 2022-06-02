@@ -386,6 +386,7 @@
                   .then((response) => response.json()) //reponse du fetch
                   .catch((error) => {
                     console.log("Fetch error: ", error);
+                    window.alert("connexion refusée");
                   })
                   .then((response) => {
                     this.userId = response.userId;

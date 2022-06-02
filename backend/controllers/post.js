@@ -197,7 +197,7 @@ exports.modifyPost = (req, res, next) => {
 
       //recherche ancienne image et la détruit
 
-      delFile(req.params.postId); //On supprime l'ancien fichier de l'image
+      //delFile(req.params.postId); //On supprime l'ancien fichier de l'image
     }
 
     //le post dont on va echapper les ' avec \'
