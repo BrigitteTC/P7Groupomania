@@ -376,7 +376,9 @@ function delFile(postId) {
           console.log("filename = " + filename);
           // Desctuction de l'image avec une req synchrone
 
-          fs.unlinkSync(`images/${filename}`);
+          if (filename !== undefined) {
+            fs.unlinkSync(`images/${filename}`);
+          }
         }
       }
     });
