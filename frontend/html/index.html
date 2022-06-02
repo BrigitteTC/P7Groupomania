@@ -55,9 +55,9 @@
         </div>
         <!-- Affichage des menus login ou signup -->
         <section class="items limitedWidthBlockContainer" id="items">
-          <div v-if="loginForm| signupForm " class="cart__order">
-            <form method="get" class="cart__order__form">
-              <div class="cart__order__form__question">
+          <div v-if="loginForm| signupForm " class="login">
+            <form method="get" class="login__form">
+              <div class="login__form__question">
                 <label for="email">Email: </label>
                 <input type="email" v-model="email" id="email" required />
 
@@ -66,13 +66,13 @@
                 </p>
               </div>
 
-              <div class="cart__order__form__question">
+              <div class="login__form__question">
                 <label for="passwd">Password: </label>
                 <input type="passwd" v-model="passwd" id="passwd" required />
                 <p v-if="!passwd && signupForm">Valeur obligatoire requise</p>
               </div>
 
-              <div v-if="signupForm" class="cart__order__form__question">
+              <div v-if="signupForm" class="login__form__question">
                 <label for="pseudo">Pseudo: </label>
                 <input type="text" v-model="pseudo" id="pseudo" required />
                 <p v-if="!pseudo && signupForm">
@@ -80,7 +80,7 @@
                 </p>
               </div>
 
-              <div v-if="loginForm" class="cart__order__form__submit">
+              <div v-if="loginForm" class="login__form__submit">
                 <input
                   @click="validateLogin()"
                   type="submit"
@@ -89,7 +89,7 @@
                 />
               </div>
 
-              <div v-if="signupForm" class="cart__order__form__submit">
+              <div v-if="signupForm" class="login__form__submit">
                 <input
                   @click="validateSignup()"
                   type="submit"
