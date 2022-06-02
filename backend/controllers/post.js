@@ -305,9 +305,7 @@ function delFile(postId) {
     connection.query(sql, (err, data, fields) => {
       if (err) {
         // Reponse avec code et message d'erreur
-        res.status(400).json({
-          message: "code: " + err.code + " message: " + err.sqlMessage,
-        });
+
         console.log("erreur" + err);
       } else {
         // OK
@@ -323,20 +321,7 @@ function delFile(postId) {
         console.log("filename = " + filename);
         // fs.unlink(`images/${filename}`, () => { });
 
-        //fs.unlinkSync(`images/${filename}`);
-        // fs.unlink(`images/${filename}`, () => {});
-        //console.log("ancienne image suprimée");
-
-        // delete file named 'sample.txt'
-        fs.unlink(`images/${filename}`, function (err) {
-          if (err) {
-            console.log("ft delFile error :" + err);
-            throw err;
-          }
-          // si pas d'erreur "ancienne image suprimée"
-          console.log("ancienne image suprimée");
-          //res.status(200).json({ message: "ancienne image suprimée" });
-        });
+        fs.unlinkSync(`images/${filename}`);
       }
     });
   } catch (err) {
