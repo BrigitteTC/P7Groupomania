@@ -231,9 +231,10 @@ exports.modifyPost = (req, res, next) => {
             const result = Object.values(JSON.parse(JSON.stringify(data)));
 
             const obj = result[0];
+            console.log("retour sql recherche image : " + obj);
 
             //test une image existe et si oui on zigouille
-            if (obj !== undefined) {
+            if (obj.imageUrl !== "") {
               const imageUrl = obj.imageUrl;
 
               const filename = imageUrl.split("/images/")[1];
