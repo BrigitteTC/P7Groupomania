@@ -68,7 +68,9 @@
                     <!-- Cas du user connecté on affiche les boutons profil et logout -->
                     <template v-if="isUserConnected">
                       <ul>
-                        <li><button v-on:click="logout()">Logout</button></li>
+                        <li>
+                          <button v-on:click="logout()">Déconnexion</button>
+                        </li>
 
                         <li>
                           <button v-on:click="profil()">Mon profil</button>
@@ -219,7 +221,12 @@
                 </div>
                 <div class="post__order__form__question">
                   <label for="newFile">Vous pouvez ajouter une image : </label>
-                  <input type="file" @change="uploadFile()" ref="file" />
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    @change="uploadFile()"
+                    ref="file"
+                  />
                 </div>
               </div>
 
@@ -331,6 +338,7 @@
                                 </label>
                                 <input
                                   type="file"
+                                  accept=".jpg,.jpeg,.png"
                                   @change="uploadFileModif()"
                                   ref="file"
                                 />
