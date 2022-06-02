@@ -266,28 +266,25 @@
                 >
                   <article class="postArticle">
                     <div class="postItem">
-                      <div class="flexRows">
-                        <!-- Affichage de l'image -->
-                        <div class="postImage" v-if="itemPost.imageUrl">
-                          <img :src="itemPost.imageUrl" alt="image du post " />
+                      <!-- Affichage de l'image -->
+                      <div class="postImage" v-if="itemPost.imageUrl">
+                        <img :src="itemPost.imageUrl" alt="image du post " />
+                      </div>
+                      <!-- Affichage du texte du post -->
+                      <div class="postText">
+                        <div v-if="modifyPostForm===itemPost.postId">
+                          <p v-if="newPost">
+                            post n° {{itemPost.postId}} : {{newPost}}
+                          </p>
+                          <p v-else>
+                            post n° {{itemPost.postId}} : {{itemPost.post}}
+                          </p>
                         </div>
-                        <!-- Affichage du texte du post -->
-                        <div class="postText">
-                          <div v-if="modifyPostForm===itemPost.postId">
-                            <p v-if="newPost">
-                              post n° {{itemPost.postId}} : {{newPost}}
-                            </p>
-                            <p v-else>
-                              post n° {{itemPost.postId}} : {{itemPost.post}}
-                            </p>
-                          </div>
-                          <div v-else>
-                            <p>
-                              post n° {{itemPost.postId}} : {{itemPost.post}}
-                            </p>
-                          </div>
+                        <div v-else>
+                          <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
                         </div>
                       </div>
+
                       <!-- fin Affichage du texte du post -->
                       <div class="postInfos">
                         <!-- Affichage auteur et date du post -->
