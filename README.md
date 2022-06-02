@@ -16,12 +16,12 @@ Pour le faire fonctionner, il faut:
 Pour lancer le projet:
 
 Depuis le frontend:
-dans P7Groupomania/frontend/index.html
+dans P7Groupomania/frontend/html/index.html
 Cliquer sur index.html
 
 Depuis le backend:
 dans P7Groupomania/backend:
-ouvrir une invide de commande cmd
+ouvrir une invite de commande cmd
 exécuter : nodemon server
 
 ---
