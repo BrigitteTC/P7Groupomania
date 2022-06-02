@@ -402,7 +402,8 @@ DELETE avec suppression du dossier image
 exports.deletePost = (req, res, next) => {
   console.log("DEBUG deletePost");
   try {
-    // Requete sql pour detruirele post
+    delFile(req.params.postId); //On supprime l'ancien fichier de l'image
+    // Requete sql pour detruire le post
     sql =
       "DELETE FROM  " +
       postsTable +
@@ -422,46 +423,9 @@ exports.deletePost = (req, res, next) => {
         // OK
         console.log("DEBUG: deletepost OK");
 
-        // on detruit l'image dans le fichier image
-        try {
-          // req sql pour récupérer l'image du post
-          const oldImageSql =
-            "SELECT imageUrl from posts WHERE postId = '" + postId + "'";
-          console.log("oldImageSql : " + oldImageSql);
-
-          // appel de la requete pour trouver l'image puis destruction
-          connection.query(oldImageSql, (err, data, fields) => {
-            if (err) {
-              // Reponse avec code et message d'erreur
-
-              console.log("erreur" + err);
-            } else {
-              // OK
-
-              //result est un tableau avec 1 seul elt
-              const result = Object.values(JSON.parse(JSON.stringify(data)));
-
-              const obj = result[0];
-
-              //test une image existe et si oui on zigouille
-              if (obj !== undefined) {
-                const imageUrl = obj.imageUrl;
-
-                const filename = imageUrl.split("/images/")[1];
-                console.log("filename = " + filename);
-                // Desctuction de l'image avec une req synchrone
-
-                fs.unlinkSync(`images/${filename}`);
-              }
-            }
-          });
-        } catch (err) {
-          console.log("erreur: " + err);
-        }
         //
 
         //
-        //delFile(req.params.postId); //On supprime l'ancien fichier de l'image
 
         res.status(200).json({ message: "post zigouillé" });
       }
