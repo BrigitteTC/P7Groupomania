@@ -184,22 +184,8 @@ exports.modifyPost = (req, res, next) => {
     // image dans req.file
     let postSql = ""; //init part sql pour le post
     let imageSql = ""; //init partie SQL pour l'image
-    let sql = ""; //requete sql complete
-    let oldImageSql = ""; //requete pour récupérer l'ancienne image du post
-
-    if (req.file) {
-      console.log("req.file : " + req.file);
-      imageUrl = `${req.protocol}://${req.get("host")}/images/${
-        req.file.filename
-      }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
-
-      //partie requete sql correspondant à l'image
-      imageSql = " imageUrl='" + imageUrl + "'";
-
-      //recherche ancienne image et la détruit
-
-      delFile(req.params.postId); //On supprime l'ancien fichier de l'image
-    }
+    let sql = ""; //requete sql complete pour mise à jour du post
+    var oldImageSql = ""; //requete pour récupérer l'ancienne image du post
 
     //le post dont on va echapper les ' avec \'
     const newPost = req.body.post;
@@ -212,64 +198,130 @@ exports.modifyPost = (req, res, next) => {
       postSql = "post='" + newPostCorrected + "'";
     }
 
-    //req sql en ft de post et image Url
-    if (newPost) {
-      if (imageUrl) {
-        //sql avec post et image
+    // test image avec le post
+    if (req.file) {
+      console.log("req.file : " + req.file);
+      imageUrl = `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`; // Url de l'image: protocole, nom du host: = server et Url de l'image
 
-        sql =
-          "UPDATE  " +
-          postsTable +
-          "  SET " +
-          postSql +
-          "," +
-          imageSql +
-          " WHERE postId='" +
-          req.params.postId +
-          "';";
-        console.log("sql avec post et image : " + sql);
-      } else {
-        //sql avec post seulement
-        sql =
-          "UPDATE  " +
-          postsTable +
-          "  SET " +
-          postSql +
-          " WHERE postId='" +
-          req.params.postId +
-          "';";
-        console.log("sql avec post : " + sql);
-      }
-    } else {
-      if (imageUrl) {
-        //sql avec image seulement
-        sql =
-          "UPDATE  " +
-          postsTable +
-          "  SET " +
-          imageSql +
-          " WHERE postId='" +
-          req.params.postId +
-          "';";
-        console.log("sql avec image : " + sql);
-      }
-    }
+      //partie requete sql correspondant à l'image
+      imageSql = " imageUrl='" + imageUrl + "'";
 
-    console.log("DEBUG modifyPost sql=  " + sql);
-    connection.query(sql, (err, data, fields) => {
-      if (err) {
-        // Reponse avec code et message d'erreur
-        res.status(400).json({
-          message: "code: " + err.code + " message: " + err.sqlMessage,
+      //recherche ancienne image et la détruit
+
+      try {
+        // req sql pour récupérer l'image du post
+        oldImageSql =
+          "SELECT imageUrl from posts WHERE postId = '" +
+          req.params.postId +
+          "'";
+        console.log("oldImageSql : " + oldImageSql);
+
+        // appel de la requete pour trouver l'image puis destruction
+        connection.query(oldImageSql, (err, data, fields) => {
+          if (err) {
+            // Reponse avec code et message d'erreur
+
+            console.log("erreur" + err);
+          } else {
+            // OK
+
+            //result est un tableau avec 1 seul elt
+            const result = Object.values(JSON.parse(JSON.stringify(data)));
+
+            const obj = result[0];
+
+            //test une image existe et si oui on zigouille
+            if (obj !== undefined) {
+              const imageUrl = obj.imageUrl;
+
+              const filename = imageUrl.split("/images/")[1];
+              console.log("filename = " + filename);
+              // Desctuction de l'image avec une req synchrone
+
+              fs.unlinkSync(`images/${filename}`);
+            }
+
+            // maj requete sql pour modifier le post
+            if (newPost) {
+              //sql avec post et image
+              sql =
+                "UPDATE  " +
+                postsTable +
+                "  SET " +
+                postSql +
+                "," +
+                imageSql +
+                " WHERE postId='" +
+                req.params.postId +
+                "';";
+              console.log("sql avec post et image : " + sql);
+            } else {
+              // sql avec image seulement
+              sql =
+                "UPDATE  " +
+                postsTable +
+                "  SET " +
+                imageSql +
+                " WHERE postId='" +
+                req.params.postId +
+                "';";
+              console.log("sql avec image : " + sql);
+            }
+
+            // modification du post
+            console.log("DEBUG modifyPost sql=  " + sql);
+            connection.query(sql, (err, data, fields) => {
+              if (err) {
+                // Reponse avec code et message d'erreur
+                res.status(400).json({
+                  message: "code: " + err.code + " message: " + err.sqlMessage,
+                });
+                console.log("erreur" + err);
+              } else {
+                // OK
+                console.log("DEBUG: modifyPost OK");
+
+                res.status(200).json({ message: "Post modifié" });
+              }
+            });
+          } //fin traitement recherche image existante avant modif
         });
-        console.log("erreur" + err);
-      } else {
-        // OK
-        console.log("DEBUG: modifyPost OK");
-
-        res.status(200).json({ message: "Post modifié" });
+      } catch (err) {
+        console.log("erreur: " + err);
       }
-    });
+    } // fin cas nouveau post avec une image
+    else {
+      // cas texte seulement
+
+      //sql avec post seulement
+      sql =
+        "UPDATE  " +
+        postsTable +
+        "  SET " +
+        postSql +
+        " WHERE postId='" +
+        req.params.postId +
+        "';";
+      console.log("sql avec post : " + sql);
+
+      console.log("DEBUG modifyPost sql=  " + sql);
+      connection.query(sql, (err, data, fields) => {
+        if (err) {
+          // Reponse avec code et message d'erreur
+          res.status(400).json({
+            message: "code: " + err.code + " message: " + err.sqlMessage,
+          });
+          console.log("erreur" + err);
+        } else {
+          // OK
+          console.log("DEBUG: modifyPost OK");
+
+          res.status(200).json({ message: "Post modifié" });
+        }
+      });
+    } // fin cas du texte seulement
     //}
   } catch (err) {
     console.log("erreur: " + err);
