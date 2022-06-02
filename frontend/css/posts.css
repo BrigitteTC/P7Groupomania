@@ -240,28 +240,9 @@ Bouton de nav du header
 /***************/
 
 @media (max-width: 991.98px) {
-  .cart__item__content__titlePrice {
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 575.98px) {
-  .cart__item {
-    flex-direction: column;
-    align-items: center;
-  }
-  .cart__item__img {
-    width: 50%;
-  }
-  .cart__item__content {
-    width: 90%;
-  }
-  .cart__item__content__titlePrice {
-    margin-bottom: 20px;
-  }
-  .cart__price p {
-    text-align: center;
-  }
   .post__order {
     justify-content: center;
   }
