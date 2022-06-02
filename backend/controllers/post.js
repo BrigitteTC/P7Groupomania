@@ -324,16 +324,19 @@ function delFile(postId) {
         // fs.unlink(`images/${filename}`, () => { });
 
         //fs.unlinkSync(`images/${filename}`);
+        // fs.unlink(`images/${filename}`, () => {});
         //console.log("ancienne image suprimée");
 
         // delete file named 'sample.txt'
         fs.unlink(`images/${filename}`, function (err) {
-          if (err) throw err;
+          if (err) {
+            console.log("ft delFile error :" + err);
+            throw err;
+          }
           // si pas d'erreur "ancienne image suprimée"
           console.log("ancienne image suprimée");
+          //res.status(200).json({ message: "ancienne image suprimée" });
         });
-
-        res.status(200).json({ message: "ancienne image suprimée" });
       }
     });
   } catch (err) {
