@@ -1,0 +1,2 @@
+#fichier utilisé pour garder le fichier images présent dans gitHub
+sans garder les images.

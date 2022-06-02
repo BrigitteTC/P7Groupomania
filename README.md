@@ -2,17 +2,49 @@
 
 Projet P7 Openclassroom Groupomania
 
+Ce projet est basé sur une base de données relationnelles mySQL.
+
+Pour le faire fonctionner, il faut:
+
+- créer et mettre à jour le fichier des variables d'environnement .env
+- Créer la base de données avec les tables utiles au projet
+- lancer le projet sur le frontend
+- lancer le projet sur le backend
+
 ---
 
-Backend avec base de données mySQL.
+Pour lancer le projet:
+
+Depuis le frontend:
+dans P7Groupomania/frontend/index.html
+Cliquer sur index.html
+
+Depuis le backend:
+dans P7Groupomania/backend:
+ouvrir une invide de commande cmd
+exécuter : nodemon server
+
+---
 
 Variables d'environnement:
+
+Il faut mettre à jour les variables d'environnement dans le fichier .env
+
 Fichier .env situé dans\P7Groupomania\backend pour mettre les variables d'environnement
 relatives à la base de données MySQL et à la clé secrete du hash du passwd.
 
+exemple dans .env--exemple
+
+---
+
+MYSQL:
+
+Backend avec base de données mySQL.
+
 Tables de mySQL:
 
-Creation de la base de données:
+Creation de la base de données et ses tables avec les commandes ci dessous:
+
 CREATE DATABASE groupomania;
 
 CREATE TABLE users (
