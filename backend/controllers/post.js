@@ -291,7 +291,7 @@ Algo:
   Calcule le chemin du fichier
   Supprime le fichier de l'image
 
-  Utilisation de fs.unlink(path, callback)
+  Utilisation de fs.unlinkSync(path)
 ---------------------------------------------------------*/
 
 function delFile(postId) {
@@ -315,13 +315,16 @@ function delFile(postId) {
 
         const obj = result[0];
 
-        const imageUrl = obj.imageUrl;
-        console.log("old image = " + imageUrl);
-        const filename = imageUrl.split("/images/")[1];
-        console.log("filename = " + filename);
-        // fs.unlink(`images/${filename}`, () => { });
+        //test une image existe et si oui on zigouille
+        if (obj !== undefined) {
+          const imageUrl = obj.imageUrl;
 
-        fs.unlinkSync(`images/${filename}`);
+          const filename = imageUrl.split("/images/")[1];
+          console.log("filename = " + filename);
+          // Desctuction de l'image avec une req synchrone
+
+          fs.unlinkSync(`images/${filename}`);
+        }
       }
     });
   } catch (err) {
@@ -365,6 +368,9 @@ exports.deletePost = (req, res, next) => {
       } else {
         // OK
         console.log("DEBUG: deletepost OK");
+
+        // on detruit l'image dans le fichier image
+        delFile(req.params.postId); //On supprime l'ancien fichier de l'image
 
         res.status(200).json({ message: "post zigouillé" });
       }
