@@ -34,6 +34,7 @@ Bouton de nav du header
   flex-direction: column;
   margin: none;
   padding: none;
+  cursor: pointer;
 }
 /************/
 /*PostsItems*/
