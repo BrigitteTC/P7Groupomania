@@ -465,7 +465,7 @@ exports.getAllPost = (req, res, next) => {
     DATE_FORMAT(postDate,'%d/%m/%Y')AS date permet d'avoir la date formatée format français
 */
     sql =
-      "SELECT *,DATE_FORMAT(postDate,'%d/%m/%Y')AS date FROM  " +
+      "SELECT *,DATE_FORMAT(postDate,'%d/%m/%Y  %H:%i:%S')AS date FROM  " +
       postsTable +
       " LEFT OUTER JOIN " +
       usersTable +

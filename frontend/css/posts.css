@@ -182,7 +182,7 @@ Bouton de nav du header
   flex-direction: column;
   width: 50%;
   justify-content: space-around;
-  border: 3px solid red;
+  /*border: 3px solid red;*/
   padding-top: 35px;
   margin-bottom: 30px;
 }
