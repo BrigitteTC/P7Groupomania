@@ -308,7 +308,7 @@
                           <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
                           <div>
                             <template
-                              v-if="connectedModerator || connectedUserId==itemPost.userId"
+                              v-if="connectedModerator || connectedUserId===itemPost.userId"
                             >
                               <button @click="deletePost(itemPost.postId)">
                                 <span class="fas fa-trash"> Delete</span>
@@ -742,7 +742,7 @@
           //---------------------------------------------------------------------------------
           validateCreationPost() {
             try {
-              if (this.newPost == "") {
+              if (this.newPost === "") {
                 //post vide
                 window.alert("rentrez un post non vide");
               } else {
@@ -986,7 +986,7 @@
                       this.comments = response; //les commentaires renvoyés de l'API
                       this.nbComments = this.comments.comment.length;
                       console.log("nombre de commentaires: " + this.nbComments);
-                      if (this.nbComments == 0) {
+                      if (this.nbComments === 0) {
                         window.alert("pas de commentaires pour ce post");
                       }
                     })
@@ -1149,7 +1149,7 @@
           //---------------------------------------------------------------------------------
           validateCreationComment(postId) {
             try {
-              if (this.newComment == "") {
+              if (this.newComment === "") {
                 //verif champ non vide
                 window.alert("rentrez un commentaire non vide");
               } else {
@@ -1255,7 +1255,7 @@
 
           validateModifyComment(postId, commentId) {
             try {
-              if (this.newComment == "") {
+              if (this.newComment === "") {
                 //verif champ non vide
                 window.alert("rentrez un commentaire non vide");
               } else {
