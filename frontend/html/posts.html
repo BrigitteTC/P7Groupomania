@@ -428,7 +428,9 @@
                           class="comment"
                         >
                           <!-- Affichage des commentaires seulement pour le post selectionné -->
-                          <template v-if="itemPost.postId===itemComment.postId">
+                          <template
+                            v-if="itemPost.postId===itemComment.postId && displaycommentForm === itemPost.postId"
+                          >
                             <div class="flexColumns">
                               <div class="commentList">
                                 <div class="commentItem">
@@ -585,12 +587,14 @@
             loading: false,
             errored: false,
 
-            // champs du formulaire pour creéation ou modification posts et comments
+            // champs du formulaire pour création ou modification posts et comments
             createPostForm: false, //sera true pour crer un post
             modifyPostForm: "", //sera egal au num du post à modifier pour modifier un post
             newPost: "", //texte du post
 
             images: null, //image du post
+
+            displaycommentForm: "", //sera a true si on affiche les commentaires d'un post
 
             createCommentForm: "", //sera egal au num du post sue lequel on veut creer un commentaire
             modifyCommentForm: "", //sera egal au num du commentaire à modifier
@@ -944,46 +948,53 @@
           //---------------------------------------------------------------------------------
           displayComments(postId) {
             try {
-              // Lecture du local storage
-              // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
-              if ("user" in localStorage) {
-                console.log("displayComments pour : " + postId);
+              if (this.displaycommentForm === postId) {
+                // on replie le formulaire
+                this.displaycommentForm = "";
+              } else {
+                //on affiche les commentaires
+                this.displaycommentForm = postId;
+                // Lecture du local storage
+                // Rien ne sera exécuté si aucun user n'est connecté = local storage vide
+                if ("user" in localStorage) {
+                  console.log("displayComments pour : " + postId);
 
-                // Lecture du local storage pour récupérer le token  du user
-                let userInLocalStorage = JSON.parse(
-                  localStorage.getItem("user")
-                ); //objet "user" du local storage
-                const userToken = userInLocalStorage.token; // le token
+                  // Lecture du local storage pour récupérer le token  du user
+                  let userInLocalStorage = JSON.parse(
+                    localStorage.getItem("user")
+                  ); //objet "user" du local storage
+                  const userToken = userInLocalStorage.token; // le token
 
-                const bearerToken = "Bearer " + userToken;
+                  const bearerToken = "Bearer " + userToken;
 
-                //Url des commentaires du post
-                const commentsUrl =
-                  "http://localhost:3000/api/post/" + postId + "/comment";
+                  //Url des commentaires du post
+                  const commentsUrl =
+                    "http://localhost:3000/api/post/" + postId + "/comment";
 
-                fetch(commentsUrl, {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: bearerToken,
-                  },
-                })
-                  .then((response) => response.json()) //reponse du fetch
-                  .catch((error) => {
-                    console.log("Fetch error: ", error);
+                  fetch(commentsUrl, {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: bearerToken,
+                    },
                   })
-                  .then((response) => {
-                    this.comments = response; //les commentaires renvoyés de l'API
-                    this.nbComments = this.comments.comment.length;
-                    console.log("nombre de commentaires: " + this.nbComments);
-                    if (this.nbComments == 0) {
-                      window.alert("pas de commentaires pour ce post");
-                    }
-                  })
-                  .catch((error) => {
-                    console.log("Response error: ", error);
-                  });
-              } // fin du test "user" in local Storage
+                    .then((response) => response.json()) //reponse du fetch
+                    .catch((error) => {
+                      console.log("Fetch error: ", error);
+                    })
+                    .then((response) => {
+                      this.comments = response; //les commentaires renvoyés de l'API
+                      this.nbComments = this.comments.comment.length;
+                      console.log("nombre de commentaires: " + this.nbComments);
+                      if (this.nbComments == 0) {
+                        window.alert("pas de commentaires pour ce post");
+                      }
+                    })
+                    .catch((error) => {
+                      console.log("Response error: ", error);
+                    });
+                } // fin du test "user" in local Storage
+              }
             } catch (err) {
               //fin du try
               console.log("erreur ft displayComments : " + err);
