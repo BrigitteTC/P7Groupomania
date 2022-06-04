@@ -346,19 +346,21 @@
                             </div>
 
                             <!-- Boutons pour valider ou annuler cette modif -->
-                            <div>
-                              <input
-                                @click="validateModifyPost(itemPost.postId)"
-                                type="submit"
-                                value="Valider"
-                              />
-                            </div>
-                            <div>
-                              <input
-                                @click="cancelModifyPost()"
-                                type="submit"
-                                value="Annuler"
-                              />
+                            <div class="flexRows">
+                              <div>
+                                <input
+                                  @click="validateModifyPost(itemPost.postId)"
+                                  type="submit"
+                                  value="Valider"
+                                />
+                              </div>
+                              <div>
+                                <input
+                                  @click="cancelModifyPost()"
+                                  type="submit"
+                                  value="Annuler"
+                                />
+                              </div>
                             </div>
                           </template>
 
