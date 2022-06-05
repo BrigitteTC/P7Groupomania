@@ -45,10 +45,11 @@
                 alt="Logo de l'entreprise"
               />
             </a>
+            <!-- Boutons nav avec signup et login -->
             <nav>
               <ul>
                 <li>
-                  <button v-on:click="signup()">Creation de compte</button>
+                  <button v-on:click="signup()">Création de compte</button>
                 </li>
                 <li><button v-on:click="login()">Connexion</button></li>
               </ul>
@@ -56,7 +57,7 @@
           </div>
         </div>
         <!-- Affichage des menus login ou signup -->
-        <section class="items limitedWidthBlockContainer" id="items">
+        <section class="limitedWidthBlockContainer items" id="items">
           <div v-if="loginForm| signupForm " class="login">
             <form method="get" class="login__form">
               <div class="login__form__question">
