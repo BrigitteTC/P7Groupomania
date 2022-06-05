@@ -61,8 +61,6 @@
 
             <!-- Boutons nav pour gérer la deconnexion et la maj profil -->
             <nav>
-              <!-- Boutons de navigation -->
-
               <!-- Cas du user connecté on affiche les boutons profil et logout -->
               <template v-if="isUserConnected">
                 <ul>
@@ -81,87 +79,86 @@
                   <li><button v-on:click="logout()">Accueil</button></li>
                 </ul>
               </template>
-
-              <!--Fin boutons de navigation    -->
-
-              <!-- Debut formulaire de modif profil -->
-              <template v-if="profilForm">
-                <div>
-                  <!-- Affichage du profil en cours -->
-                  <div>
-                    <h2>Mon profil</h2>
-                    <p>email: {{connectedEmail}}</p>
-                    <p>pseudo : {{connectedName}}</p>
-                  </div>
-                  <div class="profilMenu">
-                    <ul class="pucesItems">
-                      <!-- Affichage du menu de modif du profil-->
-                      <!-- Menu avec 4 choix -->
-                      <!-- sera caché quand on aura fait le choix -->
-                      <li @click="modifyEmailProfil()">Modification email</li>
-                      <li @click="modifyPasswdProfil()">Modification passwd</li>
-                      <li @click="modifyPseudoProfil()">Modification pseudo</li>
-                      <li @click="deleteProfil()">Suppression du compte</li>
-                    </ul>
-                  </div>
-                </div>
-              </template>
-              <!-- Fin affichage choix de modif du profil (modif ou suppression)-->
-
-              <!-- Modify profil  Champ pour saisir la nouvelle valeur cas du modify-->
-              <div v-if="modifyProfil">
-                <label for="newValue"
-                  >Modification {{valueToModify}} Nouvelle valeur</label
-                >
-                <input type="text" v-model="newValue" id="newValue" />
-
-                <div v-if="displayOkCancel" class="flexRows">
-                  <!-- Boutons pour valider ou annuler la modif -->
-                  <div>
-                    <input
-                      @click="validateModifyProfil()"
-                      type="submit"
-                      value="Valider"
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      @click="cancelModifyProfil()"
-                      type="submit"
-                      value="Annuler"
-                    />
-                  </div>
-                </div>
-                <!-- Fin des boutons valid/cancel -->
-              </div>
-              <!-- Fin partie modify profil-->
-
-              <!-- partie suppression du compte -->
-              <div v-if="deleteUser" class="flexColons">
-                <h3>Delete compte de {{connectedName}}</h3>
-                <div class="flexRows">
-                  <div>
-                    <input
-                      @click="validateDeleteProfil()"
-                      type="submit"
-                      value="Valider suppression du compte"
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      @click="cancelDeleteProfil()"
-                      type="submit"
-                      value="Annuler suppression du compte"
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- Fin  suppression du compte -->
-
-              <!-- -->
             </nav>
+            <!--Fin boutons de navigation    -->
+
+            <!-- Debut formulaire de modif profil -->
+            <template v-if="profilForm">
+              <div>
+                <!-- Affichage du profil en cours -->
+                <div>
+                  <h2>Mon profil</h2>
+                  <p>email: {{connectedEmail}}</p>
+                  <p>pseudo : {{connectedName}}</p>
+                </div>
+                <div class="profilMenu">
+                  <ul class="pucesItems">
+                    <!-- Affichage du menu de modif du profil-->
+                    <!-- Menu avec 4 choix -->
+                    <!-- sera caché quand on aura fait le choix -->
+                    <li @click="modifyEmailProfil()">Modification email</li>
+                    <li @click="modifyPasswdProfil()">Modification passwd</li>
+                    <li @click="modifyPseudoProfil()">Modification pseudo</li>
+                    <li @click="deleteProfil()">Suppression du compte</li>
+                  </ul>
+                </div>
+              </div>
+            </template>
+            <!-- Fin affichage choix de modif du profil (modif ou suppression)-->
+
+            <!-- Modify profil  Champ pour saisir la nouvelle valeur cas du modify-->
+            <div v-if="modifyProfil">
+              <label for="newValue"
+                >Modification {{valueToModify}} Nouvelle valeur</label
+              >
+              <input type="text" v-model="newValue" id="newValue" />
+
+              <div v-if="displayOkCancel" class="flexRows">
+                <!-- Boutons pour valider ou annuler la modif -->
+                <div>
+                  <input
+                    @click="validateModifyProfil()"
+                    type="submit"
+                    value="Valider"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    @click="cancelModifyProfil()"
+                    type="submit"
+                    value="Annuler"
+                  />
+                </div>
+              </div>
+              <!-- Fin des boutons valid/cancel -->
+            </div>
+            <!-- Fin partie modify profil-->
+
+            <!-- partie suppression du compte -->
+            <div v-if="deleteUser" class="flexColons">
+              <h3>Delete compte de {{connectedName}}</h3>
+              <div class="flexRows">
+                <div>
+                  <input
+                    @click="validateDeleteProfil()"
+                    type="submit"
+                    value="Valider suppression du compte"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    @click="cancelDeleteProfil()"
+                    type="submit"
+                    value="Annuler suppression du compte"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Fin  suppression du compte -->
+
+            <!-- -->
 
             <!-- Fin  nav avec boutons accueil ou profil/logout-->
           </div>
