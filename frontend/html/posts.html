@@ -377,8 +377,8 @@
                               v-if="createCommentForm===itemPost.postId"
                             >
                               <!-- Affichage du formulaire de creation du commentaire -->
-                              <div class="flexColumns">
-                                <div class="flexColumns">
+                              <form method="post" class="post__order__form">
+                                <div class="post__order__form__question">
                                   <label for="newComment"
                                     >Votre commentaire</label
                                   >
@@ -388,7 +388,7 @@
                                     maxlength="200"
                                   />
                                 </div>
-                                <div class="flexRows">
+                                <div class="post__order__form__submit">
                                   <!-- Boutons pour valider ou annuler cette modif -->
                                   <div>
                                     <input
@@ -405,7 +405,7 @@
                                     />
                                   </div>
                                 </div>
-                              </div>
+                              </form>
                             </template>
                           </div>
 
