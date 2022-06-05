@@ -59,7 +59,7 @@
         <!-- Affichage des menus login ou signup -->
         <section class="limitedWidthBlockContainer items" id="items">
           <div v-if="loginForm| signupForm " class="login">
-            <form method="get" class="login__form">
+            <form method="post" class="login__form">
               <div class="login__form__question">
                 <label for="email">Email: </label>
                 <input type="email" v-model="email" id="email" required />
