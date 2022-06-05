@@ -218,25 +218,25 @@
                     ref="file"
                   />
                 </div>
-              </form>
 
-              <!-- Boutons pour valider ou annuler cette creation -->
-              <div class="flexRows">
-                <div class="post__order__form__submit">
-                  <input
-                    @click="validateCreationPost()"
-                    type="submit"
-                    value="Valider"
-                  />
+                <!-- Boutons pour valider ou annuler cette creation -->
+                <div class="flexRows">
+                  <div class="post__order__form__submit">
+                    <input
+                      @click="validateCreationPost()"
+                      type="submit"
+                      value="Valider"
+                    />
+                  </div>
+                  <div class="post__order__form__submit">
+                    <input
+                      @click="cancelCreationPost()"
+                      type="submit"
+                      value="Annuler"
+                    />
+                  </div>
                 </div>
-                <div class="post__order__form__submit">
-                  <input
-                    @click="cancelCreationPost()"
-                    type="submit"
-                    value="Annuler"
-                  />
-                </div>
-              </div>
+              </form>
             </template>
             <!-- Fin formulaire de creation du post -->
           </div>
