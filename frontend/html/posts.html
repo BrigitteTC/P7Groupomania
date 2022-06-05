@@ -159,8 +159,6 @@
             <!-- Fin  suppression du compte -->
 
             <!-- -->
-
-            <!-- Fin  nav avec boutons accueil ou profil/logout-->
           </div>
           <!-- Fin du bloc avec les boutons de navigation -->
         </div>
@@ -171,232 +169,183 @@
       <!-- ******************************************************************************** -->
 
       <!-- <main> -->
-      <main>
-        <h1>les posts des salariés de Groupomania</h1>
-        <template v-if="!isUserConnected">
-          <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
-          <h2>Vous n'êtes pas connecté</h2>
-          <h2>Retournez sur la page accueil</h2>
-          <h2>pour vous connecter</h2>
-        </template>
+      <main class="limitedWidthBlockContainer">
+        <div class="limitedWidthBlock">
+          <h1>les posts des salariés de Groupomania</h1>
+          <template v-if="!isUserConnected">
+            <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
+            <h2>Vous n'êtes pas connecté</h2>
+            <h2>Retournez sur la page accueil</h2>
+            <h2>pour vous connecter</h2>
+          </template>
 
-        <template v-else>
-          <!-- Affichage entete pour les users connectés -->
-          <div class="postHeader">
-            <h3>Bonjour {{connectedName}}</h3>
-            <template v-if="connectedModerator">
-              <h3>Vous êtes moderateur</h3>
-            </template>
-            <div class="post__order__form__submit">
-              <!-- Bouton pour créer un post -->
+          <template v-else>
+            <!-- Affichage entete pour les users connectés -->
+            <div class="postHeader">
+              <h3>Bonjour {{connectedName}}</h3>
+              <template v-if="connectedModerator">
+                <h3>Vous êtes moderateur</h3>
+              </template>
+              <div class="post__order__form__submit">
+                <!-- Bouton pour créer un post -->
 
-              <input
-                @click="createPost()"
-                type="submit"
-                value="Créer un post"
-              />
+                <input
+                  @click="createPost()"
+                  type="submit"
+                  value="Créer un post"
+                />
+              </div>
+
+              <!-- Debut formulaire de creation du post -->
+              <template v-if="createPostForm">
+                <!-- Affichage du formulaire de creation du post -->
+                <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+                <form method="post" class="post__order__form">
+                  <div class="post__order__form__question">
+                    <label for="newPost">Votre nouveau post : </label>
+                    <input type="text" v-model="newPost" required />
+                  </div>
+                  <div class="post__order__form__question">
+                    <label for="newFile"
+                      >Vous pouvez ajouter une image :
+                    </label>
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      @change="uploadFile()"
+                      ref="file"
+                    />
+                  </div>
+
+                  <!-- Boutons pour valider ou annuler cette creation -->
+                  <div class="flexRows">
+                    <div class="post__order__form__submit">
+                      <input
+                        @click="validateCreationPost()"
+                        type="submit"
+                        value="Valider"
+                      />
+                    </div>
+                    <div class="post__order__form__submit">
+                      <input
+                        @click="cancelCreationPost()"
+                        type="submit"
+                        value="Annuler"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </template>
+              <!-- Fin formulaire de creation du post -->
             </div>
+            <!-- Fin affichage entête des connectés -->
 
-            <!-- Debut formulaire de creation du post -->
-            <template v-if="createPostForm">
-              <!-- Affichage du formulaire de creation du post -->
-              <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-              <form method="post" class="post__order__form">
-                <div class="post__order__form__question">
-                  <label for="newPost">Votre nouveau post : </label>
-                  <input type="text" v-model="newPost" required />
-                </div>
-                <div class="post__order__form__question">
-                  <label for="newFile">Vous pouvez ajouter une image : </label>
-                  <input
-                    type="file"
-                    accept=".jpg,.jpeg,.png"
-                    @change="uploadFile()"
-                    ref="file"
-                  />
-                </div>
+            <!-- ********************************************************************** -->
 
-                <!-- Boutons pour valider ou annuler cette creation -->
-                <div class="flexRows">
-                  <div class="post__order__form__submit">
-                    <input
-                      @click="validateCreationPost()"
-                      type="submit"
-                      value="Valider"
-                    />
-                  </div>
-                  <div class="post__order__form__submit">
-                    <input
-                      @click="cancelCreationPost()"
-                      type="submit"
-                      value="Annuler"
-                    />
-                  </div>
-                </div>
-              </form>
-            </template>
-            <!-- Fin formulaire de creation du post -->
-          </div>
-          <!-- Fin affichage entête des connectés -->
+            <!-- Partie affichage des posts -->
+            <div>
+              <!-- cas serveur indisponible -->
+              <template v-if="errored">
+                <h3>Serveur indisponible</h3>
+              </template>
 
-          <!-- ********************************************************************** -->
-
-          <!-- Partie affichage des posts -->
-          <div>
-            <!-- cas serveur indisponible -->
-            <template v-if="errored">
-              <h3>Serveur indisponible</h3>
-            </template>
-
-            <!-- Affichage des posts -->
-            <template v-else>
-              <h4 v-if="loading">Loading... dernières nouvelles</h4>
-              <h4 v-else>Dernières nouvelles</h4>
-              <div class="postsList">
-                <div
-                  v-for="itemPost in posts.posts"
-                  :key="itemPost.postId"
-                  class="post"
-                >
-                  <article class="postArticle">
-                    <div class="postItem">
-                      <!-- Affichage de l'image -->
-                      <div class="postImage" v-if="itemPost.imageUrl">
-                        <img :src="itemPost.imageUrl" alt="image du post " />
-                      </div>
-                      <!-- Affichage du texte du post -->
-                      <div class="postText">
-                        <div v-if="modifyPostForm===itemPost.postId">
-                          <p v-if="newPost">
-                            post n° {{itemPost.postId}} : {{newPost}}
-                          </p>
-                          <p v-else>
-                            post n° {{itemPost.postId}} : {{itemPost.post}}
-                          </p>
+              <!-- Affichage des posts -->
+              <template v-else>
+                <h4 v-if="loading">Loading... dernières nouvelles</h4>
+                <h4 v-else>Dernières nouvelles</h4>
+                <div class="postsList">
+                  <div
+                    v-for="itemPost in posts.posts"
+                    :key="itemPost.postId"
+                    class="post"
+                  >
+                    <article class="postArticle">
+                      <div class="postItem">
+                        <!-- Affichage de l'image -->
+                        <div class="postImage" v-if="itemPost.imageUrl">
+                          <img :src="itemPost.imageUrl" alt="image du post " />
                         </div>
-                        <div v-else>
-                          <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
+                        <!-- Affichage du texte du post -->
+                        <div class="postText">
+                          <div v-if="modifyPostForm===itemPost.postId">
+                            <p v-if="newPost">
+                              post n° {{itemPost.postId}} : {{newPost}}
+                            </p>
+                            <p v-else>
+                              post n° {{itemPost.postId}} : {{itemPost.post}}
+                            </p>
+                          </div>
+                          <div v-else>
+                            <p>
+                              post n° {{itemPost.postId}} : {{itemPost.post}}
+                            </p>
+                          </div>
                         </div>
-                      </div>
 
-                      <!-- fin Affichage du texte du post -->
-                      <div class="postInfos">
-                        <!-- Affichage auteur et date du post -->
-                        <div class="postHeader">
-                          <div class="postDate">
-                            <p>Date: {{itemPost.date}}</p>
-                          </div>
-                          <div class="postOwner">
-                            <p>par: {{itemPost.pseudo}}</p>
-                          </div>
+                        <!-- fin Affichage du texte du post -->
+                        <div class="postInfos">
+                          <!-- Affichage auteur et date du post -->
+                          <div class="postHeader">
+                            <div class="postDate">
+                              <p>Date: {{itemPost.date}}</p>
+                            </div>
+                            <div class="postOwner">
+                              <p>par: {{itemPost.pseudo}}</p>
+                            </div>
 
-                          <!-- La petite poubelle pour detruire le post -->
-                          <!-- et le petit crayon pour le modifier -->
-                          <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
-                          <div>
-                            <template
-                              v-if="connectedModerator || connectedUserId===itemPost.userId"
-                            >
-                              <button @click="deletePost(itemPost.postId)">
-                                <span class="fas fa-trash"> Delete</span>
-                              </button>
-                              <button @click="modifyPost(itemPost.postId)">
-                                <span class="fas fa-pen"> Modify</span>
-                              </button>
-                            </template>
-                          </div>
+                            <!-- La petite poubelle pour detruire le post -->
+                            <!-- et le petit crayon pour le modifier -->
+                            <!-- Affichés seulement pour le moderateur ou proprietaire du post -->
+                            <div>
+                              <template
+                                v-if="connectedModerator || connectedUserId===itemPost.userId"
+                              >
+                                <button @click="deletePost(itemPost.postId)">
+                                  <span class="fas fa-trash"> Delete</span>
+                                </button>
+                                <button @click="modifyPost(itemPost.postId)">
+                                  <span class="fas fa-pen"> Modify</span>
+                                </button>
+                              </template>
+                            </div>
 
-                          <!-- Formulaire pour modifier le post -->
-                          <template v-if="modifyPostForm===itemPost.postId">
-                            <!-- Affichage du formulaire de modif du post -->
-                            <!-- :placeholder="itemPost.post"   placeholder supprimé-->
-                            <form method="post" class="post__order__form">
-                              <!-- Texte -->
-                              <label for="newPost">Votre nouveau post</label>
-                              <input
-                                class="post__order__form__question"
-                                type="textarea"
-                                v-model="newPost"
-                              />
-                              <!-- Nouvelle image -->
-                              <div class="post__order__form__question">
-                                <label for="newFile"
-                                  >Vous pouvez ajouter une image :
-                                </label>
-                                <input
-                                  type="file"
-                                  accept=".jpg,.jpeg,.png"
-                                  @change="uploadFileModif()"
-                                  ref="file"
-                                />
-                              </div>
-
-                              <!-- Boutons pour valider ou annuler cette modif -->
-                              <div class="flexRows">
-                                <div>
-                                  <input
-                                    @click="validateModifyPost(itemPost.postId)"
-                                    type="submit"
-                                    value="Valider"
-                                  />
-                                </div>
-                                <div>
-                                  <input
-                                    @click="cancelModifyPost()"
-                                    type="submit"
-                                    value="Annuler"
-                                  />
-                                </div>
-                              </div>
-                            </form>
-                          </template>
-
-                          <!-- Fin du formulaire pour modifier le post -->
-                        </div>
-                        <!-- Boutons pour afficher ou ajouter les commentaires. -->
-                        <div class="commentButtonsHeader">
-                          <input
-                            @click="displayComments(itemPost.postId)"
-                            value="Afficher les commentaires"
-                            type="submit"
-                          />
-
-                          <div class="flexColumns">
-                            <input
-                              @click="createComment(itemPost.postId)"
-                              value="Ajouter un commentaire"
-                              type="submit"
-                            />
-
-                            <!-- Formulaire pour Ajouter un commentaire -->
-
-                            <template
-                              v-if="createCommentForm===itemPost.postId"
-                            >
-                              <!-- Affichage du formulaire de creation du commentaire -->
+                            <!-- Formulaire pour modifier le post -->
+                            <template v-if="modifyPostForm===itemPost.postId">
+                              <!-- Affichage du formulaire de modif du post -->
+                              <!-- :placeholder="itemPost.post"   placeholder supprimé-->
                               <form method="post" class="post__order__form">
+                                <!-- Texte -->
+                                <label for="newPost">Votre nouveau post</label>
+                                <input
+                                  class="post__order__form__question"
+                                  type="textarea"
+                                  v-model="newPost"
+                                />
+                                <!-- Nouvelle image -->
                                 <div class="post__order__form__question">
-                                  <label for="newComment"
-                                    >Votre commentaire</label
-                                  >
+                                  <label for="newFile"
+                                    >Vous pouvez ajouter une image :
+                                  </label>
                                   <input
-                                    type="text"
-                                    v-model="newComment"
-                                    maxlength="200"
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png"
+                                    @change="uploadFileModif()"
+                                    ref="file"
                                   />
                                 </div>
-                                <div class="post__order__form__submit">
-                                  <!-- Boutons pour valider ou annuler cette modif -->
+
+                                <!-- Boutons pour valider ou annuler cette modif -->
+                                <div class="flexRows">
                                   <div>
                                     <input
-                                      @click="validateCreationComment(itemPost.postId)"
+                                      @click="validateModifyPost(itemPost.postId)"
                                       type="submit"
                                       value="Valider"
                                     />
                                   </div>
                                   <div>
                                     <input
-                                      @click="cancelCreationComment()"
+                                      @click="cancelModifyPost()"
                                       type="submit"
                                       value="Annuler"
                                     />
@@ -404,123 +353,180 @@
                                 </div>
                               </form>
                             </template>
+
+                            <!-- Fin du formulaire pour modifier le post -->
+                          </div>
+                          <!-- Boutons pour afficher ou ajouter les commentaires. -->
+                          <div class="commentButtonsHeader">
+                            <input
+                              @click="displayComments(itemPost.postId)"
+                              value="Afficher les commentaires"
+                              type="submit"
+                            />
+
+                            <div class="flexColumns">
+                              <input
+                                @click="createComment(itemPost.postId)"
+                                value="Ajouter un commentaire"
+                                type="submit"
+                              />
+
+                              <!-- Formulaire pour Ajouter un commentaire -->
+
+                              <template
+                                v-if="createCommentForm===itemPost.postId"
+                              >
+                                <!-- Affichage du formulaire de creation du commentaire -->
+                                <form method="post" class="post__order__form">
+                                  <div class="post__order__form__question">
+                                    <label for="newComment"
+                                      >Votre commentaire</label
+                                    >
+                                    <input
+                                      type="text"
+                                      v-model="newComment"
+                                      maxlength="200"
+                                    />
+                                  </div>
+                                  <div class="post__order__form__submit">
+                                    <!-- Boutons pour valider ou annuler cette modif -->
+                                    <div>
+                                      <input
+                                        @click="validateCreationComment(itemPost.postId)"
+                                        type="submit"
+                                        value="Valider"
+                                      />
+                                    </div>
+                                    <div>
+                                      <input
+                                        @click="cancelCreationComment()"
+                                        type="submit"
+                                        value="Annuler"
+                                      />
+                                    </div>
+                                  </div>
+                                </form>
+                              </template>
+                            </div>
+
+                            <!-- Fin formulaire ajout d'un commentaire -->
                           </div>
 
-                          <!-- Fin formulaire ajout d'un commentaire -->
-                        </div>
+                          <!-- Partie affichage des commentaires du post -->
 
-                        <!-- Partie affichage des commentaires du post -->
-
-                        <template
-                          v-for="itemComment in comments.comment"
-                          :key="itemComment.commentId"
-                          class="comment"
-                        >
-                          <!-- Affichage des commentaires seulement pour le post selectionné -->
                           <template
-                            v-if="itemPost.postId===itemComment.postId && displaycommentForm === itemPost.postId"
+                            v-for="itemComment in comments.comment"
+                            :key="itemComment.commentId"
+                            class="comment"
                           >
-                            <div class="flexColumns">
-                              <div class="commentList">
-                                <div class="commentItem">
-                                  <div class="commentHeader">
-                                    <!-- Affichage du commentaire -->
-                                    <p>
-                                      Date: {{itemComment.date}} par
-                                      {{itemComment.pseudo}}
-                                    </p>
-                                    <!-- Affichage du commentaire en cours de modif -->
-                                    <div
-                                      v-if="newComment && modifyCommentForm===itemComment.commentId"
-                                    >
-                                      <p>{{newComment}}</p>
-                                    </div>
-                                    <div v-else>
-                                      <p>{{itemComment.comment}}</p>
-                                    </div>
-                                  </div>
-                                  <div class="commentButtons">
-                                    <template
-                                      v-if="connectedModerator || connectedUserId==itemComment.userId"
-                                    >
-                                      <button
-                                        @click="deleteComment(itemPost.postId,itemComment.commentId)"
+                            <!-- Affichage des commentaires seulement pour le post selectionné -->
+                            <template
+                              v-if="itemPost.postId===itemComment.postId && displaycommentForm === itemPost.postId"
+                            >
+                              <div class="flexColumns">
+                                <div class="commentList">
+                                  <div class="commentItem">
+                                    <div class="commentHeader">
+                                      <!-- Affichage du commentaire -->
+                                      <p>
+                                        Date: {{itemComment.date}} par
+                                        {{itemComment.pseudo}}
+                                      </p>
+                                      <!-- Affichage du commentaire en cours de modif -->
+                                      <div
+                                        v-if="newComment && modifyCommentForm===itemComment.commentId"
                                       >
-                                        <span class="fas fa-trash">
-                                          Delete</span
-                                        >
-                                      </button>
-                                      <button
-                                        @click="modifyComment(itemComment.commentId)"
-                                      >
-                                        <span class="fas fa-pen"> Modify</span>
-                                      </button>
-                                    </template>
-
-                                    <!-- Formulaire pour modifier le commentaire -->
-                                    <template
-                                      v-if="modifyCommentForm===itemComment.commentId"
-                                    >
-                                      <!-- Affichage du formulaire de modif du comment -->
-                                      <div class="flexColumns">
-                                        <!-- champ pour ecrire le nouveau commentaire -->
-                                        <div class="flexColumns">
-                                          <label for="newComment"
-                                            >Votre nouveau commentaire :
-                                          </label>
-                                          <input
-                                            type="text"
-                                            maxlength="200"
-                                            v-model="newComment"
-                                          />
-                                        </div>
-
-                                        <!-- Boutons pour valider ou annuler cette modif -->
-                                        <div class="flexRows">
-                                          <div>
-                                            <input
-                                              @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
-                                              type="submit"
-                                              value="Valider"
-                                            />
-                                          </div>
-                                          <div>
-                                            <input
-                                              @click="cancelModifyComment()"
-                                              type="submit"
-                                              value="Annuler"
-                                            />
-                                          </div>
-                                        </div>
+                                        <p>{{newComment}}</p>
                                       </div>
-                                    </template>
+                                      <div v-else>
+                                        <p>{{itemComment.comment}}</p>
+                                      </div>
+                                    </div>
+                                    <div class="commentButtons">
+                                      <template
+                                        v-if="connectedModerator || connectedUserId==itemComment.userId"
+                                      >
+                                        <button
+                                          @click="deleteComment(itemPost.postId,itemComment.commentId)"
+                                        >
+                                          <span class="fas fa-trash">
+                                            Delete</span
+                                          >
+                                        </button>
+                                        <button
+                                          @click="modifyComment(itemComment.commentId)"
+                                        >
+                                          <span class="fas fa-pen">
+                                            Modify</span
+                                          >
+                                        </button>
+                                      </template>
 
-                                    <!-- Fin du formulaire pour modifier le commentaire -->
+                                      <!-- Formulaire pour modifier le commentaire -->
+                                      <template
+                                        v-if="modifyCommentForm===itemComment.commentId"
+                                      >
+                                        <!-- Affichage du formulaire de modif du comment -->
+                                        <div class="flexColumns">
+                                          <!-- champ pour ecrire le nouveau commentaire -->
+                                          <div class="flexColumns">
+                                            <label for="newComment"
+                                              >Votre nouveau commentaire :
+                                            </label>
+                                            <input
+                                              type="text"
+                                              maxlength="200"
+                                              v-model="newComment"
+                                            />
+                                          </div>
+
+                                          <!-- Boutons pour valider ou annuler cette modif -->
+                                          <div class="flexRows">
+                                            <div>
+                                              <input
+                                                @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
+                                                type="submit"
+                                                value="Valider"
+                                              />
+                                            </div>
+                                            <div>
+                                              <input
+                                                @click="cancelModifyComment()"
+                                                type="submit"
+                                                value="Annuler"
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </template>
+
+                                      <!-- Fin du formulaire pour modifier le commentaire -->
+                                    </div>
+                                    <!-- Fin partie avec les boutons des commentaires -->
                                   </div>
-                                  <!-- Fin partie avec les boutons des commentaires -->
+                                  <!-- Fin item post -->
                                 </div>
-                                <!-- Fin item post -->
+                                <!-- Fin liste des commentaires du post -->
                               </div>
-                              <!-- Fin liste des commentaires du post -->
-                            </div>
-                            <!-- Fin partie comments avec nombre puis liste  -->
+                              <!-- Fin partie comments avec nombre puis liste  -->
+                            </template>
+                            <!--Fin affichage des commentaires du post selectionné  -->
                           </template>
-                          <!--Fin affichage des commentaires du post selectionné  -->
-                        </template>
-                        <!-- fin de la boucle sur tous les commentaires -->
+                          <!-- fin de la boucle sur tous les commentaires -->
+                        </div>
+                        <!-- Fin partie postinfo : partie utile sous l'entête -->
                       </div>
-                      <!-- Fin partie postinfo : partie utile sous l'entête -->
-                    </div>
-                  </article>
-                  <!-- Fin article avec le post, ses petits commentaires -->
+                    </article>
+                    <!-- Fin article avec le post, ses petits commentaires -->
+                  </div>
                 </div>
-              </div>
-              <!-- Fin liste des posts -->
-            </template>
-            <!-- Fin affichage des posts avec entête puis liste-->
-          </div>
-        </template>
-        <!-- Fin test user connecté ou nom (isUserConnected) -->
+                <!-- Fin liste des posts -->
+              </template>
+              <!-- Fin affichage des posts avec entête puis liste-->
+            </div>
+          </template>
+          <!-- Fin test user connecté ou nom (isUserConnected) -->
+        </div>
       </main>
       <!-- Fin du main -->
 
