@@ -204,7 +204,7 @@
             <template v-if="createPostForm">
               <!-- Affichage du formulaire de creation du post -->
               <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-              <div>
+              <form method="post" class="post__order__form">
                 <div class="post__order__form__question">
                   <label for="newPost">Votre nouveau post : </label>
                   <input type="text" v-model="newPost" required />
@@ -218,7 +218,7 @@
                     ref="file"
                   />
                 </div>
-              </div>
+              </form>
 
               <!-- Boutons pour valider ou annuler cette creation -->
               <div class="flexRows">
@@ -313,7 +313,7 @@
                           <template v-if="modifyPostForm===itemPost.postId">
                             <!-- Affichage du formulaire de modif du post -->
                             <!-- :placeholder="itemPost.post"   placeholder supprimé-->
-                            <div>
+                            <form method="post" class="post__order__form">
                               <!-- Texte -->
                               <label for="newPost">Votre nouveau post</label>
                               <input
@@ -333,7 +333,7 @@
                                   ref="file"
                                 />
                               </div>
-                            </div>
+                            </form>
 
                             <!-- Boutons pour valider ou annuler cette modif -->
                             <div class="flexRows">
