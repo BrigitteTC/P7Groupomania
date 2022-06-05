@@ -1,7 +1,7 @@
 /*********/
 /*GENERAL*/
 /*********/
-
+/*
 main {
   padding-bottom: 90px;
 }
@@ -12,7 +12,7 @@ h1 {
 p {
   color: black;
 }
-
+*/
 /***************************
 Bouton de nav du header
 *****************************/
@@ -138,12 +138,12 @@ Bouton de nav du header
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
-  height: 100px;
-  width: 400px;
+  /*width: 400px;*/
 }
 .post__order__form__question input {
   border-radius: 13px;
   border: 0;
+  /*height: 100px;*/
   height: 100px;
   width: 400px;
 
@@ -250,6 +250,8 @@ Bouton de nav du header
     justify-content: center;
   }
   .post__order__form {
-    width: 75%;
+    width: 100%;
+    margin: 5%;
+    padding: 5%;
   }
 }
