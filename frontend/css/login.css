@@ -72,6 +72,10 @@ h1 {
     justify-content: center;
   }
   .login__form {
-    width: 75%;
+    width: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
   }
 }
