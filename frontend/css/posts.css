@@ -250,6 +250,8 @@ Bouton de nav du header
     justify-content: center;
   }
   .post__order__form {
-    width: 75%;
+    width: 100%;
+    margin: 5%;
+    padding: 5%;
   }
 }
