@@ -173,85 +173,81 @@
 
         <!-- ******************************************************************************** -->
 
-        <div class="limitedWidthBlock">
-          <section>
-            <h1>les posts</h1>
-            <h2>des salariés de Groupomania</h2>
-          </section>
+        <div class="flexColumns">
+          <h1>Le forum <br />des salariés de Groupomania</h1>
+
           <template v-if="!isUserConnected">
-            <section>
-              <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
-              <h2>Vous n'êtes pas connecté</h2>
-              <h2>Retournez sur la page accueil</h2>
-              <h2>pour vous connecter</h2>
-            </section>
+            <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
+            <h2>Vous n'êtes pas connecté</h2>
+            <h2>Retournez sur la page accueil</h2>
+            <h2>pour vous connecter</h2>
           </template>
 
           <template v-else>
             <!-- Affichage entete pour les users connectés -->
-            <div class="postHeader">
-              <section>
+            <div class="flexColumns">
+              <div class="flexColumns">
                 <h3>Bonjour {{connectedName}}</h3>
                 <template v-if="connectedModerator">
                   <h3>Vous êtes moderateur</h3>
                 </template>
-              </section>
+              </div>
 
-              <!-- Section pour la creation d'un post -->
-              <section>
-                <div class="post__order__form__submit">
-                  <!-- Bouton pour créer un post -->
+              <!-- Debut pour la creation d'un post -->
 
-                  <input
-                    @click="createPost()"
-                    type="submit"
-                    value="Créer un post"
-                  />
-                </div>
+              <div class="post__order__form__submit">
+                <!-- Bouton pour créer un post -->
 
-                <!-- Debut formulaire de creation du post -->
-                <template v-if="createPostForm">
-                  <!-- Affichage du formulaire de creation du post -->
-                  <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-                  <form method="post" class="post__order__form">
-                    <div class="post__order__form__question">
-                      <label for="newPost">Votre nouveau post : </label>
-                      <input type="text" v-model="newPost" required />
-                    </div>
-                    <div class="post__order__form__question">
-                      <label for="newFile"
-                        >Vous pouvez ajouter une image :
-                      </label>
+                <input
+                  @click="createPost()"
+                  type="submit"
+                  value="Créer un post"
+                />
+              </div>
+
+              <!-- Debut formulaire de creation du post -->
+              <template v-if="createPostForm">
+                <!-- Affichage du formulaire de creation du post -->
+                <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+                <form method="post" class="post__order__form">
+                  <div class="post__order__form__question">
+                    <label for="newPost">Votre nouveau post : </label>
+                    <input type="text" v-model="newPost" required />
+                  </div>
+                  <div class="post__order__form__question">
+                    <label for="newFile"
+                      >Vous pouvez ajouter une image :
+                    </label>
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      @change="uploadFile()"
+                      ref="file"
+                    />
+                  </div>
+
+                  <!-- Boutons pour valider ou annuler cette creation -->
+                  <div class="flexRows">
+                    <div class="post__order__form__submit">
                       <input
-                        type="file"
-                        accept=".jpg,.jpeg,.png"
-                        @change="uploadFile()"
-                        ref="file"
+                        @click="validateCreationPost()"
+                        type="submit"
+                        value="Valider"
                       />
                     </div>
-
-                    <!-- Boutons pour valider ou annuler cette creation -->
-                    <div class="flexRows">
-                      <div class="post__order__form__submit">
-                        <input
-                          @click="validateCreationPost()"
-                          type="submit"
-                          value="Valider"
-                        />
-                      </div>
-                      <div class="post__order__form__submit">
-                        <input
-                          @click="cancelCreationPost()"
-                          type="submit"
-                          value="Annuler"
-                        />
-                      </div>
+                    <div class="post__order__form__submit">
+                      <input
+                        @click="cancelCreationPost()"
+                        type="submit"
+                        value="Annuler"
+                      />
                     </div>
-                  </form>
-                </template>
-                <!-- Fin formulaire de creation du post -->
-              </section>
-              <!-- fin section création d'un post -->
+                  </div>
+                </form>
+              </template>
+              <!-- Fin formulaire de creation du post -->
+
+              <!-- fin  création d'un post -->
             </div>
             <!-- Fin affichage entête des connectés -->
 
