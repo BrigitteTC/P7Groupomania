@@ -214,22 +214,26 @@
             <template v-if="createPostForm">
               <!-- Affichage du formulaire de creation du post -->
               <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-              <form method="get" class="post__order__form">
+              <form method="get">
                 <div>
                   <div class="post__order__form__question">
-                    <label for="newPost">Votre nouveau post : </label>
-                    <input type="text" v-model="newPost" required />
+                    <div>
+                      <label for="newPost">Votre nouveau post : </label>
+                      <input type="text" v-model="newPost" required />
+                    </div>
                   </div>
                   <div class="post__order__form__question">
-                    <label for="newFile"
-                      >Vous pouvez ajouter une image :
-                    </label>
-                    <input
-                      type="file"
-                      accept=".jpg,.jpeg,.png"
-                      @change="uploadFile()"
-                      ref="file"
-                    />
+                    <div>
+                      <label for="newFile"
+                        >Vous pouvez ajouter une image :
+                      </label>
+                      <input
+                        type="file"
+                        accept=".jpg,.jpeg,.png"
+                        @change="uploadFile()"
+                        ref="file"
+                      />
+                    </div>
                   </div>
                 </div>
               </form>
