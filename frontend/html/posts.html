@@ -174,79 +174,91 @@
         <!-- ******************************************************************************** -->
 
         <div class="limitedWidthBlock">
-          <h1>les posts des salariés de Groupomania</h1>
+          <section>
+            <h1>les posts</h1>
+            <h2>des salariés de Groupomania</h2>
+          </section>
           <template v-if="!isUserConnected">
-            <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
-            <h2>Vous n'êtes pas connecté</h2>
-            <h2>Retournez sur la page accueil</h2>
-            <h2>pour vous connecter</h2>
+            <section>
+              <!-- Cas du user non connecté qui aurait ouvert la page par mégarde -->
+              <h2>Vous n'êtes pas connecté</h2>
+              <h2>Retournez sur la page accueil</h2>
+              <h2>pour vous connecter</h2>
+            </section>
           </template>
 
           <template v-else>
             <!-- Affichage entete pour les users connectés -->
             <div class="postHeader">
-              <h3>Bonjour {{connectedName}}</h3>
-              <template v-if="connectedModerator">
-                <h3>Vous êtes moderateur</h3>
-              </template>
-              <div class="post__order__form__submit">
-                <!-- Bouton pour créer un post -->
+              <section>
+                <h3>Bonjour {{connectedName}}</h3>
+                <template v-if="connectedModerator">
+                  <h3>Vous êtes moderateur</h3>
+                </template>
+              </section>
 
-                <input
-                  @click="createPost()"
-                  type="submit"
-                  value="Créer un post"
-                />
-              </div>
+              <!-- Section pour la creation d'un post -->
+              <section>
+                <div class="post__order__form__submit">
+                  <!-- Bouton pour créer un post -->
 
-              <!-- Debut formulaire de creation du post -->
-              <template v-if="createPostForm">
-                <!-- Affichage du formulaire de creation du post -->
-                <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-                <form method="post" class="post__order__form">
-                  <div class="post__order__form__question">
-                    <label for="newPost">Votre nouveau post : </label>
-                    <input type="text" v-model="newPost" required />
-                  </div>
-                  <div class="post__order__form__question">
-                    <label for="newFile"
-                      >Vous pouvez ajouter une image :
-                    </label>
-                    <input
-                      type="file"
-                      accept=".jpg,.jpeg,.png"
-                      @change="uploadFile()"
-                      ref="file"
-                    />
-                  </div>
+                  <input
+                    @click="createPost()"
+                    type="submit"
+                    value="Créer un post"
+                  />
+                </div>
 
-                  <!-- Boutons pour valider ou annuler cette creation -->
-                  <div class="flexRows">
-                    <div class="post__order__form__submit">
+                <!-- Debut formulaire de creation du post -->
+                <template v-if="createPostForm">
+                  <!-- Affichage du formulaire de creation du post -->
+                  <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+                  <form method="post" class="post__order__form">
+                    <div class="post__order__form__question">
+                      <label for="newPost">Votre nouveau post : </label>
+                      <input type="text" v-model="newPost" required />
+                    </div>
+                    <div class="post__order__form__question">
+                      <label for="newFile"
+                        >Vous pouvez ajouter une image :
+                      </label>
                       <input
-                        @click="validateCreationPost()"
-                        type="submit"
-                        value="Valider"
+                        type="file"
+                        accept=".jpg,.jpeg,.png"
+                        @change="uploadFile()"
+                        ref="file"
                       />
                     </div>
-                    <div class="post__order__form__submit">
-                      <input
-                        @click="cancelCreationPost()"
-                        type="submit"
-                        value="Annuler"
-                      />
+
+                    <!-- Boutons pour valider ou annuler cette creation -->
+                    <div class="flexRows">
+                      <div class="post__order__form__submit">
+                        <input
+                          @click="validateCreationPost()"
+                          type="submit"
+                          value="Valider"
+                        />
+                      </div>
+                      <div class="post__order__form__submit">
+                        <input
+                          @click="cancelCreationPost()"
+                          type="submit"
+                          value="Annuler"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </form>
-              </template>
-              <!-- Fin formulaire de creation du post -->
+                  </form>
+                </template>
+                <!-- Fin formulaire de creation du post -->
+              </section>
+              <!-- fin section création d'un post -->
             </div>
             <!-- Fin affichage entête des connectés -->
 
             <!-- ********************************************************************** -->
 
             <!-- Partie affichage des posts -->
-            <div>
+            <section>
               <!-- cas serveur indisponible -->
               <template v-if="errored">
                 <h3>Serveur indisponible</h3>
@@ -526,7 +538,7 @@
                 <!-- Fin liste des posts -->
               </template>
               <!-- Fin affichage des posts avec entête puis liste-->
-            </div>
+            </section>
           </template>
           <!-- Fin test user connecté ou nom (isUserConnected) -->
         </div>
