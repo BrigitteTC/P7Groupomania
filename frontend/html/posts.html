@@ -209,7 +209,7 @@
               <template v-if="createPostForm">
                 <!-- Affichage du formulaire de creation du post -->
                 <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-                <form method="post" class="post__order__form">
+                <form method="get" class="post__order__form">
                   <div class="post__order__form__question">
                     <label for="newPost">Votre nouveau post : </label>
                     <input type="text" v-model="newPost" required />
@@ -394,7 +394,7 @@
                                       >Votre commentaire</label
                                     >
                                     <input
-                                      type="textarea"
+                                      type="text"
                                       v-model="newComment"
                                       maxlength="200"
                                     />
