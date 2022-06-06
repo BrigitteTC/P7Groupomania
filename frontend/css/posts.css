@@ -24,18 +24,7 @@ Bouton de nav du header
 /***************************
  Menu de profil
 **************************/
-.profilMenu {
-  display: flex;
-  flex-direction: column;
-}
 
-.pucesItems {
-  display: flex;
-  flex-direction: column;
-  margin: none;
-  padding: none;
-  cursor: pointer;
-}
 /************/
 /*PostsItems*/
 /************/

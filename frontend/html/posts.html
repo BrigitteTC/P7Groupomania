@@ -91,17 +91,17 @@
       <!-- <main> -->
       <main class="limitedWidthBlockContainer flexColumns">
         <!-- Section de verif ou modif du profil -->
-        <section class="mainContainer" id="profil">
+        <section class="limitedWidthBlock" id="profil">
           <!-- Debut formulaire de modif profil -->
           <template v-if="profilForm">
-            <div>
+            <div class="profilClass flexColumns">
               <!-- Affichage du profil en cours -->
               <div>
                 <h2>Mon profil</h2>
                 <p>email: {{connectedEmail}}</p>
                 <p>pseudo : {{connectedName}}</p>
               </div>
-              <div class="profilMenu">
+              <div class="flexColumns">
                 <ul class="pucesItems">
                   <!-- Affichage du menu de modif du profil-->
                   <!-- Menu avec 4 choix -->
@@ -118,7 +118,7 @@
           <!-- Fin affichage choix de modif du profil (modif ou suppression)-->
 
           <!-- Modify profil  Champ pour saisir la nouvelle valeur cas du modify-->
-          <div v-if="modifyProfil">
+          <div class="blockCentre" v-if="modifyProfil">
             <label for="newValue"
               >Modification {{valueToModify}} Nouvelle valeur</label
             >

@@ -39,7 +39,7 @@ h1 {
 }
 h2 {
   font-weight: 400;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -148,10 +148,26 @@ main {
   background-color: var(--main-color);
 }
 
-/* Classe pour centrer tous les blocs du main*/
-.mainContainer {
+.profilClass {
   display: flex;
   justify-content: center;
+  margin-top: 85px;
+  margin-bottom: 85px;
+}
+.profilClass p {
+  color: white;
+  text-align: center;
+  /*font-weight: 500;*/
+  /*padding: 30px;*/
+  border-radius: 25px;
+}
+
+.pucesItems {
+  display: flex;
+  flex-direction: column;
+  margin: none;
+  padding: none;
+  cursor: pointer;
 }
 
 /*items*/
