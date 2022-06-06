@@ -394,26 +394,29 @@
                                       >Votre commentaire</label
                                     >
                                     <input
-                                      type="text"
+                                      type="textarea"
                                       v-model="newComment"
                                       maxlength="200"
                                     />
                                   </div>
-                                  <div class="post__order__form__submit">
+                                  <div>
                                     <!-- Boutons pour valider ou annuler cette modif -->
-                                    <div>
-                                      <input
-                                        @click="validateCreationComment(itemPost.postId)"
-                                        type="submit"
-                                        value="Valider"
-                                      />
-                                    </div>
-                                    <div>
-                                      <input
-                                        @click="cancelCreationComment()"
-                                        type="submit"
-                                        value="Annuler"
-                                      />
+                                    <div class="flexRows">
+                                      <div>
+                                        <input
+                                          @click="validateCreationComment(itemPost.postId)"
+                                          type="submit"
+                                          value="Valider"
+                                        />
+                                      </div>
+
+                                      <div>
+                                        <input
+                                          @click="cancelCreationComment()"
+                                          type="submit"
+                                          value="Annuler"
+                                        />
+                                      </div>
                                     </div>
                                   </div>
                                 </form>
