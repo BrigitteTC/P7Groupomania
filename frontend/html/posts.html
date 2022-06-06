@@ -329,29 +329,31 @@
 
                           <!-- Formulaire pour modifier le post -->
                           <template v-if="modifyPostForm===itemPost.postId">
-                            <!-- Affichage du formulaire de modif du post -->
-                            <!-- :placeholder="itemPost.post"   placeholder supprimé-->
-                            <div>
-                              <!-- Texte -->
-                              <label for="newPost">Votre nouveau post</label>
-                              <input
-                                class="post__order__form__question"
-                                type="textarea"
-                                v-model="newPost"
-                              />
-                              <!-- Nouvelle image -->
-                              <div class="post__order__form__question">
-                                <label for="newFile"
-                                  >Vous pouvez ajouter une image :
-                                </label>
+                            <form method="get">
+                              <!-- Affichage du formulaire de modif du post -->
+                              <!-- :placeholder="itemPost.post"   placeholder supprimé-->
+                              <div>
+                                <!-- Texte -->
+                                <label for="newPost">Votre nouveau post</label>
                                 <input
-                                  type="file"
-                                  accept=".jpg,.jpeg,.png"
-                                  @change="uploadFileModif()"
-                                  ref="file"
+                                  class="post__order__form__question"
+                                  type="textarea"
+                                  v-model="newPost"
                                 />
+                                <!-- Nouvelle image -->
+                                <div class="post__order__form__question">
+                                  <label for="newFile"
+                                    >Vous pouvez ajouter une image :
+                                  </label>
+                                  <input
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png"
+                                    @change="uploadFileModif()"
+                                    ref="file"
+                                  />
+                                </div>
                               </div>
-                            </div>
+                            </form>
 
                             <!-- Boutons pour valider ou annuler cette modif -->
                             <div class="flexRows">
@@ -394,36 +396,38 @@
                             <template
                               v-if="createCommentForm===itemPost.postId"
                             >
-                              <!-- Affichage du formulaire de creation du commentaire -->
-                              <div class="flexColumns">
+                              <form method="get">
+                                <!-- Affichage du formulaire de creation du commentaire -->
                                 <div class="flexColumns">
-                                  <label for="newComment"
-                                    >Votre commentaire</label
-                                  >
-                                  <input
-                                    type="text"
-                                    v-model="newComment"
-                                    maxlength="200"
-                                  />
-                                </div>
-                                <div class="flexRows">
-                                  <!-- Boutons pour valider ou annuler cette modif -->
-                                  <div>
+                                  <div class="flexColumns">
+                                    <label for="newComment"
+                                      >Votre commentaire</label
+                                    >
                                     <input
-                                      @click="validateCreationComment(itemPost.postId)"
-                                      type="submit"
-                                      value="Valider"
+                                      type="text"
+                                      v-model="newComment"
+                                      maxlength="200"
                                     />
                                   </div>
-                                  <div>
-                                    <input
-                                      @click="cancelCreationComment()"
-                                      type="submit"
-                                      value="Annuler"
-                                    />
+                                  <div class="flexRows">
+                                    <!-- Boutons pour valider ou annuler cette modif -->
+                                    <div>
+                                      <input
+                                        @click="validateCreationComment(itemPost.postId)"
+                                        type="submit"
+                                        value="Valider"
+                                      />
+                                    </div>
+                                    <div>
+                                      <input
+                                        @click="cancelCreationComment()"
+                                        type="submit"
+                                        value="Annuler"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
+                              </form>
                             </template>
                           </div>
 
@@ -482,38 +486,40 @@
                                     <template
                                       v-if="modifyCommentForm===itemComment.commentId"
                                     >
-                                      <!-- Affichage du formulaire de modif du comment -->
-                                      <div class="flexColumns">
-                                        <!-- champ pour ecrire le nouveau commentaire -->
+                                      <form method="get">
+                                        <!-- Affichage du formulaire de modif du comment -->
                                         <div class="flexColumns">
-                                          <label for="newComment"
-                                            >Votre nouveau commentaire :
-                                          </label>
-                                          <input
-                                            type="text"
-                                            maxlength="200"
-                                            v-model="newComment"
-                                          />
-                                        </div>
+                                          <!-- champ pour ecrire le nouveau commentaire -->
+                                          <div class="flexColumns">
+                                            <label for="newComment"
+                                              >Votre nouveau commentaire :
+                                            </label>
+                                            <input
+                                              type="text"
+                                              maxlength="200"
+                                              v-model="newComment"
+                                            />
+                                          </div>
 
-                                        <!-- Boutons pour valider ou annuler cette modif -->
-                                        <div class="flexRows">
-                                          <div>
-                                            <input
-                                              @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
-                                              type="submit"
-                                              value="Valider"
-                                            />
-                                          </div>
-                                          <div>
-                                            <input
-                                              @click="cancelModifyComment()"
-                                              type="submit"
-                                              value="Annuler"
-                                            />
+                                          <!-- Boutons pour valider ou annuler cette modif -->
+                                          <div class="flexRows">
+                                            <div>
+                                              <input
+                                                @click="validateModifyComment(itemPost.postId,itemComment.commentId)"
+                                                type="submit"
+                                                value="Valider"
+                                              />
+                                            </div>
+                                            <div>
+                                              <input
+                                                @click="cancelModifyComment()"
+                                                type="submit"
+                                                value="Annuler"
+                                              />
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
+                                      </form>
                                     </template>
 
                                     <!-- Fin du formulaire pour modifier le commentaire -->
