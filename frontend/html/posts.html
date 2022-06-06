@@ -24,7 +24,7 @@
     ></script>
 
     <!--Appel Normalize-->
-    <link rel="normalize" href="CSS/normalize.css" />
+    <link rel="normalize" href="../CSS/normalize.css" />
     <link href="../css/style.css" rel="stylesheet" />
     <link href="../css/login.css" rel="stylesheet" />
     <link href="../css/posts.css" rel="stylesheet" />
@@ -89,7 +89,8 @@
       <!-- **************************************************************** -->
 
       <!-- <main> -->
-      <main class="limitedWidthBlockContainer">
+      <main class="limitedWidthBlockContainer flexColumns">
+        <!-- Section de verif ou modif du profil -->
         <section id="profil">
           <!-- Debut formulaire de modif profil -->
           <template v-if="profilForm">
@@ -168,7 +169,7 @@
           </div>
           <!-- Fin  suppression du compte -->
         </section>
-        <!-- -->
+        <!--fin section pour modif du profil -->
 
         <!-- ******************************************************************************** -->
 
