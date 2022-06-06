@@ -67,6 +67,7 @@ Class pour afficher les items a coté ou dessus/dessous
 .flexColumns {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .flexRows {
@@ -145,6 +146,12 @@ Class pour afficher les items a coté ou dessus/dessous
 
 main {
   background-color: var(--main-color);
+}
+
+/* Classe pour centrer tous les blocs du main*/
+.mainContainer {
+  display: flex;
+  justify-content: center;
 }
 
 /*items*/
