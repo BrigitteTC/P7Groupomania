@@ -46,6 +46,10 @@ h2 {
 h3 {
   color: white;
 }
+
+p {
+  font-weight: 100;
+}
 .logo {
   height: 100px;
 }
@@ -168,6 +172,11 @@ main {
   margin: none;
   padding: none;
   cursor: pointer;
+}
+
+.modifProfil {
+  padding: 30px;
+  border-radius: 25px;
 }
 
 /*items*/
