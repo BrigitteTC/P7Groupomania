@@ -213,30 +213,32 @@
             <!-- Debut formulaire de creation du post -->
             <template v-if="createPostForm">
               <!-- Affichage du formulaire de creation du post -->
-              <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
-              <form method="get">
-                <div>
-                  <div class="post__order__form__question">
-                    <div>
-                      <label for="newPost">Votre nouveau post : </label>
-                      <input type="text" v-model="newPost" required />
+              <div class="boxWithMargin">
+                <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
+                <form method="get">
+                  <div>
+                    <div class="post__order__form__question">
+                      <div>
+                        <label for="newPost">Votre nouveau post : </label>
+                        <input type="text" v-model="newPost" required />
+                      </div>
+                    </div>
+                    <div class="post__order__form__question">
+                      <div>
+                        <label for="newFile"
+                          >Vous pouvez ajouter une image :
+                        </label>
+                        <input
+                          type="file"
+                          accept=".jpg,.jpeg,.png"
+                          @change="uploadFile()"
+                          ref="file"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div class="post__order__form__question">
-                    <div>
-                      <label for="newFile"
-                        >Vous pouvez ajouter une image :
-                      </label>
-                      <input
-                        type="file"
-                        accept=".jpg,.jpeg,.png"
-                        @change="uploadFile()"
-                        ref="file"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
 
               <!-- Boutons pour valider ou annuler cette creation -->
               <div class="flexRows">
@@ -332,7 +334,7 @@
                             <form method="get">
                               <!-- Affichage du formulaire de modif du post -->
                               <!-- :placeholder="itemPost.post"   placeholder supprimé-->
-                              <div>
+                              <div class="boxWithMargin">
                                 <!-- Texte -->
                                 <label for="newPost">Votre nouveau post</label>
                                 <input

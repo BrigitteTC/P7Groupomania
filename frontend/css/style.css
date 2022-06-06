@@ -74,6 +74,16 @@ Class pour afficher les items a coté ou dessus/dessous
   flex-direction: rows;
 }
 
+.boxWithMargin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 20px;
+  margin: 20px;
+  border: solid, 2px, black;
+}
+
 /********/
 /*Header*/
 /********/
