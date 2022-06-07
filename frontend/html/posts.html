@@ -336,18 +336,18 @@
                               <!-- :placeholder="itemPost.post"   placeholder supprimé-->
                               <div class="boxWithMargin">
                                 <!-- Texte -->
-                                <label for="newPost">Votre nouveau post</label>
-                                <input
-                                  class="post__order__form__question"
-                                  type="textarea"
-                                  v-model="newPost"
-                                />
+                                <label class="sm-center" for="newPost"
+                                  >Votre nouveau post</label
+                                >
+                                <textarea class="textarea" v-model="newPost">
+                                </textarea>
                                 <!-- Nouvelle image -->
-                                <div class="post__order__form__question">
-                                  <label for="newFile"
+                                <div class="sm-center-inside">
+                                  <label class="sm-center" for="newFile"
                                     >Vous pouvez ajouter une image :
                                   </label>
                                   <input
+                                    class="sm-center"
                                     type="file"
                                     accept=".jpg,.jpeg,.png"
                                     @change="uploadFileModif()"

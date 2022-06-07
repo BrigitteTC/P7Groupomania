@@ -266,6 +266,19 @@ footer .footerSecondary {
 }
 
 @media (max-width: 575.98px) {
+  .sm-center {
+    text-align: center;
+  }
+
+  .sm-center-inside {
+    margin: auto;
+    text-align-last: center;
+  }
+  .textarea {
+    margin: 5px auto;
+    width: 250px;
+    height: 200px;
+  }
   .informations ul {
     flex-direction: column;
     align-items: center;
