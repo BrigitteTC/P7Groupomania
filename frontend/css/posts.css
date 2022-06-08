@@ -18,7 +18,7 @@ Bouton de nav du header
 *****************************/
 .HeaderButton {
   display: flex;
-  flex-direction: rows;
+  flex-direction: row;
 }
 
 /***************************
@@ -32,8 +32,8 @@ Bouton de nav du header
 .pucesItems {
   display: flex;
   flex-direction: column;
-  margin: none;
-  padding: none;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
 }
 /************/
@@ -79,7 +79,7 @@ Bouton de nav du header
   display: flex;
 
   flex-direction: column;
-  align-items: space-around;
+
   justify-content: center;
   border: none;
 
@@ -122,7 +122,7 @@ Bouton de nav du header
 
 .postHeader {
   display: flex;
-  flex-direction: rows;
+  flex-direction: row;
   justify-content: space-around;
   /* border: 1px solid black;*/
 
@@ -203,7 +203,7 @@ Bouton de nav du header
 
 .commentHeader {
   display: flex;
-  flex-direction: column; /* vertical*/
+  flex-direction: row; /* horizontal*/
   justify-content: space-around;
   background: rgb(241, 238, 238);
   font-size: 11px;
@@ -214,7 +214,7 @@ Bouton de nav du header
 
 .commentButton {
   display: flex;
-  flex-direction: rows; /* cote cote*/
+  flex-direction: row; /* cote cote*/
   justify-content: space-around;
   background: grey;
   border: 1px solid black;
@@ -249,6 +249,10 @@ Bouton de nav du header
 }
 
 @media (max-width: 575.98px) {
+  .commentButtonsHeader {
+    display: flex;
+    flex-direction: column;
+  }
   .post__order {
     justify-content: center;
   }

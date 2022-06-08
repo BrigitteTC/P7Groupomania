@@ -461,10 +461,9 @@
                                 <div class="commentItem">
                                   <div class="commentHeader">
                                     <!-- Affichage du commentaire -->
-                                    <p>
-                                      Date: {{itemComment.date}} par
-                                      {{itemComment.pseudo}}
-                                    </p>
+                                    <!-- Date et auteur -->
+                                    <p>Date: {{itemComment.date}}</p>
+                                    <p>par {{itemComment.pseudo}}</p>
                                     <!-- Affichage du commentaire en cours de modif -->
                                     <div
                                       v-if="newComment && modifyCommentForm===itemComment.commentId"
@@ -499,13 +498,16 @@
                                     >
                                       <form method="get">
                                         <!-- Affichage du formulaire de modif du comment -->
-                                        <div class="flexColumns">
+                                        <div class="boxWithMargin">
                                           <!-- champ pour ecrire le nouveau commentaire -->
                                           <div class="flexColumns">
-                                            <label for="newComment"
+                                            <label
+                                              class="sm-center"
+                                              for="newComment"
                                               >Votre nouveau commentaire :
                                             </label>
                                             <textarea
+                                              class="textarea"
                                               maxlength="200"
                                               v-model="newComment"
                                             ></textarea>
