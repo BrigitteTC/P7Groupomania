@@ -67,6 +67,7 @@ Class pour afficher les items a coté ou dessus/dessous
 .flexColumns {
   display: flex;
   flex-direction: column;
+  margin: 20px;
 }
 
 .flexRows {

@@ -83,7 +83,7 @@ Bouton de nav du header
   justify-content: center;
   border: none;
 
-  margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  margin: 20px 20px 20px 20px; /*top right bottom left*/
 }
 
 .postItem {
@@ -126,7 +126,7 @@ Bouton de nav du header
   justify-content: space-around;
   /* border: 1px solid black;*/
 
-  padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  padding: 20px 20px 20px 20px; /*top right bottom left*/
 }
 
 .post__order {
@@ -184,21 +184,21 @@ Bouton de nav du header
 .commentList {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   justify-content: space-around;
   /*border: 3px solid red;*/
-  padding-top: 35px;
-  margin-bottom: 30px;
+  padding-top: 10px;
+  margin-bottom: 10px;
 }
 
 .commentItem {
   display: flex;
   flex-direction: column; /* vertical*/
   justify-content: space-around;
-  background: white;
+  background: rgb(241, 238, 238);
   border: 1px solid black;
-  margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
-  padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  margin: 5px; /*top right bottom left*/
+  padding: 5px; /*top right bottom left*/
 }
 
 .commentHeader {
@@ -207,9 +207,9 @@ Bouton de nav du header
   justify-content: space-around;
   background: rgb(241, 238, 238);
   font-size: 11px;
-  border: 1px solid black;
-  margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
-  padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  /*border: 1px solid black;*/
+  /*margin: 20px; /*top right bottom left*/
+  /* padding: 20px; /*top right bottom left*/
 }
 
 .commentButton {
@@ -218,13 +218,13 @@ Bouton de nav du header
   justify-content: space-around;
   background: grey;
   border: 1px solid black;
-  margin: 20px, 20px, 20px, 20px; /*top right bottom left*/
-  padding: 20px, 20px, 20px, 20px; /*top right bottom left*/
+  margin: 20px; /*top right bottom left*/
+  padding: 20px; /*top right bottom left*/
 }
 
 .commentButtonsHeader {
   display: flex;
-  flex-direction: rows; /* cote cote*/
+  flex-direction: column; /*dessus/dessous*/
   justify-content: space-around;
   margin-top: 20px; /*top right bottom left*/
   margin-bottom: 20px; /*top right bottom left*/

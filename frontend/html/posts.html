@@ -390,12 +390,6 @@
                         </div>
                         <!-- Boutons pour afficher ou ajouter les commentaires. -->
                         <div class="commentButtonsHeader">
-                          <input
-                            @click="displayComments(itemPost.postId)"
-                            value="Afficher les commentaires"
-                            type="submit"
-                          />
-
                           <div class="flexColumns">
                             <input
                               @click="createComment(itemPost.postId)"
@@ -443,6 +437,12 @@
                           </div>
 
                           <!-- Fin formulaire ajout d'un commentaire -->
+
+                          <input
+                            @click="displayComments(itemPost.postId)"
+                            value="Afficher les commentaires"
+                            type="submit"
+                          />
                         </div>
 
                         <!-- Partie affichage des commentaires du post -->
