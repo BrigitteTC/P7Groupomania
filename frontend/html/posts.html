@@ -298,17 +298,21 @@
                         <img :src="itemPost.imageUrl" alt="image du post " />
                       </div>
                       <!-- Affichage du texte du post -->
-                      <div class="postText">
+                      <div>
                         <div v-if="modifyPostForm===itemPost.postId">
-                          <p v-if="newPost">
+                          <!-- test modif en cours: on affiche la valeur modifiee-->
+                          <p class="postText" v-if="newPost">
                             post n° {{itemPost.postId}} : {{newPost}}
                           </p>
-                          <p v-else>
+                          <p class="postText" v-else>
                             post n° {{itemPost.postId}} : {{itemPost.post}}
                           </p>
                         </div>
                         <div v-else>
-                          <p>post n° {{itemPost.postId}} : {{itemPost.post}}</p>
+                          <!-- Affichage normal -->
+                          <p class="postText">
+                            post n° {{itemPost.postId}} : {{itemPost.post}}
+                          </p>
                         </div>
                       </div>
 
