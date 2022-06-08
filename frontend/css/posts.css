@@ -120,15 +120,6 @@ Bouton de nav du header
   object-fit: cover; /* l'image s'adapte par rapport à la plus petite dimension*/
 }
 
-.postHeader {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  /* border: 1px solid black;*/
-
-  padding: 20px 20px 20px 20px; /*top right bottom left*/
-}
-
 .post__order {
   display: flex;
   justify-content: center;
