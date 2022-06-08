@@ -82,7 +82,7 @@ Class pour afficher les items a coté ou dessus/dessous
 
   padding: 20px;
   margin: 20px;
-  border: solid 2px black;
+  /* border: solid 2px black;*/
 }
 
 /* pour centrer le texte*/
