@@ -213,28 +213,36 @@
             <!-- Debut formulaire de creation du post -->
             <template v-if="createPostForm">
               <!-- Affichage du formulaire de creation du post -->
-              <div class="boxWithMargin">
+              <div>
                 <span v-if="newPost">Votre nouveau post : {{ newPost }}</span>
                 <form method="get">
-                  <div>
-                    <div class="post__order__form__question">
-                      <div>
-                        <label for="newPost">Votre nouveau post : </label>
-                        <input type="text" v-model="newPost" required />
-                      </div>
+                  <div class="boxWithMargin">
+                    <!-- texte -->
+
+                    <div class="flexColumns">
+                      <label class="sm-center" for="newPost"
+                        >Votre nouveau post :
+                      </label>
+                      <textarea
+                        class="textarea"
+                        v-model="newPost"
+                        required
+                      ></textarea>
                     </div>
-                    <div class="post__order__form__question">
-                      <div>
-                        <label for="newFile"
-                          >Vous pouvez ajouter une image :
-                        </label>
-                        <input
-                          type="file"
-                          accept=".jpg,.jpeg,.png"
-                          @change="uploadFile()"
-                          ref="file"
-                        />
-                      </div>
+
+                    <!-- image -->
+
+                    <div class="sm-center-inside flexColumns">
+                      <label class="sm-center" for="newFile"
+                        >Vous pouvez ajouter une image :
+                      </label>
+                      <input
+                        class="sm-center"
+                        type="file"
+                        accept=".jpg,.jpeg,.png"
+                        @change="uploadFile()"
+                        ref="file"
+                      />
                     </div>
                   </div>
                 </form>
