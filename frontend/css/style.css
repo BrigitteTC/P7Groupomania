@@ -84,6 +84,11 @@ Class pour afficher les items a coté ou dessus/dessous
   border: solid, 2px, black;
 }
 
+/* pour centrer le texte*/
+.center {
+  text-align: center;
+}
+
 /********/
 /*Header*/
 /********/

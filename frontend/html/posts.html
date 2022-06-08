@@ -273,8 +273,10 @@
 
             <!-- Affichage des posts -->
             <template v-else>
-              <h4 v-if="loading">Loading... dernières nouvelles</h4>
-              <h4 v-else>Dernières nouvelles</h4>
+              <h2 class="center" v-if="loading">
+                Loading... dernières nouvelles
+              </h2>
+              <h2 class="center" v-else>Dernières nouvelles</h2>
               <div class="postsList">
                 <div
                   v-for="itemPost in posts.posts"
