@@ -84,12 +84,7 @@
               </div>
 
               <div v-if="loginForm" class="login__form__submit">
-                <input
-                  @click="validateLogin()"
-                  type="submit"
-                  value="Valider"
-                  id="order"
-                />
+                <input @click="validateLogin()" type="submit" value="Valider" />
               </div>
 
               <div v-if="signupForm" class="login__form__submit">
@@ -97,7 +92,6 @@
                   @click="validateSignup()"
                   type="submit"
                   value="Valider"
-                  id="order"
                 />
               </div>
             </form>
