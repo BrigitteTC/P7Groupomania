@@ -108,11 +108,9 @@ Bouton de nav du header
 
 /* l'image associée au post*/
 .postImage {
-  height: 400px;
-  width: 100%;
+  max-width: 100%;
   text-align: center;
 
-  border-radius: 13px;
   border: 0;
   overflow: hidden;
   margin: auto;

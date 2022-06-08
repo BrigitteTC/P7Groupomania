@@ -294,8 +294,12 @@
                   <article class="postArticle">
                     <div class="postItem">
                       <!-- Affichage de l'image -->
-                      <div class="postImage" v-if="itemPost.imageUrl">
-                        <img :src="itemPost.imageUrl" alt="image du post " />
+                      <div v-if="itemPost.imageUrl">
+                        <img
+                          class="postImage"
+                          :src="itemPost.imageUrl"
+                          alt="image du post "
+                        />
                       </div>
                       <!-- Affichage du texte du post -->
                       <div>
