@@ -435,11 +435,14 @@
 
                           <!-- Fin formulaire ajout d'un commentaire -->
 
-                          <input
-                            @click="displayComments(itemPost.postId)"
-                            value="Afficher les commentaires"
-                            type="submit"
-                          />
+                          <!-- bouton pour affichage des commentaires -->
+                          <div class="flexColumns">
+                            <input
+                              @click="displayComments(itemPost.postId)"
+                              value="Afficher les commentaires"
+                              type="submit"
+                            />
+                          </div>
                         </div>
 
                         <!-- Partie affichage des commentaires du post -->
