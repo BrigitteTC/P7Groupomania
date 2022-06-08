@@ -116,6 +116,8 @@ Bouton de nav du header
   border: 0;
   overflow: hidden;
   margin: auto;
+  /* margin:auto;*/
+  object-fit: cover; /* l'image s'adapte par rapport à la plus petite dimension*/
 }
 
 .postHeader {
