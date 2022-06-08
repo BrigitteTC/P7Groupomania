@@ -194,8 +194,8 @@ Bouton de nav du header
 
 .commentHeader {
   display: flex;
-  flex-direction: row; /* horizontal*/
-  justify-content: space-around;
+  flex-direction: column; /* vertical*/
+  /* justify-content: space-around;*/
   background: rgb(241, 238, 238);
   font-size: 11px;
   /*border: 1px solid black;*/
@@ -206,6 +206,7 @@ Bouton de nav du header
 .commentButton {
   display: flex;
   flex-direction: row; /* cote cote*/
+  text-align: center;
   justify-content: space-around;
   background: grey;
   border: 1px solid black;
@@ -215,7 +216,7 @@ Bouton de nav du header
 
 .commentButtonsHeader {
   display: flex;
-  flex-direction: column; /*dessus/dessous*/
+  flex-direction: row; /*horizontal en desktom dessus/dessous en phone*/
   justify-content: space-around;
   margin-top: 20px; /*top right bottom left*/
   margin-bottom: 20px; /*top right bottom left*/
