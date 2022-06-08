@@ -413,7 +413,10 @@
                                     <label for="newComment"
                                       >Votre commentaire</label
                                     >
-                                    <textarea v-model="newComment"></textarea>
+                                    <textarea
+                                      class="textareaComment"
+                                      v-model="newComment"
+                                    ></textarea>
                                   </div>
                                   <div class="flexRows">
                                     <!-- Boutons pour valider ou annuler cette modif -->
@@ -508,11 +511,10 @@
                                             <label
                                               class="sm-center"
                                               for="newComment"
-                                              >Votre nouveau commentaire :
+                                              >Votre nouveau commentaire:
                                             </label>
                                             <textarea
-                                              class="textarea"
-                                              maxlength="200"
+                                              class="textareaComment"
                                               v-model="newComment"
                                             ></textarea>
                                           </div>

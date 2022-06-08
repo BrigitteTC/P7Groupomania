@@ -285,6 +285,12 @@ footer .footerSecondary {
     width: 250px;
     height: 200px;
   }
+
+  .textareaComment {
+    margin: 5px auto;
+    width: 100px;
+    height: 150px;
+  }
   .informations ul {
     flex-direction: column;
     align-items: center;
